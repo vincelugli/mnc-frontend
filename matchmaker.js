@@ -1,18 +1,27 @@
-const rawData = `{"mmr":{"tryhard0331":1397.4885409182448,"rccsr":1497.8908303756327,"coconuthead321":1538.8375481226765,"barneydabarnacle":1353.9171637173085,"ragtime":1626.4762802957453,"sarin":1522.205726301398,"pentakilldan":1625.3488420846581,"dusk euphoria":1635.0257058627406,"doomgeek":1497.9179998610532,"kash4null":1573.2861757930843,"bloodysundae":1490.2705741461662,"crickettlo14":1534.9971717512176,"zqmdfg":1337.4963666998956,"humantaboo":1392.0614485200497,"maddiesassslayer":1704.2889873355414,"datonedude23":1540.3919916805726,"namelrrelevant":1542.6527934294575,"lastspartan017":1530.9775109818986,"haley":1538.3387761250224,"drboomer":1366.0736352957915,"pmybqholto":1526.856274797828,"lumenadi":1443.2494477858634,"dropitlikeitsbox":1468.3778897570255,"thecanadianmoose":1848.4934285909126,"xylobi":1438.9063326362307,"pioushippo":1534.025848779661,"yahboiduane":1605.9303041040116,"kurushimi4":1469.6756643104202,"tootoxin":1841.5936134137114,"sharpkaze":1511.2838529148687,"ducorey":1523.68078342737,"dwyane":1555.372366064136,"iron":1522.205726301398,"sexualpancake":1663.1437563552684,"cmoneyseemoney":1512.6706971864267,"drsmashphd":1526.6167022239283,"hector1747":1471.1703328217163,"relia wylder":1530.1845776564967}}`;
-const jsonData = JSON.parse(rawData);
-
-const playerSelect = document.getElementById("known_players");
 const gamePlayers = new Map();
-
-// put data into a map
 const dataMap = new Map();
-for (const [key, value] of Object.entries(jsonData.mmr)) {
-    dataMap.set(key, value);
-    // hydrate the select
-    const option = document.createElement("option");
-    option.text = key;
-    playerSelect.add(option);
-    console.log(key);
+const playerSelect = document.getElementById("known_players");
+
+fetch('https://toxic-api-production.gggrunt16.workers.dev/placement')
+    .then(res => res.json())
+    .then(out => {
+        processJSON(out);
+    }
+).catch(error => alert(error));
+
+// Local Testing Data
+// const rawData = `{"mmr":{"tryhard0331":1397.4885409182448,"rccsr":1497.8908303756327,"coconuthead321":1538.8375481226765,"barneydabarnacle":1353.9171637173085,"ragtime":1626.4762802957453,"sarin":1522.205726301398,"pentakilldan":1625.3488420846581,"dusk euphoria":1635.0257058627406,"doomgeek":1497.9179998610532,"kash4null":1573.2861757930843,"bloodysundae":1490.2705741461662,"crickettlo14":1534.9971717512176,"zqmdfg":1337.4963666998956,"humantaboo":1392.0614485200497,"maddiesassslayer":1704.2889873355414,"datonedude23":1540.3919916805726,"namelrrelevant":1542.6527934294575,"lastspartan017":1530.9775109818986,"haley":1538.3387761250224,"drboomer":1366.0736352957915,"pmybqholto":1526.856274797828,"lumenadi":1443.2494477858634,"dropitlikeitsbox":1468.3778897570255,"thecanadianmoose":1848.4934285909126,"xylobi":1438.9063326362307,"pioushippo":1534.025848779661,"yahboiduane":1605.9303041040116,"kurushimi4":1469.6756643104202,"tootoxin":1841.5936134137114,"sharpkaze":1511.2838529148687,"ducorey":1523.68078342737,"dwyane":1555.372366064136,"iron":1522.205726301398,"sexualpancake":1663.1437563552684,"cmoneyseemoney":1512.6706971864267,"drsmashphd":1526.6167022239283,"hector1747":1471.1703328217163,"relia wylder":1530.1845776564967}}`;
+// processJSON(rawData);
+
+function processJSON(data) {
+    const jsonData = JSON.parse(data);
+    for (const [key, value] of Object.entries(jsonData.mmr)) {
+        dataMap.set(key, value);
+        // hydrate the select
+        const option = document.createElement("option");
+        option.text = key;
+        playerSelect.add(option);
+    }
 }
 
 function getValue() {
