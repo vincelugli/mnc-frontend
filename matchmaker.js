@@ -199,7 +199,7 @@ function addMatch() {
     
     const redTitleTag = document.createElement("div");
     redTitleTag.style = "color: red; font-weight: bold;"
-    const redTitle = document.createTextNode("RED TEAM: " + Math.round(redMMR));
+    const redTitle = document.createTextNode("RED TEAM (Team 2): " + Math.round(redMMR));
     redTitleTag.appendChild(redTitle);
 
     const redRosterTag = document.createElement("div");
@@ -214,7 +214,7 @@ function addMatch() {
 
     const blueTitleTag = document.createElement("div");
     blueTitleTag.style = "color: blue; font-weight: bold;"
-    const blueTitle = document.createTextNode("BLUE TEAM: " + Math.round(blueMMR));
+    const blueTitle = document.createTextNode("BLUE TEAM (Team 1): " + Math.round(blueMMR));
     blueTitleTag.appendChild(blueTitle);
 
     const blueRosterTag = document.createElement("div");
@@ -224,8 +224,8 @@ function addMatch() {
     blueDiv.appendChild(blueTitleTag);
     blueDiv.appendChild(blueRoster);
 
-    parentDiv.appendChild(redDiv);
     parentDiv.appendChild(blueDiv);
+    parentDiv.appendChild(redDiv);
 
     const element = document.getElementById("match_display");
     element.appendChild(parentDiv);
