@@ -224,8 +224,8 @@ function addMatch() {
     blueDiv.appendChild(blueTitleTag);
     blueDiv.appendChild(blueRoster);
 
-    parentDiv.appendChild(redDiv);
     parentDiv.appendChild(blueDiv);
+    parentDiv.appendChild(redDiv);
 
     const element = document.getElementById("match_display");
     element.appendChild(parentDiv);
