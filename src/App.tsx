@@ -2,35 +2,17 @@ import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { Player } from "./player";
+import allPlayers from "./allPlayers";
 
 function App() {
+  const [playerPool, setPlayerPool] = useState(allPlayers);
+  const [matchPlayers, setMatchPlayers] = useState([]);
 
-  const [playerQueue, setPlayerQueue] = useState([]);
-  function getValue() {
-    const key = document.getElementById("name").value;
-    console.log(key);
-    console.log(dataMap.get(key));
-}
-
-const rawData = `{"mmr":{"tryhard0331":1397.4885409182448,"rccsr":1495.4047954154519,"coconuthead321":1538.8375481226765,"barneydabarnacle":1353.9171637173085,"ragtime":1626.4762802957453,"sarin":1522.205726301398,"pentakilldan":1625.3488420846581,"dusk euphoria":1635.0257058627406,"doomgeek":1519.2399129487894,"kash4null":1567.3272099015242,"bloodysundae":1472.4049884250226,"crickettlo14":1534.9971717512176,"3hawkz":1759.8167604591738,"zqmdfg":1522.5623519984017,"humantaboo":1392.0614485200497,"datonedude23":1547.495856282352,"namelrrelevant":1542.6527934294575,"lastspartan017":1530.9775109818986,"haley":1479.4077925619383,"drboomer":1366.0736352957915,"pmybqholto":1526.856274797828,"lumenadi":1426.997048023692,"dropitlikeitsbox":1489.7637417717701,"thecanadianmoose":1671.2906446838806,"xylobi":1470.454474077244,"downbad minor":1649.5130585216455,"pioushippo":1534.4219454546787,"yahboiduane":1626.7100568172864,"kurushimi4":1469.6756643104202,"tootoxin":1841.5936134137114,"sharpkaze":1581.3756702575458,"ducorey":1423.9096312357592,"dwyane":1515.01899974558,"iron":1623.5783327677375,"sexualpancake":1636.4610737661055,"cmoneyseemoney":1512.6706971864267,"drsmashphd":1526.6167022239283,"hector1747":1456.212646470949,"relia wylder":1530.1845776564967}}`;
-processJSON(rawData);
-
-function processJSON(data) {
-    const jsonData = JSON.parse(data);
-    for (const [key, value] of Object.entries(jsonData.mmr)) {
-        dataMap.set(key, value);
-        // hydrate the select
-        const option = document.createElement("option");
-        option.text = key;
-        playerSelect.add(option);
-    }
-}
-
-function getValue() {
-    const key = document.getElementById("name").value;
-    console.log(key);
-    console.log(dataMap.get(key));
-}
+//   function getValue() {
+//     const key = document.getElementById("name").value;
+//     console.log(key);
+//     console.log(dataMap.get(key));
+// }
 
 const addPlayerHelper = (playerName, playerMMR) => {
     const div = document.createElement("div");

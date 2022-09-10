@@ -1,10 +1,12 @@
 export class Player {
   private id: number;
   private name: string;
+  private mmr: number;
 
-  constructor(id: number, name: string) {
+  constructor(id: number, name: string, mmr: number) {
     this.id = id;
     this.name = name;
+    this.mmr = mmr;
   }
 
   getId(): number {
@@ -12,5 +14,8 @@ export class Player {
   }
   getName(): string {
     return this.name;
+  }
+  getMmr(): number {
+    return this.mmr;
   }
 }
