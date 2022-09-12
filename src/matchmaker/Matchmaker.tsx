@@ -163,12 +163,6 @@ function App() {
           ></div>
           <div className="debug">
             <ul>
-              All Players({allPlayers.length})
-              {allPlayers.map((player) => {
-                return <li>{player.getName()}</li>;
-              })}
-            </ul>
-            <ul>
               Blue Team: {getTeamMmr(blueTeam)}
               {blueTeam.map((player) => {
                 return (
