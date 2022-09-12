@@ -1,26 +1,48 @@
 import React, { useState } from "react";
-import "./App.css";
-import { Player } from "./player";
-import allPlayers from "./allPlayers";
+import "./Matchmaker.css";
+import { Player } from ".././player";
 import Select from "react-select";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { MmrData } from "../mmr-data";
 
-function App() {
+function Matchmaker() {
   const [matchPlayers, setMatchPlayers] = useState<readonly Player[]>([]);
   const [blueTeam, setBlueTeam] = useState<readonly Player[]>([]);
   const [redTeam, setRedTeam] = useState<readonly Player[]>([]);
 
+  const fetchPlayers = () =>
+    axios
+      .get<MmrData>("/placement", {
+        headers: {
+          Accept: "application/json",
+        },
+      })
+      .then((res) => res.data);
+
+  const { isLoading, error, data } = useQuery<MmrData, Error, Player[]>(
+    ["mmr"],
+    fetchPlayers,
+    {
+      select: (data) => {
+        const players = Object.entries(data.mmr).map(
+          (key, value) => new Player(key.toString(), value)
+        );
+        return players;
+      },
+    }
+  );
+
   const handleSelectChange = (selectedPlayers: readonly Player[]) => {
     setMatchPlayers(selectedPlayers);
   };
-
-  const addMatchDisabled = () => matchPlayers.length != 10;
+  const addMatchDisabled = () => matchPlayers.length !== 10;
 
   const addMatch = () => {
-    if (matchPlayers.length == 10) {
+    if (matchPlayers.length === 10) {
       let playerPool: Player[] = [...matchPlayers].sort(
         (p1, p2) => p1.getMmr() - p2.getMmr()
       );
-      console.log(playerPool);
 
       const team1 = playerPool.splice(0, 1);
       const anchor1 = playerPool.pop();
@@ -114,6 +136,10 @@ function App() {
     // document.getElementById(key + "_matchmaking_item").remove();
   }
 
+  if (isLoading) return <div>Loading...</div>;
+
+  if (error) return <div>Error fetching data from api</div>;
+
   return (
     <div className="App">
       <header className="App-header">
@@ -125,7 +151,7 @@ function App() {
             <div /*style="margin-bottom: 10;"*/>
               <Select
                 isMulti
-                options={allPlayers}
+                options={data}
                 getOptionLabel={(player) => player.getName()}
                 getOptionValue={(player) => player.getName()}
                 onChange={handleSelectChange}
@@ -193,4 +219,4 @@ function App() {
   );
 }
 
-export default App;
+export default Matchmaker;

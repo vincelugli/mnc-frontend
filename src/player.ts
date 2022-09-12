@@ -1,17 +1,12 @@
 export class Player {
-  private id: number;
   private name: string;
   private mmr: number;
 
-  constructor(id: number, name: string, mmr: number) {
-    this.id = id;
+  constructor(name: string, mmr: number) {
     this.name = name;
     this.mmr = mmr;
   }
 
-  getId(): number {
-    return this.id;
-  }
   getName(): string {
     return this.name;
   }
