@@ -26,7 +26,11 @@ function Matchmaker() {
     {
       select: (data) => {
         const players = Object.entries(data.mmr).map(
-          (key, value) => new Player(key.toString(), value)
+          (key, value) =>
+            ({
+              name: key.toString(),
+              mmr: value,
+            } as Player)
         );
         return players;
       },
@@ -40,8 +44,8 @@ function Matchmaker() {
 
   const addMatch = () => {
     if (matchPlayers.length === 10) {
-      let playerPool: Player[] = [...matchPlayers].sort(
-        (p1, p2) => p1.getMmr() - p2.getMmr()
+      const playerPool: Player[] = [...matchPlayers].sort(
+        (p1, p2) => p1.mmr - p2.mmr
       );
 
       const team1 = playerPool.splice(0, 1);
@@ -72,7 +76,7 @@ function Matchmaker() {
   const getTeamMmr = (players: readonly Player[]) => {
     return (
       players.reduce((total, player) => {
-        return total + player.getMmr();
+        return total + player.mmr;
       }, 0) / 5
     );
   };
@@ -152,8 +156,8 @@ function Matchmaker() {
               <Select
                 isMulti
                 options={data}
-                getOptionLabel={(player) => player.getName()}
-                getOptionValue={(player) => player.getName()}
+                getOptionLabel={(player) => player.name}
+                getOptionValue={(player) => player.name}
                 onChange={handleSelectChange}
               />
               <button onClick={addPlayer} /* style="width: 25; height: 25"*/>
@@ -194,7 +198,7 @@ function Matchmaker() {
                 return (
                   <li>
                     <>
-                      {player.getName()}({player.getMmr()})
+                      {player.name}({player.name})
                     </>
                   </li>
                 );
@@ -206,7 +210,7 @@ function Matchmaker() {
                 return (
                   <li>
                     <>
-                      {player.getName()}({player.getMmr()})
+                      {player.name}({player.name})
                     </>
                   </li>
                 );
