@@ -1,24 +1,15 @@
-import React, { useState } from "react";
-import "./Matchmaker.css";
-import { Player } from ".././player";
-import Select from "react-select";
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import Select from "react-select";
+import { Player } from ".././player";
+import { fetchPlayers } from "../api/gruntApi";
 import { MmrData } from "../mmr-data";
+import "./Matchmaker.css";
 
 function Matchmaker() {
   const [matchPlayers, setMatchPlayers] = useState<readonly Player[]>([]);
   const [blueTeam, setBlueTeam] = useState<readonly Player[]>([]);
   const [redTeam, setRedTeam] = useState<readonly Player[]>([]);
-
-  const fetchPlayers = () =>
-    axios
-      .get<MmrData>("/placement", {
-        headers: {
-          Accept: "application/json",
-        },
-      })
-      .then((res) => res.data);
 
   const { isLoading, error, data } = useQuery<MmrData, Error, Player[]>(
     ["mmr"],
