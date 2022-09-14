@@ -7,9 +7,12 @@ import { MmrData } from "../mmr-data";
 import "./Matchmaker.css";
 
 function Matchmaker() {
+  const [customPlayers, setCustomPlayers] = useState<Player[]>([]);
   const [matchPlayers, setMatchPlayers] = useState<readonly Player[]>([]);
   const [blueTeam, setBlueTeam] = useState<readonly Player[]>([]);
   const [redTeam, setRedTeam] = useState<readonly Player[]>([]);
+
+  const [customPlayerInput, setCustomPlayerInput] = useState("");
 
   const { isLoading, error, data } = useQuery<MmrData, Error, Player[]>(
     ["mmr"],
@@ -17,10 +20,10 @@ function Matchmaker() {
     {
       select: (data) => {
         const players = Object.entries(data.mmr).map(
-          (key, value) =>
+          (kvPair) =>
             ({
-              name: key.toString(),
-              mmr: value,
+              name: kvPair[0],
+              mmr: kvPair[1],
             } as Player)
         );
         return players;
@@ -31,6 +34,17 @@ function Matchmaker() {
   const handleSelectChange = (selectedPlayers: readonly Player[]) => {
     setMatchPlayers(selectedPlayers);
   };
+
+  const addCustomPlayer = () => {
+    if (
+      customPlayerInput.length > 0 &&
+      !customPlayers.find((player) => player.name === customPlayerInput)
+    )
+      setCustomPlayers(
+        customPlayers.concat({ name: customPlayerInput, mmr: 1500 })
+      );
+  };
+
   const addMatchDisabled = () => matchPlayers.length !== 10;
 
   const addMatch = () => {
@@ -79,47 +93,6 @@ function Matchmaker() {
     }
   };
 
-  const addPlayerHelper = (player: Player) => {
-    // const div = document.createElement("div");
-    // div.id = playerName + "_matchmaking_item";
-    // div.style =
-    //   "display:flex; flex-direction: row; justify-content: space-between; align-items: center; border-radius: 5px; border: 1px solid #b0b0b0; margin-bottom: 5; padding: 5; height: 40";
-    // const tag = document.createElement("p");
-    // const textNode = document.createTextNode(
-    //   playerName + ": " + Math.round(playerMMR)
-    // );
-    // const button = document.createElement("button");
-    // button.style = "width: 25; height: 25";
-    // button.onclick = () => {
-    //   removePlayer(playerName);
-    // };
-    // button.innerText = "X";
-    // div.appendChild(tag);
-    // div.appendChild(button);
-    // tag.appendChild(textNode);
-    // var element = document.getElementById("players_to_match");
-    // element.appendChild(div);
-    // // update our map used for matchmaking
-    // gamePlayers.set(playerName, playerMMR);
-  };
-
-  function manualAddPlayer() {
-    // if (gamePlayers.size >= 10) {
-    //   return;
-    // }
-    // const playerName = document.getElementById("manual_entry").value;
-    // addPlayerHelper(playerName, 1500);
-  }
-
-  function addPlayer() {
-    // if (gamePlayers.size >= 10) {
-    //   return;
-    // }
-    // const playerName = playerSelect.value;
-    // addPlayerHelper(playerName, dataMap.get(playerName));
-    // playerSelect.remove(playerSelect.selectedIndex);
-  }
-
   function removePlayer(key: number) {
     // if (gamePlayers.size === 0) {
     //   return;
@@ -146,21 +119,25 @@ function Matchmaker() {
             <div /*style="margin-bottom: 10;"*/>
               <Select
                 isMulti
-                options={data}
+                options={data.concat(customPlayers)}
                 getOptionLabel={(player) => player.name}
                 getOptionValue={(player) => player.name}
                 onChange={handleSelectChange}
               />
-              <button onClick={addPlayer} /* style="width: 25; height: 25"*/>
-                +
-              </button>
             </div>
             <div /*style="margin-bottom: 10;"*/>
               <input
                 type="text"
                 id="manual_entry" /*style="width: 200; height: 25"*/
+                value={customPlayerInput}
+                onInput={(e) => {
+                  const target = e.target as HTMLInputElement;
+                  setCustomPlayerInput(target.value);
+                }}
               />
-              <button /*onclick="manualAddPlayer()" style="width: 25; height: 25"*/
+              <button
+                onClick={addCustomPlayer} /*style="width: 25; height: 25"*/
+                disabled={customPlayerInput.length <= 0}
               >
                 +
               </button>
@@ -201,7 +178,7 @@ function Matchmaker() {
                 return (
                   <li>
                     <>
-                      {player.name}({player.name})
+                      {player.name}({player.mmr})
                     </>
                   </li>
                 );
