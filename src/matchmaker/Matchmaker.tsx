@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Select from "react-select";
-import { Player } from ".././player";
+import { Player } from "../types/Player";
 import { fetchPlayers } from "../api/gruntApi";
 import { MmrData } from "../mmr-data";
 import "./Matchmaker.css";
