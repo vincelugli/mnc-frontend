@@ -1,12 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
 import React from "react"
+import { useSelector } from "react-redux";
 import { useSortBy, useTable } from "react-table";
-import { mapStats } from "../services/dataMapper";
-import { fetchPlayers, fetchStats } from "../services/dataService";
-import { Player } from "../types/domain/Player";
-import { StatsPlayer } from "../types/domain/StatsPlayer";
-import { MmrData } from "../types/service/MmrData";
-import { StatsData } from "../types/service/StatsData";
+import { statsSelector } from "../redux/statsSelectors";
 
 function Table({ columns, data }: {columns: any, data: any}) {
     const {
@@ -82,18 +77,10 @@ export const PlayerOverview = React.memo(function PlayerOverview() {
     {Header: 'Wins', accessor: "wins"}
   ],[]);
 
-  const { isLoading, error, data } = useQuery<StatsData, Error, StatsPlayer[]>(
-    ["stats"],
-    fetchStats,
-    {
-      select: (data) => {
-        return mapStats(data);
-      },
-    }
-  );
+  const data = useSelector(statsSelector.getPlayers);
 
   return <div style={{display: "flex", flexDirection: "column", marginTop: 100, marginLeft: 100, justifyContent: "center", alignItems: "center"}}>
     <h1>Player Overview</h1>
-    {!isLoading && <Table columns={columns} data={data} />}
+    {<Table columns={columns} data={data} />}
   </div>;
 });
