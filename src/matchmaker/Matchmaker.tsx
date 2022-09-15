@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Select from "react-select";
-import { Player } from ".././player";
-import { fetchPlayers } from "../api/gruntApi";
+import { Player } from "../types/Player";
+import { fetchMMR, fetchPlayers } from "../services/dataService";
 import { MmrData } from "../mmr-data";
 import "./Matchmaker.css";
 
@@ -30,6 +30,25 @@ function Matchmaker() {
       },
     }
   );
+
+  const result = useQuery(
+    [],
+    fetchMMR,
+    // {
+    //   select: (data) => {
+    //     const players = Object.entries(data.mmr).map(
+    //       (kvPair) =>
+    //         ({
+    //           name: kvPair[0],
+    //           mmr: kvPair[1],
+    //         } as Player)
+    //     );
+    //     return players;
+    //   },
+    // }
+  );
+
+  console.log(result.data);
 
   const handleSelectChange = (selectedPlayers: readonly Player[]) => {
     setMatchPlayers(selectedPlayers);
