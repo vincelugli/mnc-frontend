@@ -1,5 +1,6 @@
 import axios from "axios";
 import { MmrData } from "../types/service/MmrData";
+import { StatsData } from "../types/service/StatsData";
 
 const placementEndpoint = "https://toxic-api-production.gggrunt16.workers.dev/mmr";
 const mmrEndpoint = "https://toxic-api-production.gggrunt16.workers.dev/mmr";
@@ -11,13 +12,13 @@ export const fetchPlayers = () => axios.get<MmrData>("/placement", {
   },
 }).then((res) => res.data);
 
-export const fetchStats = () =>axios.get<MmrData>(statsEndpoint, {
+export const fetchStats = () => axios.get<StatsData>(statsEndpoint, {
   headers: {
     Accept: "application/json",
   },
 }).then((res) => res.data);
 
-export const fetchMMR = () =>axios.get<MmrData>(mmrEndpoint, {
+export const fetchMMR = () => axios.get<MmrData>(mmrEndpoint, {
   headers: {
     Accept: "application/json",
   },

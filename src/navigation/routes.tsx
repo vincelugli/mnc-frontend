@@ -1,6 +1,6 @@
 import { createBrowserRouter} from 'react-router-dom';
 
-import { PlayerOverview } from "../components/PlayerOverview";
+import { PlayerOverview } from "../playerOverview/PlayerOverview";
 import Home from '../home/Home';
 import Matchmaker from '../matchmaker/Matchmaker';
 import Root from "./Root";
