@@ -5,4 +5,6 @@ const proxy = {
 };
 module.exports = function (app) {
   app.use("/placement", createProxyMiddleware(proxy));
+  app.use("/stats", createProxyMiddleware(proxy));
+  app.use("/mmr", createProxyMiddleware(proxy));
 };
