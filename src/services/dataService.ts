@@ -1,5 +1,5 @@
 import axios from "axios";
-import { MmrData } from "../mmr-data";
+import { MmrData } from "../types/service/MmrData";
 
 // https://toxic-api-production.gggrunt16.workers.dev/mmr
 // https://toxic-api-production.gggrunt16.workers.dev/placement
@@ -19,7 +19,7 @@ export const fetchStats = () =>axios.get<MmrData>("/stats", {
   },
 }).then((res) => res.data);
 
-export const fetchMMR = () =>axios.get<MmrData>("/mmr", {
+export const fetchMMR = () =>axios.get<MmrData>(mmrEndpoint, {
   headers: {
     Accept: "application/json",
   },

@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Select from "react-select";
-import { Player } from "../types/Player";
+import { Player } from "../types/domain/Player";
 import { fetchMMR, fetchPlayers } from "../services/dataService";
-import { MmrData } from "../mmr-data";
+import { MmrData } from "../types/service/MmrData";
 import "./Matchmaker.css";
 
 function Matchmaker() {
