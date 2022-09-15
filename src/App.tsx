@@ -14,6 +14,10 @@ const router = createBrowserRouter([
     errorElement: <div>Hello world!</div>,
     children: [
       {
+        path: "/",
+        element: <Matchmaker/>
+      },
+      {
         path: "/matchmaker",
         element: <Matchmaker/>,
       },
