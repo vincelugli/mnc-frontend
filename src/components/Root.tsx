@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 import {AiOutlineMenu, AiOutlineClose} from "react-icons/ai";
 
@@ -53,8 +53,8 @@ export default function Root() {
     <>
       <div id="mySidenav" className="sidenav" style={isNavigationCollapsed ? sideBarCollapsedStyle : sideBarStyle}>
         <a style={sideBarIcon} onClick={onToggleNavigation}><AiOutlineClose/></a>
-        <a href="playerOverview">Player Overview</a>
-        <a href="matchmaker">Matchmaker</a>
+        <Link to="/playerOverview">Player Overview</Link>
+        <Link to="/matchmaker">Matchmaker</Link>
       </div>
       <div style={{flex:1, width: "100%"}}>
       <a style={{...sideBarIcon, right: 0, left: 0, marginLeft: 0, paddingLeft:25}} onClick={onToggleNavigation}><AiOutlineMenu/></a>
