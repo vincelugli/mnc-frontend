@@ -71,7 +71,6 @@ function Table({ columns, data }: {columns: any, data: any}) {
           </tbody>
         </table>
         <br />
-        <div>Showing the first 20 results of {rows.length} rows</div>
       </>
     )
   }
