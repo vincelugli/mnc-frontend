@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider} from 'react-router-dom';
 
 import { Container } from './components/counter';
 import Root from "./components/Root";
+import { PlayerOverview } from "./components/PlayerOverview";
 
 const queryClient = new QueryClient();
 
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/playerOverview",
-        element: <Container/>,
+        element: <PlayerOverview/>,
       }
     ]
   },

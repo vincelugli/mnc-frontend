@@ -31,24 +31,7 @@ function Matchmaker() {
     }
   );
 
-  const result = useQuery(
-    [],
-    fetchMMR,
-    // {
-    //   select: (data) => {
-    //     const players = Object.entries(data.mmr).map(
-    //       (kvPair) =>
-    //         ({
-    //           name: kvPair[0],
-    //           mmr: kvPair[1],
-    //         } as Player)
-    //     );
-    //     return players;
-    //   },
-    // }
-  );
-
-  console.log(result.data);
+  console.log(data);
 
   const handleSelectChange = (selectedPlayers: readonly Player[]) => {
     setMatchPlayers(selectedPlayers);

@@ -43,6 +43,7 @@ const sideBarIcon: CSS.Properties = {
 
 export default function Root() {
 
+
     const [isNavigationCollapsed, setIsNavigationCollapsed] = useState<boolean>(true);
 
     const onToggleNavigation = () => {
