@@ -1,5 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
-import createSagaMiddleware from 'redux-saga';
+import { createStore } from 'redux';
 import "regenerator-runtime/runtime";
 
 // reducer
@@ -13,13 +12,5 @@ const countReducer = function (state = 0, action: {type: string}) {
         return state;
     }
 };
-  
-function* exampleSaga() {
-  console.log("Example saga reached");
-}
 
-const sagaMiddleware = createSagaMiddleware();
-
-export const store = createStore(countReducer, applyMiddleware(sagaMiddleware));
-
-sagaMiddleware.run(exampleSaga);
+export const store = createStore(countReducer);

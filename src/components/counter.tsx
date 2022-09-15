@@ -1,4 +1,4 @@
-import { Provider, connect} from 'react-redux';
+import { connect} from 'react-redux';
 
 // component
 const Component = (data: {count: number, handleIncrementClick: ()=> void, handleDecrementClick: ()=> void}) => (
