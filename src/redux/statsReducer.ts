@@ -26,7 +26,13 @@ export const statsReducer = createReducer(initialState, (builder) => {
     for(const player of playersCollection) {
       const currentPlayer = state.players[player.name];
       if (currentPlayer) {
-        state.players[player.name] = {...currentPlayer, name: player.name, wins: player.wins, losses: player.losses};
+        state.players[player.name] = {
+          ...currentPlayer,
+          name: player.name, 
+          wins: player.wins,
+          losses: player.losses,
+          champions: player.champions
+        };
       } else {
         state.players[player.name] = player;
       }
