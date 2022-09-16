@@ -1,7 +1,8 @@
+import { Champion } from "../types/domain/Champion";
 import { Player } from "../types/domain/Player";
 
 /**
- * Given a collection of players, map to a player with processed stats
+ * Given a collection of players, map to a collection of players with processed stats
  * @param data A collection of playeres to process
  */
 export function processPlayers(data: Player[] | undefined) {
@@ -19,3 +20,39 @@ export function processPlayers(data: Player[] | undefined) {
     })) : [];
   }
   
+/**
+ * Given a collection of players, map to a key value pair of championName to champion that has stats centered around that champion
+ * @param data 
+ */
+export function processChampions(data: Player[] | undefined) {
+  const championMap: {[key: string]: Champion} = {};
+  if (data) {
+    for (const player of data) {
+      // iterate through the player's champions to aggregate champion info
+      if (player.champions) {
+        for (const [key,value] of Object.entries(player.champions)) {
+          if (championMap[key] === undefined) {
+            // champion does not exist in our collection, so we can add it
+            championMap[key] = {
+              name: key,
+              losses: value.losses,
+              wins: value.wins,
+              totalGames: value.losses + value.wins,
+              winPercentage: value.winPercentage
+            }
+          } else {
+            championMap[key] = {
+              name: key,
+              losses: championMap[key].losses + value.losses,
+              wins: championMap[key].wins + value.wins,
+              winPercentage: Math.round((championMap[key].winPercentage + value.winPercentage) / 2),
+              totalGames: championMap[key].totalGames + value.losses + value.wins
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return championMap;
+}

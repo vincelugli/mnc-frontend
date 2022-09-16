@@ -5,6 +5,7 @@ import Home from '../home/Home';
 import Matchmaker from '../matchmaker/Matchmaker';
 import Root from "./Root";
 import { loader as playerLoader, PlayerScreen } from '../playerOverview/PlayerScreen';
+import { ChampionOverview } from '../championOverview/ChampionOverview';
 
 export const router = createBrowserRouter([
   {
@@ -28,7 +29,11 @@ export const router = createBrowserRouter([
         path: "/playerOverview/:playerId",
         loader: playerLoader,
         element: <PlayerScreen/>,
-      }
+      },
+      {
+        path: "/championOverview",
+        element: <ChampionOverview/>,
+      },
     ]
   },
 ]);

@@ -33,7 +33,6 @@ export default function Home() {
                       mmr: kvPair[1],
                     } as Player)
                 );
-                console.log(players);
                 return players;
               },
         }

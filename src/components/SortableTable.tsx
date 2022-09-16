@@ -15,7 +15,7 @@ export function SortableTable({
     getHeaderProps?: any,
     getColumnProps?: any,
     getRowProps?: any,
-    getCellProps: any;
+    getCellProps?: any;
   }) {
     const {
       getTableProps,
