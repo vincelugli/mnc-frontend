@@ -1,14 +1,29 @@
-import { useQuery } from "@tanstack/react-query";
-import React from "react"
+import React, { useCallback, useState } from "react"
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useSortBy, useTable } from "react-table";
-import { mapStats } from "../services/dataMapper";
-import { fetchPlayers, fetchStats } from "../services/dataService";
+import { statsSelector } from "../redux/statsSelectors";
 import { Player } from "../types/domain/Player";
-import { StatsPlayer } from "../types/domain/StatsPlayer";
-import { MmrData } from "../types/service/MmrData";
-import { StatsData } from "../types/service/StatsData";
 
-function Table({ columns, data }: {columns: any, data: any}) {
+import "./PlayerOverview.css";
+
+const defaultPropGetter = () => ({})
+
+function Table({
+    columns,
+    data,
+    getHeaderProps = defaultPropGetter,
+    getColumnProps = defaultPropGetter,
+    getRowProps = defaultPropGetter,
+    getCellProps = defaultPropGetter,
+  } : {
+    columns: any,
+    data: any,
+    getHeaderProps?: any,
+    getColumnProps?: any,
+    getRowProps?: any,
+    getCellProps: any;
+  }) {
     const {
       getTableProps,
       getTableBodyProps,
@@ -23,10 +38,6 @@ function Table({ columns, data }: {columns: any, data: any}) {
       useSortBy
     )
   
-    // We don't want to render all 2000 rows for this example, so cap
-    // it at 20 for this use case
-    const firstPageRows = rows; //.slice(0, 20)
-  
     return (
       <>
         <table {...getTableProps()}>
@@ -39,30 +50,46 @@ function Table({ columns, data }: {columns: any, data: any}) {
                 {headerGroup.headers.map((column:any) => (
                   // Add the sorting props to control sorting. For this example
                   // we can add them into the header props
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  <th
+
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                  >
+                    <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      //justifyContent: "space-between",
+                      marginRight: "8px",
+                      marginLeft: "8px",
+                      }}>
                     {column.render('Header')}
                     {/* Add a sort direction indicator */}
-                    <span>
+                    <span style={{marginLeft: "8px"}}>
                       {column.isSorted
                         ? column.isSortedDesc
                           ? ' 🔽'
                           : ' 🔼'
-                        : ''}
+                        : ' 🟦'}
                     </span>
+                    </div>
+
                   </th>
                 ))}
               </tr>
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {firstPageRows.map(
+            {rows.map(
               (row, i) => {
                 prepareRow(row);
                 return (
-                  <tr {...row.getRowProps()}>
+                  <tr {...row.getRowProps(getRowProps(row))}>
                     {row.cells.map(cell => {
                       return (
-                        <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                        <td {...cell.getCellProps([
+                          getColumnProps(cell.column),
+                          getCellProps(cell)
+                        ])}>{cell.render('Cell')}</td>
                       )
                     })}
                   </tr>
@@ -75,25 +102,60 @@ function Table({ columns, data }: {columns: any, data: any}) {
     )
   }
 
+function processData(data: Player[] | undefined) {
+  return data ? (data.map((player) => {
+    const wins = player.wins ?? 0;
+    const losses = player.losses ?? 0;
+    const totalGames = wins + losses;
+    return {
+      ...player,
+      winPercentage: Math.round(wins / totalGames * 100) + "%",
+      totalGames: totalGames,
+      mmr: Math.round(player.mmr ?? 0)
+    }
+  })) : [];
+}
+
 export const PlayerOverview = React.memo(function PlayerOverview() {
   const columns = React.useMemo(() => [
     {Header: 'Name', accessor: 'name'},
+    {Header: 'Wins', accessor: "wins"},
+    {Header: 'Win Percentage', accessor: "winPercentage"},
     {Header: 'Losses', accessor: "losses"},
-    {Header: 'Wins', accessor: "wins"}
+    {Header: 'Total Games', accessor: "totalGames"},
+    {Header: 'MMR', accessor: "mmr"},
   ],[]);
 
-  const { isLoading, error, data } = useQuery<StatsData, Error, StatsPlayer[]>(
-    ["stats"],
-    fetchStats,
-    {
-      select: (data) => {
-        return mapStats(data);
-      },
-    }
-  );
+  const data = useSelector(statsSelector.getPlayers);
+  const processedData = processData(data);
 
-  return <div style={{display: "flex", flexDirection: "column", marginTop: 100, marginLeft: 100, justifyContent: "center", alignItems: "center"}}>
+  const navigate = useNavigate();
+
+  return <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
     <h1>Player Overview</h1>
-    {!isLoading && <Table columns={columns} data={data} />}
+    {
+      <Table
+        columns={columns}
+        data={processedData}
+        getRowProps={(row:any) => {
+          return {          
+          onClick: () => {
+            navigate(row.values.name);
+          },
+        }}}
+        getCellProps={(cellInfo: any) => {
+          if (cellInfo.column.id === "mmr") {
+            const mmrColor = cellInfo.value > 0 ? `hsl(${120 * ((1800 - cellInfo.value) / 1800) * 4 * -1 + 120}, 100%, 67%)`: "transparent";
+            return {
+              style: {
+                backgroundColor: mmrColor,
+              },
+            }
+          } else {
+            return {};
+          }
+        }}
+      />
+    }
   </div>;
 });

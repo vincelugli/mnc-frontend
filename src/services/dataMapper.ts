@@ -1,8 +1,8 @@
-import { StatsPlayer } from "../types/domain/StatsPlayer";
+import { Player } from "../types/domain/Player";
 import { StatsData } from "../types/service/StatsData";
 
-export function mapStats(data: StatsData): StatsPlayer[] {
-    const players: StatsPlayer[] = Object.entries(data).map(
+export function mapStats(data: StatsData): Player[] {
+    const players: Player[] = Object.entries(data).map(
         (kvPair)=> {
             let wins = 0; 
             let losses = 0;

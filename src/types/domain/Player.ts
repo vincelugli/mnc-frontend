@@ -1,4 +1,6 @@
 export type Player = {
-  name: string;
-  mmr: number;
-};
+    name: string;
+    wins?: number;
+    losses?: number;
+    mmr?: number;
+}
