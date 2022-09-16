@@ -60,13 +60,21 @@ const sideBarClose: CSS.Properties = {
   backgroundColor: "transparent",
 }
 
-function NavigationItem({route, label}: {route: string, label: string}) {
+function NavigationItem(
+  {route, label, onClickCallback}: 
+  {route: string, label: string, onClickCallback?: () => void}
+) {
   const navigate = useNavigate();
+
   const onClick = useCallback(()=> {
     navigate(route)
-  },[route, navigate]);
+    if (onClickCallback) {
+      onClickCallback();
+    }
+  },[route, navigate, onClickCallback]);
+
   return <button onClick={onClick} style={{backgroundColor: "transparent", borderWidth: 0 }}>
-    <a>{label}</a>
+    <a style={{minWidth: 500, textAlign: "left"}}>{label}</a>
   </button>
 }
 
@@ -81,9 +89,9 @@ export default function Root() {
     <>
       <div id="mySidenav" className="sidenav" style={isNavigationCollapsed ? sideBarCollapsedStyle : sideBarStyle}>
         <button onClick={onToggleNavigation} style={sideBarClose}><a><AiOutlineClose/></a></button>
-        <NavigationItem label="Home" route="/"/>
-        <NavigationItem label="Player Overview" route="/playerOverview"/>
-        <NavigationItem label="Matchmaker" route="/matchmaker"/>
+        <NavigationItem label="Home" route="/" onClickCallback={onToggleNavigation}/>
+        <NavigationItem label="Player Overview" route="/playerOverview" onClickCallback={onToggleNavigation}/>
+        <NavigationItem label="Matchmaker" route="/matchmaker" onClickCallback={onToggleNavigation}/>
       </div>
       <div style={{display: "flex", flex:1, width: "100%", flexDirection: "column"}}>
         <div style={{display: "flex", flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>

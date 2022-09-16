@@ -52,7 +52,7 @@ function Matchmaker() {
   const addMatch = () => {
     if (matchPlayers.length === 10) {
       const playerPool: Player[] = [...matchPlayers].sort(
-        (p1, p2) => p1.mmr - p2.mmr
+        (p1, p2) => (p1.mmr ?? 0) - (p2.mmr ?? 0)
       );
 
       const team1 = playerPool.splice(0, 1);
@@ -83,7 +83,7 @@ function Matchmaker() {
   const getTeamMmr = (players: readonly Player[]) => {
     return (
       players.reduce((total, player) => {
-        return total + player.mmr;
+        return total + (player.mmr ?? 0);
       }, 0) / 5
     );
   };
