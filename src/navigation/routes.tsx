@@ -4,7 +4,7 @@ import { PlayerOverview } from "../playerOverview/PlayerOverview";
 import Home from '../home/Home';
 import Matchmaker from '../matchmaker/Matchmaker';
 import Root from "./Root";
-import PlayerScreen, { loader as playerLoader } from '../playerOverview/PlayerScreen';
+import { loader as playerLoader, PlayerScreen } from '../playerOverview/PlayerScreen';
 
 export const router = createBrowserRouter([
   {
