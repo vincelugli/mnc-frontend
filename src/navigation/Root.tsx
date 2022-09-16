@@ -20,7 +20,7 @@ const baseSideBarStyle: CSS.Properties = {
 
 const sideBarStyle: CSS.Properties = {
   ...baseSideBarStyle,
-  width: "250px", /* 0 width - change this with JavaScript */
+  width: "300px", /* 0 width - change this with JavaScript */
 }
 
 const sideBarCollapsedStyle: CSS.Properties = {
@@ -91,6 +91,7 @@ export default function Root() {
         <button onClick={onToggleNavigation} style={sideBarClose}><a><AiOutlineClose/></a></button>
         <NavigationItem label="Home" route="/" onClickCallback={onToggleNavigation}/>
         <NavigationItem label="Player Overview" route="/playerOverview" onClickCallback={onToggleNavigation}/>
+        <NavigationItem label="Champion Overview" route="/championOverview" onClickCallback={onToggleNavigation}/>
         <NavigationItem label="Matchmaker" route="/matchmaker" onClickCallback={onToggleNavigation}/>
       </div>
       <div style={{display: "flex", flex:1, width: "100%", flexDirection: "column"}}>
