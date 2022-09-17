@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Select from "react-select";
 import { Player } from "../types/domain/Player";
-import { fetchMMR, fetchPlayers } from "../services/dataService";
+import { fetchPlayers } from "../services/dataService";
 import { MmrData } from "../types/service/MmrData";
 import "./Matchmaker.css";
 
@@ -31,12 +31,6 @@ function Matchmaker() {
     }
   );
 
-  console.log(data);
-
-  const handleSelectChange = (selectedPlayers: readonly Player[]) => {
-    setMatchPlayers(selectedPlayers);
-  };
-
   const addCustomPlayer = () => {
     if (
       customPlayerInput.length > 0 &&
@@ -46,8 +40,6 @@ function Matchmaker() {
         customPlayers.concat({ name: customPlayerInput, mmr: 1500 })
       );
   };
-
-  const addMatchDisabled = () => matchPlayers.length !== 10;
 
   const addMatch = () => {
     if (matchPlayers.length === 10) {
@@ -95,17 +87,6 @@ function Matchmaker() {
     }
   };
 
-  function removePlayer(key: number) {
-    // if (gamePlayers.size === 0) {
-    //   return;
-    // }
-    // gamePlayers.delete(key);
-    // const option = document.createElement("option");
-    // option.text = key;
-    // playerSelect.add(option);
-    // document.getElementById(key + "_matchmaking_item").remove();
-  }
-
   if (isLoading) return <div>Loading...</div>;
 
   if (error) return <div>Error fetching data from api</div>;
@@ -113,24 +94,21 @@ function Matchmaker() {
   return (
     <div className="App">
       <header className="App-header">
-        <div /*style="display: flex; flex-direction: row; flex-wrap: wrap; padding: 10; margin-bottom: 32;"*/
-        >
-          {/* match management section */}
-          <div /*style="display: flex; flex-direction: column; margin-right: 10; margin-bottom: 10;"*/
-          >
-            <div /*style="margin-bottom: 10;"*/>
+        <div>
+          <div>
+            <div>
               <Select
                 isMulti
                 options={data.concat(customPlayers)}
                 getOptionLabel={(player) => player.name}
                 getOptionValue={(player) => player.name}
-                onChange={handleSelectChange}
+                onChange={setMatchPlayers}
               />
             </div>
-            <div /*style="margin-bottom: 10;"*/>
+            <div>
               <input
                 type="text"
-                id="manual_entry" /*style="width: 200; height: 25"*/
+                id="manual_entry"
                 value={customPlayerInput}
                 onInput={(e) => {
                   const target = e.target as HTMLInputElement;
@@ -138,29 +116,17 @@ function Matchmaker() {
                 }}
               />
               <button
-                onClick={addCustomPlayer} /*style="width: 25; height: 25"*/
+                onClick={addCustomPlayer}
                 disabled={customPlayerInput.length <= 0}
               >
                 +
               </button>
             </div>
             <div id="players_to_match"></div>
-            <button onClick={addMatch} disabled={addMatchDisabled()}>
+            <button onClick={addMatch} disabled={matchPlayers.length !== 10}>
               Matchmake!
             </button>
           </div>
-          {/* match display section */}
-          <div /*style="
-            display: flex; 
-            flex-direction: column-reverse;
-            justify-content: flex-end;
-            flex: 1;
-            height: 500;
-            min-width: 300;
-            max-width: 500;
-            overflow: auto;" */
-            id="match_display"
-          ></div>
           <div className="debug">
             <ul>
               Blue Team: {getTeamMmr(blueTeam)}
