@@ -92,69 +92,75 @@ function Matchmaker() {
   if (error) return <div>Error fetching data from api</div>;
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <h1>Matchmaker</h1>
+      <div>
         <div>
           <div>
-            <div>
-              <Select
-                isMulti
-                options={data.concat(customPlayers)}
-                getOptionLabel={(player) => player.name}
-                getOptionValue={(player) => player.name}
-                onChange={setMatchPlayers}
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                id="manual_entry"
-                value={customPlayerInput}
-                onInput={(e) => {
-                  const target = e.target as HTMLInputElement;
-                  setCustomPlayerInput(target.value);
-                }}
-              />
-              <button
-                onClick={addCustomPlayer}
-                disabled={customPlayerInput.length <= 0}
-              >
-                +
-              </button>
-            </div>
-            <div id="players_to_match"></div>
-            <button onClick={addMatch} disabled={matchPlayers.length !== 10}>
-              Matchmake!
+            <Select
+              isMulti
+              options={data.concat(customPlayers)}
+              getOptionLabel={(player) => player.name}
+              getOptionValue={(player) => player.name}
+              onChange={setMatchPlayers}
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              id="manual_entry"
+              value={customPlayerInput}
+              onInput={(e) => {
+                const target = e.target as HTMLInputElement;
+                setCustomPlayerInput(target.value);
+              }}
+            />
+            <button
+              onClick={addCustomPlayer}
+              disabled={customPlayerInput.length <= 0}
+            >
+              +
             </button>
           </div>
-          <div className="debug">
-            <ul>
-              Blue Team: {getTeamMmr(blueTeam)}
-              {blueTeam.map((player) => {
-                return (
-                  <li>
-                    <>
-                      {player.name}({player.name})
-                    </>
-                  </li>
-                );
-              })}
-            </ul>
-            <ul>
-              Red Team: {getTeamMmr(redTeam)}
-              {redTeam.map((player) => {
-                return (
-                  <li>
-                    <>
-                      {player.name}({player.mmr})
-                    </>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+          <div id="players_to_match"></div>
+          <button onClick={addMatch} disabled={matchPlayers.length !== 10}>
+            Matchmake!
+          </button>
         </div>
-      </header>
+        <div className="debug">
+          <ul>
+            Blue Team: {getTeamMmr(blueTeam)}
+            {blueTeam.map((player) => {
+              return (
+                <li>
+                  <>
+                    {player.name}({player.name})
+                  </>
+                </li>
+              );
+            })}
+          </ul>
+          <ul>
+            Red Team: {getTeamMmr(redTeam)}
+            {redTeam.map((player) => {
+              return (
+                <li>
+                  <>
+                    {player.name}({player.mmr})
+                  </>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
