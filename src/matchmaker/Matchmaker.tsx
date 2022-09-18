@@ -7,6 +7,7 @@ import { MmrData } from "../types/service/MmrData";
 import "./Matchmaker.css";
 
 function Matchmaker() {
+  const [customPlayers, setCustomPlayers] = useState<Player[]>([]);
   const [selectedPlayers, setSelectedPlayers] = useState<readonly Player[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [blueTeam, setBlueTeam] = useState<readonly Player[]>([]);
@@ -40,6 +41,7 @@ function Matchmaker() {
   const handleCreate = (inputValue: string) => {
     if (inputValue !== "") {
       const newPlayer = { name: inputValue, mmr: 1500 };
+      setCustomPlayers([...customPlayers, newPlayer]);
       setSelectedPlayers([...selectedPlayers, newPlayer]);
     }
   };
@@ -107,10 +109,12 @@ function Matchmaker() {
       <div>
         <div>
           <div>
+            <span>Players selected: {selectedPlayers.length}/10</span>
             <CreatableSelect
               isMulti
               isClearable
-              options={data}
+              options={data.concat(customPlayers)}
+              isOptionDisabled={() => selectedPlayers.length >= 10}
               inputValue={inputValue}
               value={selectedPlayers}
               getOptionLabel={(player) => player.name}
@@ -122,6 +126,7 @@ function Matchmaker() {
                 name: inputValue,
                 mmr: 1500,
               })}
+              placeholder="Add players..."
             />
           </div>
           <div id="players_to_match"></div>
