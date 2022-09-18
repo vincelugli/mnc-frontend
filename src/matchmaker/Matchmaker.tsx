@@ -1,18 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
 import { Player } from "../types/domain/Player";
-import { fetchMMR, fetchPlayers } from "../services/dataService";
+import { fetchPlayers } from "../services/dataService";
 import { MmrData } from "../types/service/MmrData";
 import "./Matchmaker.css";
 
 function Matchmaker() {
   const [customPlayers, setCustomPlayers] = useState<Player[]>([]);
-  const [matchPlayers, setMatchPlayers] = useState<readonly Player[]>([]);
+  const [selectedPlayers, setSelectedPlayers] = useState<readonly Player[]>([]);
+  const [inputValue, setInputValue] = useState("");
   const [blueTeam, setBlueTeam] = useState<readonly Player[]>([]);
   const [redTeam, setRedTeam] = useState<readonly Player[]>([]);
-
-  const [customPlayerInput, setCustomPlayerInput] = useState("");
 
   const { isLoading, error, data } = useQuery<MmrData, Error, Player[]>(
     ["mmr"],
@@ -31,27 +30,25 @@ function Matchmaker() {
     }
   );
 
-  console.log(data);
-
-  const handleSelectChange = (selectedPlayers: readonly Player[]) => {
-    setMatchPlayers(selectedPlayers);
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
   };
 
-  const addCustomPlayer = () => {
-    if (
-      customPlayerInput.length > 0 &&
-      !customPlayers.find((player) => player.name === customPlayerInput)
-    )
-      setCustomPlayers(
-        customPlayers.concat({ name: customPlayerInput, mmr: 1500 })
-      );
+  const handleOnChange = (values: readonly Player[]) => {
+    setSelectedPlayers(values);
   };
 
-  const addMatchDisabled = () => matchPlayers.length !== 10;
+  const handleCreate = (inputValue: string) => {
+    if (inputValue !== "") {
+      const newPlayer = { name: inputValue, mmr: 1500 };
+      setCustomPlayers([...customPlayers, newPlayer]);
+      setSelectedPlayers([...selectedPlayers, newPlayer]);
+    }
+  };
 
   const addMatch = () => {
-    if (matchPlayers.length === 10) {
-      const playerPool: Player[] = [...matchPlayers].sort(
+    if (selectedPlayers.length === 10) {
+      const playerPool: Player[] = [...selectedPlayers].sort(
         (p1, p2) => (p1.mmr ?? 0) - (p2.mmr ?? 0)
       );
 
@@ -95,100 +92,75 @@ function Matchmaker() {
     }
   };
 
-  function removePlayer(key: number) {
-    // if (gamePlayers.size === 0) {
-    //   return;
-    // }
-    // gamePlayers.delete(key);
-    // const option = document.createElement("option");
-    // option.text = key;
-    // playerSelect.add(option);
-    // document.getElementById(key + "_matchmaking_item").remove();
-  }
-
   if (isLoading) return <div>Loading...</div>;
 
   if (error) return <div>Error fetching data from api</div>;
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <div /*style="display: flex; flex-direction: row; flex-wrap: wrap; padding: 10; margin-bottom: 32;"*/
-        >
-          {/* match management section */}
-          <div /*style="display: flex; flex-direction: column; margin-right: 10; margin-bottom: 10;"*/
-          >
-            <div /*style="margin-bottom: 10;"*/>
-              <Select
-                isMulti
-                options={data.concat(customPlayers)}
-                getOptionLabel={(player) => player.name}
-                getOptionValue={(player) => player.name}
-                onChange={handleSelectChange}
-              />
-            </div>
-            <div /*style="margin-bottom: 10;"*/>
-              <input
-                type="text"
-                id="manual_entry" /*style="width: 200; height: 25"*/
-                value={customPlayerInput}
-                onInput={(e) => {
-                  const target = e.target as HTMLInputElement;
-                  setCustomPlayerInput(target.value);
-                }}
-              />
-              <button
-                onClick={addCustomPlayer} /*style="width: 25; height: 25"*/
-                disabled={customPlayerInput.length <= 0}
-              >
-                +
-              </button>
-            </div>
-            <div id="players_to_match"></div>
-            <button onClick={addMatch} disabled={addMatchDisabled()}>
-              Matchmake!
-            </button>
-          </div>
-          {/* match display section */}
-          <div /*style="
-            display: flex; 
-            flex-direction: column-reverse;
-            justify-content: flex-end;
-            flex: 1;
-            height: 500;
-            min-width: 300;
-            max-width: 500;
-            overflow: auto;" */
-            id="match_display"
-          ></div>
-          <div className="debug">
-            <ul>
-              Blue Team: {getTeamMmr(blueTeam)}
-              {blueTeam.map((player) => {
-                return (
-                  <li>
-                    <>
-                      {player.name}({player.name})
-                    </>
-                  </li>
-                );
+    <div
+    // style={{
+    //   display: "flex",
+    //   flexDirection: "column",
+    //   justifyContent: "center",
+    //   alignItems: "center",
+    // }}
+    >
+      <h1>Matchmaker</h1>
+      <div>
+        <div>
+          <div>
+            <span>Players selected: {selectedPlayers.length}/10</span>
+            <CreatableSelect
+              isMulti
+              isClearable
+              options={data.concat(customPlayers)}
+              isOptionDisabled={() => selectedPlayers.length >= 10}
+              inputValue={inputValue}
+              value={selectedPlayers}
+              getOptionLabel={(player) => player.name}
+              getOptionValue={(player) => player.name}
+              onChange={handleOnChange}
+              onInputChange={handleInputChange}
+              onCreateOption={handleCreate}
+              getNewOptionData={(inputValue) => ({
+                name: inputValue,
+                mmr: 1500,
               })}
-            </ul>
-            <ul>
-              Red Team: {getTeamMmr(redTeam)}
-              {redTeam.map((player) => {
-                return (
-                  <li>
-                    <>
-                      {player.name}({player.mmr})
-                    </>
-                  </li>
-                );
-              })}
-            </ul>
+              placeholder="Add players..."
+            />
           </div>
+          <div id="players_to_match"></div>
+          <button onClick={addMatch} disabled={selectedPlayers.length !== 10}>
+            Matchmake!
+          </button>
         </div>
-      </header>
+        <div className="debug">
+          <ul>
+            Blue Team: {getTeamMmr(blueTeam)}
+            {blueTeam.map((player) => {
+              return (
+                <li>
+                  <>
+                    {player.name}({player.name})
+                  </>
+                </li>
+              );
+            })}
+          </ul>
+          <ul>
+            Red Team: {getTeamMmr(redTeam)}
+            {redTeam.map((player) => {
+              return (
+                <li>
+                  <>
+                    {player.name}({player.mmr})
+                  </>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
