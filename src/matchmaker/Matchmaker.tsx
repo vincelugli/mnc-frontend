@@ -1,18 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
 import { Player } from "../types/domain/Player";
 import { fetchPlayers } from "../services/dataService";
 import { MmrData } from "../types/service/MmrData";
 import "./Matchmaker.css";
 
 function Matchmaker() {
-  const [customPlayers, setCustomPlayers] = useState<Player[]>([]);
-  const [matchPlayers, setMatchPlayers] = useState<readonly Player[]>([]);
+  const [selectedPlayers, setSelectedPlayers] = useState<readonly Player[]>([]);
+  const [inputValue, setInputValue] = useState("");
   const [blueTeam, setBlueTeam] = useState<readonly Player[]>([]);
   const [redTeam, setRedTeam] = useState<readonly Player[]>([]);
-
-  const [customPlayerInput, setCustomPlayerInput] = useState("");
 
   const { isLoading, error, data } = useQuery<MmrData, Error, Player[]>(
     ["mmr"],
@@ -31,19 +29,24 @@ function Matchmaker() {
     }
   );
 
-  const addCustomPlayer = () => {
-    if (
-      customPlayerInput.length > 0 &&
-      !customPlayers.find((player) => player.name === customPlayerInput)
-    )
-      setCustomPlayers(
-        customPlayers.concat({ name: customPlayerInput, mmr: 1500 })
-      );
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
+  };
+
+  const handleOnChange = (values: readonly Player[]) => {
+    setSelectedPlayers(values);
+  };
+
+  const handleCreate = (inputValue: string) => {
+    if (inputValue !== "") {
+      const newPlayer = { name: inputValue, mmr: 1500 };
+      setSelectedPlayers([...selectedPlayers, newPlayer]);
+    }
   };
 
   const addMatch = () => {
-    if (matchPlayers.length === 10) {
-      const playerPool: Player[] = [...matchPlayers].sort(
+    if (selectedPlayers.length === 10) {
+      const playerPool: Player[] = [...selectedPlayers].sort(
         (p1, p2) => (p1.mmr ?? 0) - (p2.mmr ?? 0)
       );
 
@@ -93,44 +96,36 @@ function Matchmaker() {
 
   return (
     <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+    // style={{
+    //   display: "flex",
+    //   flexDirection: "column",
+    //   justifyContent: "center",
+    //   alignItems: "center",
+    // }}
     >
       <h1>Matchmaker</h1>
       <div>
         <div>
           <div>
-            <Select
+            <CreatableSelect
               isMulti
-              options={data.concat(customPlayers)}
+              isClearable
+              options={data}
+              inputValue={inputValue}
+              value={selectedPlayers}
               getOptionLabel={(player) => player.name}
               getOptionValue={(player) => player.name}
-              onChange={setMatchPlayers}
+              onChange={handleOnChange}
+              onInputChange={handleInputChange}
+              onCreateOption={handleCreate}
+              getNewOptionData={(inputValue) => ({
+                name: inputValue,
+                mmr: 1500,
+              })}
             />
-          </div>
-          <div>
-            <input
-              type="text"
-              id="manual_entry"
-              value={customPlayerInput}
-              onInput={(e) => {
-                const target = e.target as HTMLInputElement;
-                setCustomPlayerInput(target.value);
-              }}
-            />
-            <button
-              onClick={addCustomPlayer}
-              disabled={customPlayerInput.length <= 0}
-            >
-              +
-            </button>
           </div>
           <div id="players_to_match"></div>
-          <button onClick={addMatch} disabled={matchPlayers.length !== 10}>
+          <button onClick={addMatch} disabled={selectedPlayers.length !== 10}>
             Matchmake!
           </button>
         </div>
