@@ -91,7 +91,7 @@ const columns: ColumnDef<PlayerTableData, any>[] = [
 
 export const PlayerOverview = React.memo(function PlayerOverview() {
   const navigate = useNavigate();
-  const data = useSelector(statsSelector.getPlayers);
+  const data = useSelector(statsSelector.getPlayersCollection);
   const processedData = processPlayers(data);
 
   return (
