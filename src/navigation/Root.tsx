@@ -103,7 +103,7 @@ export default function Root() {
       <div style={{display: "flex", flex:1, width: "100%", flexDirection: "column"}}>
         <div style={{display: "flex", flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center", minHeight: TOP_NAV_BAR_HEIGHT}}>
           <button style={openMenuIcon} onClick={onToggleNavigation}><a><AiOutlineMenu/></a></button>
-          <h1 style={{flex: 1, maxWidth: 500,}}>Monday Night Customs Hub</h1>
+          <h1 style={{flex: 0, minWidth: 300}}>Monday Night Customs Hub</h1>
         </div>
         <Outlet />
       </div>

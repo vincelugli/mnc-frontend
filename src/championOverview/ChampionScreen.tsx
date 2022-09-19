@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { SortableTable } from "../components/SortableTable";
 import { StatsCard } from "../components/StatsCard";
+import { gameInfoSelector } from "../redux/gameInfo/gameInfoSelectors";
 import { AppState } from "../redux/rootReducer";
 import { statsSelector } from "../redux/stats/statsSelectors";
 import { Champion } from "../types/domain/Champion";
@@ -97,6 +98,8 @@ export const ChampionScreen = React.memo(function ChampionScreen() {
     const championId = useLoaderData() as string;
     const champion = useSelector((state: AppState) => statsSelector.getChampion(state, championId ?? ""));
     const allPlayers = useSelector(statsSelector.getPlayersCollection);
+    const dataDragonChampionIdMap = useSelector(gameInfoSelector.getChampionMap)
+    const dataDragonChampionId = dataDragonChampionIdMap[championId];
 
     const championPlayerData: Player[] = processChampionPlayers(champion, allPlayers);
 
@@ -114,7 +117,7 @@ export const ChampionScreen = React.memo(function ChampionScreen() {
 
     const statsCardChampion = {
       ...champion,
-      imageUri: getChampionImage(champion.name)
+      imageUri: getChampionImage(dataDragonChampionId)
     }
 
     console.log(statsCardChampion.imageUri);
