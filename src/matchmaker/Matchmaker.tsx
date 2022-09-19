@@ -6,7 +6,7 @@ import { fetchPlayers } from "../services/dataService";
 import { MmrData } from "../types/service/MmrData";
 import "./Matchmaker.css";
 
-function Matchmaker() {
+export const Matchmaker = () => {
   const [customPlayers, setCustomPlayers] = useState<Player[]>([]);
   const [selectedPlayers, setSelectedPlayers] = useState<readonly Player[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -163,6 +163,4 @@ function Matchmaker() {
       </div>
     </div>
   );
-}
-
-export default Matchmaker;
+};

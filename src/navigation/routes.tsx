@@ -1,39 +1,42 @@
-import { createBrowserRouter} from 'react-router-dom';
+import { createBrowserRouter } from "react-router-dom";
 
 import { PlayerOverview } from "../playerOverview/PlayerOverview";
-import Home from '../home/Home';
-import Matchmaker from '../matchmaker/Matchmaker';
+import Home from "../home/Home";
+import { Matchmaker } from "../matchmaker/Matchmaker";
 import Root from "./Root";
-import { loader as playerLoader, PlayerScreen } from '../playerOverview/PlayerScreen';
-import { ChampionOverview } from '../championOverview/ChampionOverview';
+import {
+  loader as playerLoader,
+  PlayerScreen,
+} from "../playerOverview/PlayerScreen";
+import { ChampionOverview } from "../championOverview/ChampionOverview";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root/>,
+    element: <Root />,
     errorElement: <div>Hello world!</div>,
     children: [
       {
         path: "/",
-        element: <Home/>
+        element: <Home />,
       },
       {
         path: "/matchmaker",
-        element: <Matchmaker/>,
+        element: <Matchmaker />,
       },
       {
         path: "/playerOverview",
-        element: <PlayerOverview/>,
+        element: <PlayerOverview />,
       },
       {
         path: "/playerOverview/:playerId",
         loader: playerLoader,
-        element: <PlayerScreen/>,
+        element: <PlayerScreen />,
       },
       {
         path: "/championOverview",
-        element: <ChampionOverview/>,
+        element: <ChampionOverview />,
       },
-    ]
+    ],
   },
 ]);
