@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
-import { Champion } from "../types/domain/Champion";
-import { Player } from "../types/domain/Player";
-import { AppState } from "./rootReducer";
+import { Champion } from "../../types/domain/Champion";
+import { Player } from "../../types/domain/Player";
+import { AppState } from "../rootReducer";
 
 export const getPlayers = (state: AppState) => state.stats.players;
 export const getChampions = (state: AppState) => state.stats.champions;

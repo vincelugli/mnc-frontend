@@ -1,8 +1,10 @@
 import { combineReducers, Reducer } from "redux";
-import { statsReducer, StatsState } from "./statsReducer";
+import { gameInfoReducer, GameInfoState } from "./gameInfo/gameInfoReducer";
+import { statsReducer, StatsState } from "./stats/statsReducer";
 
 export interface AppState {
     stats: StatsState;
+    gameInfo: GameInfoState;
 };
 
-export const rootReducer: Reducer<AppState> = combineReducers({stats: statsReducer})
+export const rootReducer: Reducer<AppState> = combineReducers({stats: statsReducer, gameInfo: gameInfoReducer})

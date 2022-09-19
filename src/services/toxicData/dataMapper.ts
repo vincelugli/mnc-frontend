@@ -1,6 +1,6 @@
-import { Champion } from "../types/domain/Champion";
-import { Player } from "../types/domain/Player";
-import { StatsData } from "../types/service/StatsData";
+import { Champion } from "../../types/domain/Champion";
+import { Player } from "../../types/domain/Player";
+import { StatsData } from "../../types/service/toxicData/StatsData";
 
 export function mapStats(data: StatsData): {players: Player[], champions: {[id: string]: Champion}} {
     const championMap: { [key: string]: Champion } = {};
