@@ -1,96 +1,99 @@
-import { useSortBy, useTable } from "react-table";
+import { chakra, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
+import {
+  Cell,
+  Column,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  Header,
+  Row,
+  SortingState,
+  useReactTable,
+} from "@tanstack/react-table";
+import React from "react";
 
-const defaultPropGetter = () => ({})
+const defaultPropGetter = () => ({});
 
 export function SortableTable({
+  columns,
+  data,
+  getHeaderProps = defaultPropGetter,
+  getColumnProps = defaultPropGetter,
+  getRowProps = defaultPropGetter,
+  getCellProps = defaultPropGetter,
+}: {
+  columns: any;
+  data: any;
+  getHeaderProps?: (header: Header<any, any>) => any;
+  getColumnProps?: (column: Column<any>) => any;
+  getRowProps?: (row: Row<any>) => any;
+  getCellProps?: (cell: Cell<any, any>) => any;
+}) {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const table = useReactTable({
     columns,
     data,
-    getHeaderProps = defaultPropGetter,
-    getColumnProps = defaultPropGetter,
-    getRowProps = defaultPropGetter,
-    getCellProps = defaultPropGetter,
-  } : {
-    columns: any,
-    data: any,
-    getHeaderProps?: any,
-    getColumnProps?: any,
-    getRowProps?: any,
-    getCellProps?: any;
-  }) {
-    const {
-      getTableProps,
-      getTableBodyProps,
-      headerGroups,
-      rows,
-      prepareRow,
-    } = useTable(
-      {
-        columns,
-        data,
-      },
-      useSortBy
-    )
-  
-    return (
-      <>
-        <table {...getTableProps()}>
-          <thead>
-            {headerGroups.map(headerGroup => (
-              <tr {...headerGroup.getHeaderGroupProps(getHeaderProps(headerGroup))}>
-                {
-                  // https://github.com/TanStack/table/issues/1481
-                }
-                {headerGroup.headers.map((column:any) => (
-                  // Add the sorting props to control sorting. For this example
-                  // we can add them into the header props
-                  <th
+    getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting,
+    },
+  });
+  return (
+    <Table>
+      <Thead>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <Tr key={headerGroup.id}>
+            {headerGroup.headers.map((header) => {
+              const meta: any = header.column.columnDef.meta;
+              return (
+                <Th
+                  key={header.id}
+                  onClick={header.column.getToggleSortingHandler()}
+                  isNumeric={meta?.isNumeric}
+                  {...getHeaderProps(header)}
+                >
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
 
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                  >
-                    <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      //justifyContent: "space-between",
-                      marginRight: "8px",
-                      marginLeft: "8px",
-                      }}>
-                    {column.render('Header')}
-                    {/* Add a sort direction indicator */}
-                    <span style={{marginLeft: "8px"}}>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? ' 🔽'
-                          : ' 🔼'
-                        : ' 🟦'}
-                    </span>
-                    </div>
-
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map(
-              (row, i) => {
-                prepareRow(row);
-                return (
-                  <tr {...row.getRowProps(getRowProps(row))}>
-                    {row.cells.map(cell => {
-                      return (
-                        <td {...cell.getCellProps([
-                          getColumnProps(cell.column),
-                          getCellProps(cell)
-                        ])}>{cell.render('Cell')}</td>
+                  <chakra.span pl="4">
+                    {header.column.getIsSorted() ? (
+                      header.column.getIsSorted() === "desc" ? (
+                        <TriangleDownIcon aria-label="sorted descending" />
+                      ) : (
+                        <TriangleUpIcon aria-label="sorted ascending" />
                       )
-                    })}
-                  </tr>
-                )}
-            )}
-          </tbody>
-        </table>
-        <br />
-      </>
-    )
-  }
+                    ) : null}
+                  </chakra.span>
+                </Th>
+              );
+            })}
+          </Tr>
+        ))}
+      </Thead>
+      <Tbody>
+        {table.getRowModel().rows.map((row) => (
+          <Tr key={row.id} {...getRowProps(row)}>
+            {row.getVisibleCells().map((cell) => {
+              const meta: any = cell.column.columnDef.meta;
+              return (
+                <Td
+                  key={cell.id}
+                  isNumeric={meta?.isNumeric}
+                  {...getCellProps(cell)}
+                  {...getColumnProps(cell.column)}
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </Td>
+              );
+            })}
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
+  );
+}

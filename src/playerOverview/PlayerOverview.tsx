@@ -3,7 +3,7 @@ import { ColumnDef, createColumnHelper, Row } from "@tanstack/react-table";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { SortableTable } from "../components/SortableTable2";
+import { SortableTable } from "../components/SortableTable";
 import { processChampions, processPlayers } from "../logic/statsProcessors";
 import { statsSelector } from "../redux/statsSelectors";
 import { PlayerTableData } from "../types/domain/Player";
