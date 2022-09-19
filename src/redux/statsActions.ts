@@ -1,5 +1,6 @@
 import {createAction} from "@reduxjs/toolkit";
-import { Player, Champion } from "../types/domain/statsTypes";
+import { Champion } from "../types/domain/Champion";
+import { Player } from "../types/domain/Player";
 
 export enum StatsActionType {
     HydratePlayerStatsComplete = "PlayerStatsActions/HydratePlayerStatsComplete",

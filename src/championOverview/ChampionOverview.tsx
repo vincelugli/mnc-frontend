@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { SortableTable } from "../components/SortableTable";
 import { statsSelector } from "../redux/statsSelectors";
-import { Champion } from "../types/domain/statsTypes";
+import { Champion } from "../types/domain/Champion";
 
 const columnHelper = createColumnHelper<Champion>();
 

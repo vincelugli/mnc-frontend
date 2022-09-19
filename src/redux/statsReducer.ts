@@ -1,7 +1,8 @@
-import { Player, Champion } from '../types/domain/statsTypes';
+import { Player } from '../types/domain/Player';
 import { StatsAction } from './statsActions';
 
 import { createReducer } from '@reduxjs/toolkit'
+import { Champion } from '../types/domain/Champion';
 
 export type StatsState = Readonly<{
     players:{

@@ -1,4 +1,5 @@
-import { Player, Champion } from "../types/domain/statsTypes";
+import { Champion } from "../types/domain/Champion";
+import { Player } from "../types/domain/Player";
 import { StatsData } from "../types/service/StatsData";
 
 export function mapStats(data: StatsData): {players: Player[], champions: {[id: string]: Champion}} {

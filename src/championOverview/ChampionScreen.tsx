@@ -5,7 +5,8 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { SortableTable } from "../components/SortableTable";
 import { AppState } from "../redux/rootReducer";
 import { statsSelector } from "../redux/statsSelectors";
-import { Champion, Player } from "../types/domain/statsTypes";
+import { Champion } from "../types/domain/Champion";
+import { Player } from "../types/domain/Player";
 
 export async function loader(data: {params: any}) {
     return data.params.championId;
