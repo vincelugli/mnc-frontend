@@ -38,7 +38,9 @@ export const processPlayers = (
  * Given a collection of players, map to a key value pair of championName to champion that has stats centered around that champion
  * @param data
  */
-export function processChampions(data: Player[] | undefined) {
+export function processChampions(data: Player[] | undefined): {
+  [key: string]: Champion;
+} {
   const championMap: { [key: string]: Champion } = {};
   if (data) {
     for (const player of data) {
