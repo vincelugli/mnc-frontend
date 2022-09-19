@@ -78,6 +78,8 @@ function NavigationItem(
   </button>
 }
 
+export const TOP_NAV_BAR_HEIGHT = 80;
+
 export default function Root() {
   const [isNavigationCollapsed, setIsNavigationCollapsed] = useState<boolean>(true);
 
@@ -99,7 +101,7 @@ export default function Root() {
         }
       </div>
       <div style={{display: "flex", flex:1, width: "100%", flexDirection: "column"}}>
-        <div style={{display: "flex", flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+        <div style={{display: "flex", flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center", minHeight: TOP_NAV_BAR_HEIGHT}}>
           <button style={openMenuIcon} onClick={onToggleNavigation}><a><AiOutlineMenu/></a></button>
           <h1 style={{flex: 1, maxWidth: 500,}}>Monday Night Customs Hub</h1>
         </div>
