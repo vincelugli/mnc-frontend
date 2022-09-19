@@ -14,13 +14,13 @@ export const processPlayers = (
         const wins = player.wins ?? 0;
         const losses = player.losses ?? 0;
         const totalGames = wins + losses;
-        console.log(totalGames);
-
         return {
           ...player,
+          wins,
+          losses,
           winPercentage: Math.round((wins / totalGames) * 100) + "%",
           totalGames: totalGames,
-          mmr: Math.round(player.mmr ?? 0),
+          mmr: Math.round(player.mmr ?? 1500),
         };
       })
     : [];

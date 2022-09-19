@@ -18,9 +18,9 @@ export type Player = {
 
 export type PlayerTableData = {
   name: string;
-  wins?: number | undefined;
+  wins: number;
   winPercentage: string;
-  losses?: number;
+  losses: number;
   totalGames: number;
-  mmr?: number;
+  mmr: number;
 };
