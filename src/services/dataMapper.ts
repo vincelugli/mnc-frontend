@@ -1,5 +1,5 @@
 import { Champion } from "../types/domain/Champion";
-import { Player, PlayerChampionData } from "../types/domain/Player";
+import { Player } from "../types/domain/Player";
 import { StatsData } from "../types/service/StatsData";
 
 export function mapStats(data: StatsData): {players: Player[], champions: {[id: string]: Champion}} {
@@ -8,7 +8,7 @@ export function mapStats(data: StatsData): {players: Player[], champions: {[id: 
         (kvPair)=> {
             let wins = 0; 
             let losses = 0;
-            let champions: {[key: string]: PlayerChampionData} = {};
+            let champions: {[key: string]: Champion} = {};
             // loop through all of the champions this player has and collect the wins and loses
             for (const [championName, champion] of Object.entries(kvPair[1].champion)) {
                 wins += champion.win;

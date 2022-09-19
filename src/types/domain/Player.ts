@@ -1,10 +1,4 @@
-export type PlayerChampionData = {
-  name: string;
-  totalGames: number;
-  wins: number;
-  losses: number;
-  winPercentage: number;
-};
+import { Champion } from "./Champion";
 
 export type Player = {
   name: string;
@@ -12,6 +6,6 @@ export type Player = {
   losses?: number;
   mmr?: number;
   champions?: {
-    [key: string]: PlayerChampionData;
+    [key: string]: Champion;
   };
 };

@@ -5,23 +5,24 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { SortableTable } from "../components/SortableTable";
 import { AppState } from "../redux/rootReducer";
 import { statsSelector } from "../redux/statsSelectors";
-import { Player, PlayerChampionData } from "../types/domain/Player";
+import { Champion } from "../types/domain/Champion";
+import { Player } from "../types/domain/Player";
 
 export async function loader(data: { params: any }) {
   return data.params.playerId;
 }
 
 /**
- * Given a player, map to a an array of PlayerChampionData that has stats centered around that player's champion
+ * Given a player, create an array of champions that player has played
  * @param data
  */
-const processPlayerChampions = (data: Player): PlayerChampionData[] => {
+const processPlayerChampions = (data: Player): Champion[] => {
   return data.champions ? Array.from(Object.values(data.champions)) : [];
 };
 
-const columnHelper = createColumnHelper<PlayerChampionData>();
+const columnHelper = createColumnHelper<Champion>();
 
-const columns: ColumnDef<PlayerChampionData, any>[] = [
+const columns: ColumnDef<Champion, any>[] = [
   columnHelper.accessor((row) => row.name, {
     id: "name",
     cell: (info) => info.getValue(),
@@ -84,7 +85,7 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
     );
   }
 
-  const playerChampionData: PlayerChampionData[] =
+  const playerChampionData: Champion[] =
     processPlayerChampions(player);
 
   return (
@@ -109,7 +110,7 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
           getRowProps={(row: any) => {
             return {
               onClick: () => {
-                navigate(row.getValue("name"));
+                navigate("/championOverview/" + row.getValue("name"));
               },
             };
           }}
