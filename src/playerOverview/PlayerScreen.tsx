@@ -40,7 +40,7 @@ const columns: ColumnDef<PlayerScreenChampion, any>[] = [
     id: "name",
     cell: (info) => {
       return <div style={{display: "flex", alignItems: "center"}}>
-        <img src={getChampionImage(info.getValue())} style={{width: 32, height: 32, marginRight: 8}}/>
+        <img src={info.row.original.imageUrl} style={{width: 32, height: 32, marginRight: 8}}/>
         {info.getValue()}
       </div>
     },
