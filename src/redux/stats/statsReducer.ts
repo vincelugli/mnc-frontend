@@ -1,9 +1,12 @@
-import { Player } from '../types/domain/Player';
 import { StatsAction } from './statsActions';
 
 import { createReducer } from '@reduxjs/toolkit'
-import { Champion } from '../types/domain/Champion';
+import { Player } from '../../types/domain/Player';
+import { Champion } from '../../types/domain/Champion';
 
+/**
+ * State containing all game history data focused around players and champions
+ */
 export type StatsState = Readonly<{
     players:{
       [id: string]: Player;

@@ -4,8 +4,9 @@ import { useSelector } from "react-redux";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { SortableTable } from "../components/SortableTable";
 import { StatsCard } from "../components/StatsCard";
+import { gameInfoSelector } from "../redux/gameInfo/gameInfoSelectors";
 import { AppState } from "../redux/rootReducer";
-import { statsSelector } from "../redux/statsSelectors";
+import { statsSelector } from "../redux/stats/statsSelectors";
 import { Champion } from "../types/domain/Champion";
 import { Player } from "../types/domain/Player";
 import { getChampionImage } from "../utils/championImageHelpers";
@@ -14,17 +15,27 @@ export async function loader(data: { params: any }) {
   return data.params.playerId;
 }
 
+type PlayerScreenChampion = {
+  imageUrl: string;
+} & Champion;
+
 /**
- * Given a player, create an array of champions that player has played
+ * Given a player, create an array of champions that player has played with image url populated
  * @param data
  */
-const processPlayerChampions = (data: Player): Champion[] => {
-  return data.champions ? Array.from(Object.values(data.champions)) : [];
+const processPlayerChampions = (data: Player, championIdMap: {[key: string]: string}): PlayerScreenChampion[] => {
+  return (data.champions ? Array.from(Object.values(data.champions)) : []).map((champion: Champion) => {
+    console.log(champion);
+    return {
+      ...champion,
+      imageUrl: championIdMap[champion.name] ? getChampionImage(championIdMap[champion.name]) : "",
+    }
+  });
 };
 
-const columnHelper = createColumnHelper<Champion>();
+const columnHelper = createColumnHelper<PlayerScreenChampion>();
 
-const columns: ColumnDef<Champion, any>[] = [
+const columns: ColumnDef<PlayerScreenChampion, any>[] = [
   columnHelper.accessor((row) => row.name, {
     id: "name",
     cell: (info) => {
@@ -76,6 +87,8 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
     statsSelector.getPlayer(state, playerId ?? "")
   );
 
+  const championIdMap = useSelector(gameInfoSelector.getChampionMap)
+
   if (player === undefined) {
     return (
       <div
@@ -93,7 +106,7 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
   }
 
   const playerChampionData: Champion[] =
-    processPlayerChampions(player);
+    processPlayerChampions(player, championIdMap);
 
   const statsCardPlayer = {...player, extraStats: player.mmr ? ["MMR: " + Math.round(player.mmr)] : []};
   

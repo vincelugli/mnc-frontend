@@ -5,7 +5,7 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { SortableTable } from "../components/SortableTable";
 import { StatsCard } from "../components/StatsCard";
 import { AppState } from "../redux/rootReducer";
-import { statsSelector } from "../redux/statsSelectors";
+import { statsSelector } from "../redux/stats/statsSelectors";
 import { Champion } from "../types/domain/Champion";
 import { Player } from "../types/domain/Player";
 import { getChampionImage } from "../utils/championImageHelpers";
