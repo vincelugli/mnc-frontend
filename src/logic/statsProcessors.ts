@@ -1,16 +1,24 @@
-import { PlayerTableData } from "./../types/domain/Player";
+import { PlayerChampionData, PlayerTableData } from "./../types/domain/Player";
 import { Champion } from "../types/domain/Champion";
 import { Player } from "../types/domain/Player";
 
 /**
+ * Given a player, map to a an array of PlayerChampionData that has stats centered around that player's champion
+ * @param data
+ */
+export const processPlayerChampions = (data: Player): PlayerChampionData[] => {
+  return data.champions ? Array.from(Object.values(data.champions)) : [];
+};
+
+/**
  * Given a collection of players, map to a collection of players with processed stats
- * @param data A collection of playeres to process
+ * @param players A collection of playeres to process
  */
 export const processPlayers = (
-  data: Player[] | undefined
+  players: Player[] | undefined
 ): PlayerTableData[] => {
-  return data
-    ? data.map((player) => {
+  return players
+    ? players.map((player) => {
         const wins = player.wins ?? 0;
         const losses = player.losses ?? 0;
         const totalGames = wins + losses;
@@ -62,6 +70,5 @@ export function processChampions(data: Player[] | undefined) {
       }
     }
   }
-
   return championMap;
 }

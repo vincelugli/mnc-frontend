@@ -1,72 +1,117 @@
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { SortableTable } from "../components/SortableTable";
+import { SortableTable } from "../components/SortableTable2";
+import { processPlayerChampions } from "../logic/statsProcessors";
 import { AppState } from "../redux/rootReducer";
 import { statsSelector } from "../redux/statsSelectors";
+import {
+  Player,
+  PlayerChampionData,
+  PlayerTableData,
+} from "../types/domain/Player";
 
-export async function loader(data: {params: any}) {
-    return data.params.playerId;
+export async function loader(data: { params: any }) {
+  return data.params.playerId;
 }
 
+const columnHelper = createColumnHelper<PlayerTableData>();
+
+const columns: ColumnDef<PlayerTableData, any>[] = [
+  columnHelper.accessor((row) => row.name, {
+    id: "name",
+    cell: (info) => info.getValue(),
+    header: () => <span>Name</span>,
+  }),
+  columnHelper.accessor((row) => row.wins, {
+    id: "wins",
+    cell: (info) => info.getValue(),
+    header: () => <span>Wins</span>,
+    meta: {
+      isNumeric: true,
+    },
+  }),
+  columnHelper.accessor((row) => row.winPercentage, {
+    id: "winPercentage",
+    cell: (info) => info.getValue(),
+    header: () => <span>Win Percentage</span>,
+    meta: {
+      isNumeric: true,
+    },
+  }),
+  columnHelper.accessor((row) => row.losses, {
+    id: "losses",
+    cell: (info) => info.getValue(),
+    header: () => <span>Losses</span>,
+    meta: {
+      isNumeric: true,
+    },
+  }),
+  columnHelper.accessor((row) => row.totalGames, {
+    id: "totalGames",
+    cell: (info) => info.getValue(),
+    header: () => <span>Total Games</span>,
+    meta: {
+      isNumeric: true,
+    },
+  }),
+];
+
 export const PlayerScreen = React.memo(function PlayerScreen() {
-    const playerId = useLoaderData() as string;
-    const player = useSelector((state: AppState) => statsSelector.getPlayer(state, playerId ?? ""));
+  const navigate = useNavigate();
+  const playerId = useLoaderData() as string;
+  const player: Player | undefined = useSelector((state: AppState) =>
+    statsSelector.getPlayer(state, playerId ?? "")
+  );
 
-    const columns = React.useMemo(() => [
-        {Header: 'Name', accessor: 'name'},
-        {Header: 'Wins', accessor: "wins"},
-        {Header: 'Win Percentage', accessor: "winPercentage"},
-        {Header: 'Losses', accessor: "losses"},
-        {Header: 'Total Games', accessor: "totalGames"},
-    ],[]);
-        
-    const navigate = useNavigate();
-    
-    if (player === undefined) {
-        return <div style={
-            {display: "flex",
-            minHeight: "100vh",
-            backgroundColor: "#282c34",
-            justifyContent: "center",
-            alignItems: "center"}
-        }>
-            <h1 style={{color: "white"}}>Player not found</h1>
-        </div>
-    }
+  if (player === undefined) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          minHeight: "100vh",
+          backgroundColor: "#282c34",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <h1 style={{ color: "white" }}>Player not found</h1>
+      </div>
+    );
+  }
 
-    const playerChampionsArray = player.champions ? Array.from(Object.values(player.champions)) : [];
+  const playerChampionData: PlayerChampionData[] =
+    processPlayerChampions(player);
 
-    return <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-        <div style={{marginBottom: 32}}>
-            <h1>{player.name}</h1>
-            <h1>{"Wins: " + player.wins}</h1>
-            <h1>{"Losses: " + player.losses}</h1>
-            <h1>{"MMR: " + player.mmr}</h1>
-        </div>
-        {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div style={{ marginBottom: 32 }}>
+        <h1>{player.name}</h1>
+        <h1>{"Wins: " + player.wins}</h1>
+        <h1>{"Losses: " + player.losses}</h1>
+        <h1>{"MMR: " + player.mmr}</h1>
+      </div>
+      {
         <SortableTable
-            columns={columns}
-            data={playerChampionsArray}
-            getRowProps={(row:any) => {
-            return {          
-            onClick: () => {
-                navigate(row.values.name);
-            },
-            }}}
-            getCellProps={(cellInfo: any) => {
-            if (cellInfo.column.id === "mmr") {
-                const mmrColor = cellInfo.value > 0 ? `hsl(${120 * ((1800 - cellInfo.value) / 1800) * 4 * -1 + 120}, 100%, 67%)`: "transparent";
-                return {
-                style: {
-                    backgroundColor: mmrColor,
-                },
-                }
-            } else {
-                return {};
-            }
-            }}
+          columns={columns}
+          data={playerChampionData}
+          getRowProps={(row: any) => {
+            return {
+              onClick: () => {
+                navigate(row.getValue("name"));
+              },
+            };
+          }}
         />
-        }
-    </div>;
+      }
+    </div>
+  );
 });

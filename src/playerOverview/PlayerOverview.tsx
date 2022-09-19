@@ -63,7 +63,6 @@ export const PlayerOverview = React.memo(function PlayerOverview() {
   const navigate = useNavigate();
   const data = useSelector(statsSelector.getPlayers);
   const processedData = processPlayers(data);
-  const processedChampionData = processChampions(data);
 
   return (
     <div
