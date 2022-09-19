@@ -5,6 +5,7 @@ import { TOP_NAV_BAR_HEIGHT } from "../navigation/Root";
 import { GameInfoAction } from "../redux/gameInfo/gameInfoActions";
 import { StatsAction } from "../redux/stats/statsActions";
 import { fetchChampions } from "../services/dataDragon/dataDragonService";
+import { mapChampions } from "../services/dataDragon/dataMapper";
 import { mapStats } from "../services/toxicData/dataMapper";
 import { fetchMMR, fetchStats } from "../services/toxicData/toxicDataService";
 import { Champion } from "../types/domain/Champion";
@@ -50,13 +51,7 @@ export default function Home() {
         fetchChampions,
         {
             select: (data) => {
-                const championMap: {[key: string]: string} = {};
-                // get a mapping of friendly name to data dragon champion id
-                // mnc-frontend uses friendly name as the key for its champions map
-                for (const championId of Object.keys(data.data)) {
-                    championMap[data.data[championId].name] = data.data[championId].id;
-                }
-                return championMap;
+                return mapChampions(data);
             },
         }
     );
