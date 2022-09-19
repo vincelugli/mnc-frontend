@@ -1,7 +1,9 @@
+import { Champion } from "../types/domain/Champion";
 import { Player, PlayerChampionData } from "../types/domain/Player";
 import { StatsData } from "../types/service/StatsData";
 
-export function mapStats(data: StatsData): Player[] {
+export function mapStats(data: StatsData): {players: Player[], champions: {[id: string]: Champion}} {
+    const championMap: { [key: string]: Champion } = {};
     const players: Player[] = Object.entries(data).map(
         (kvPair)=> {
             let wins = 0; 
@@ -19,6 +21,29 @@ export function mapStats(data: StatsData): Player[] {
                     totalGames: champion.loss + champion.win,
                     winPercentage: Math.round(champion.win_rate * 100)
                 }
+
+                // also update our champion map
+                if (championMap[championName] === undefined) {
+                    // champion does not exist in our map, so we can add it
+                    championMap[championName] = {
+                      name: championName,
+                      losses: champion.loss,
+                      wins: champion.win,
+                      totalGames: champion.loss + champion.win,
+                      winPercentage: champion.win_rate,
+                    };
+                  } else {
+                    const wins = championMap[championName].wins + champion.win;
+                    const losses = championMap[championName].losses + champion.loss;
+                    championMap[championName] = {
+                      name: championName,
+                      losses,
+                      wins,
+                      winPercentage: Math.round((wins / (wins + losses)) * 100),
+                      totalGames:
+                        championMap[championName].totalGames + champion.loss + champion.win,
+                    };
+                  }
             }
 
             return {
@@ -30,5 +55,5 @@ export function mapStats(data: StatsData): Player[] {
         }
     )
 
-    return players;
+    return {players, champions: championMap};
 }

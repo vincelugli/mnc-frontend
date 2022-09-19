@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { StatsAction } from "../redux/statsActions";
 import { mapStats } from "../services/dataMapper";
 import { fetchMMR, fetchStats } from "../services/dataService";
+import { Champion } from "../types/domain/Champion";
 import { Player } from "../types/domain/Player";
 import { MmrData } from "../types/service/MmrData";
 import { StatsData } from "../types/service/StatsData";
@@ -11,7 +12,7 @@ import { StatsData } from "../types/service/StatsData";
 export default function Home() {
     const dispatch = useDispatch();
 
-    const statsResponse = useQuery<StatsData, Error, Player[]>(
+    const statsResponse = useQuery<StatsData, Error, {players: Player[], champions: {[id: string]: Champion}}>(
         ["stats"],
         fetchStats,
         {
@@ -40,7 +41,8 @@ export default function Home() {
 
     useEffect(()=>{
         if (!statsResponse.isLoading && statsResponse.data !== undefined) {
-            dispatch(StatsAction.hydratePlayerStatsActionComplete(statsResponse.data));
+            dispatch(StatsAction.hydratePlayerStatsActionComplete(statsResponse.data.players));
+            dispatch(StatsAction.hydrateChampionStatsActionComplete(statsResponse.data.champions));
         }
     },[statsResponse.isLoading, statsResponse.data]);
 

@@ -2,15 +2,20 @@ import { Player } from '../types/domain/Player';
 import { StatsAction } from './statsActions';
 
 import { createReducer } from '@reduxjs/toolkit'
+import { Champion } from '../types/domain/Champion';
 
 export type StatsState = Readonly<{
     players:{
       [id: string]: Player;
     } | undefined;
+    champions: {
+      [id: string]: Champion;
+    } | undefined;
   }>;
   
 const initialState: StatsState = {
-  players: undefined
+  players: undefined,
+  champions: undefined
 };
 
 export const statsReducer = createReducer(initialState, (builder) => {
@@ -54,6 +59,17 @@ export const statsReducer = createReducer(initialState, (builder) => {
       } else {
         state.players[player.name] = {name: player.name, mmr: player.mmr };
       }
+    }
+  })
+  .addCase(StatsAction.hydrateChampionStatsActionComplete, (state, action) => {
+    const championsMap = action.payload;
+
+    if (state.champions === undefined) {
+      state.champions = {};
+    }
+
+    if (championsMap) {
+      state.champions = action.payload;
     }
   })
 });
