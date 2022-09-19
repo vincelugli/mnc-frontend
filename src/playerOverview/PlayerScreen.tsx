@@ -3,22 +3,25 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { SortableTable } from "../components/SortableTable";
-import { processPlayerChampions } from "../logic/statsProcessors";
 import { AppState } from "../redux/rootReducer";
 import { statsSelector } from "../redux/statsSelectors";
-import {
-  Player,
-  PlayerChampionData,
-  PlayerTableData,
-} from "../types/domain/Player";
+import { Player, PlayerChampionData } from "../types/domain/Player";
 
 export async function loader(data: { params: any }) {
   return data.params.playerId;
 }
 
-const columnHelper = createColumnHelper<PlayerTableData>();
+/**
+ * Given a player, map to a an array of PlayerChampionData that has stats centered around that player's champion
+ * @param data
+ */
+const processPlayerChampions = (data: Player): PlayerChampionData[] => {
+  return data.champions ? Array.from(Object.values(data.champions)) : [];
+};
 
-const columns: ColumnDef<PlayerTableData, any>[] = [
+const columnHelper = createColumnHelper<PlayerChampionData>();
+
+const columns: ColumnDef<PlayerChampionData, any>[] = [
   columnHelper.accessor((row) => row.name, {
     id: "name",
     cell: (info) => info.getValue(),

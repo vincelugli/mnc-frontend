@@ -3,9 +3,52 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { SortableTable } from "../components/SortableTable";
-import { processChampions } from "../logic/statsProcessors";
 import { statsSelector } from "../redux/statsSelectors";
 import { Champion } from "../types/domain/Champion";
+import { Player } from "../types/domain/Player";
+
+/**
+ * Given a collection of players, map to a key value pair of championName to champion that has stats centered around that champion
+ * @param data
+ */
+const processChampions = (
+  data: Player[] | undefined
+): {
+  [key: string]: Champion;
+} => {
+  const championMap: { [key: string]: Champion } = {};
+  if (data) {
+    for (const player of data) {
+      // iterate through the player's champions to aggregate champion info
+      if (player.champions) {
+        for (const [key, value] of Object.entries(player.champions)) {
+          if (championMap[key] === undefined) {
+            // champion does not exist in our collection, so we can add it
+            championMap[key] = {
+              name: key,
+              losses: value.losses,
+              wins: value.wins,
+              totalGames: value.losses + value.wins,
+              winPercentage: value.winPercentage,
+            };
+          } else {
+            const wins = championMap[key].wins + value.wins;
+            const losses = championMap[key].losses + value.losses;
+            championMap[key] = {
+              name: key,
+              losses,
+              wins,
+              winPercentage: Math.round((wins / (wins + losses)) * 100),
+              totalGames:
+                championMap[key].totalGames + value.losses + value.wins,
+            };
+          }
+        }
+      }
+    }
+  }
+  return championMap;
+};
 
 const columnHelper = createColumnHelper<Champion>();
 

@@ -4,10 +4,40 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { SortableTable } from "../components/SortableTable";
-import { processChampions, processPlayers } from "../logic/statsProcessors";
 import { statsSelector } from "../redux/statsSelectors";
-import { PlayerTableData } from "../types/domain/Player";
+import { Player } from "../types/domain/Player";
 import "./PlayerOverview.css";
+
+type PlayerTableData = {
+  name: string;
+  wins: number;
+  winPercentage: string;
+  losses: number;
+  totalGames: number;
+  mmr: number;
+};
+
+/**
+ * Given a collection of players, map to a collection of players with processed stats
+ * @param players A collection of playeres to process
+ */
+const processPlayers = (players: Player[] | undefined): PlayerTableData[] => {
+  return players
+    ? players.map((player) => {
+        const wins = player.wins ?? 0;
+        const losses = player.losses ?? 0;
+        const totalGames = wins + losses;
+        return {
+          ...player,
+          wins,
+          losses,
+          winPercentage: Math.round((wins / totalGames) * 100) + "%",
+          totalGames: totalGames,
+          mmr: Math.round(player.mmr ?? 1500),
+        };
+      })
+    : [];
+};
 
 const columnHelper = createColumnHelper<PlayerTableData>();
 

@@ -15,12 +15,3 @@ export type Player = {
     [key: string]: PlayerChampionData;
   };
 };
-
-export type PlayerTableData = {
-  name: string;
-  wins: number;
-  winPercentage: string;
-  losses: number;
-  totalGames: number;
-  mmr: number;
-};
