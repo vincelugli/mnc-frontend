@@ -3,10 +3,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { SortableTable } from "../components/SortableTable";
+import { StatsCard } from "../components/StatsCard";
 import { AppState } from "../redux/rootReducer";
 import { statsSelector } from "../redux/statsSelectors";
 import { Champion } from "../types/domain/Champion";
 import { Player } from "../types/domain/Player";
+import { getChampionImage } from "../utils/championImageHelpers";
 
 export async function loader(data: {params: any}) {
     return data.params.championId;
@@ -110,13 +112,16 @@ export const ChampionScreen = React.memo(function ChampionScreen() {
         </div>
     }
 
+    const statsCardChampion = {
+      ...champion,
+      imageUri: getChampionImage(champion.name)
+    }
+
+    console.log(statsCardChampion.imageUri);
+
     return <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
         <div style={{marginBottom: 32}}>
-            <h1>{champion.name}</h1>
-            <h1>{"Wins: " + champion.wins}</h1>
-            <h1>{"Losses: " + champion.losses}</h1>
-            <h1>{"Win Percentage: " + champion.winPercentage + "%"}</h1>
-            <h1>{"Total Games: " + champion.totalGames}</h1>
+            <StatsCard stats={statsCardChampion}/>
         </div>
         {
           <SortableTable

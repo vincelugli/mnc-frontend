@@ -3,10 +3,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { SortableTable } from "../components/SortableTable";
+import { StatsCard } from "../components/StatsCard";
 import { AppState } from "../redux/rootReducer";
 import { statsSelector } from "../redux/statsSelectors";
 import { Champion } from "../types/domain/Champion";
 import { Player } from "../types/domain/Player";
+import { getChampionImage } from "../utils/championImageHelpers";
 
 export async function loader(data: { params: any }) {
   return data.params.playerId;
@@ -25,7 +27,12 @@ const columnHelper = createColumnHelper<Champion>();
 const columns: ColumnDef<Champion, any>[] = [
   columnHelper.accessor((row) => row.name, {
     id: "name",
-    cell: (info) => info.getValue(),
+    cell: (info) => {
+      return <div style={{display: "flex", alignItems: "center"}}>
+        <img src={getChampionImage(info.getValue())} style={{width: 32, height: 32, marginRight: 8}}/>
+        {info.getValue()}
+      </div>
+    },
     header: () => <span>Name</span>,
   }),
   columnHelper.accessor((row) => row.wins, {
@@ -88,6 +95,8 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
   const playerChampionData: Champion[] =
     processPlayerChampions(player);
 
+  const statsCardPlayer = {...player, extraStats: player.mmr ? ["MMR: " + Math.round(player.mmr)] : []};
+  
   return (
     <div
       style={{
@@ -97,11 +106,8 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
         alignItems: "center",
       }}
     >
-      <div style={{ marginBottom: 32 }}>
-        <h1>{player.name}</h1>
-        <h1>{"Wins: " + player.wins}</h1>
-        <h1>{"Losses: " + player.losses}</h1>
-        <h1>{"MMR: " + player.mmr}</h1>
+      <div style={{ marginBottom: 32}}>
+        <StatsCard stats={statsCardPlayer}/>
       </div>
       {
         <SortableTable
