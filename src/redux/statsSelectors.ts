@@ -1,6 +1,5 @@
 import { createSelector } from "reselect";
-import { Champion } from "../types/domain/Champion";
-import { Player } from "../types/domain/Player";
+import { Player, Champion } from "../types/domain/statsTypes";
 import { AppState } from "./rootReducer";
 
 export const getPlayers = (state: AppState) => state.stats.players;

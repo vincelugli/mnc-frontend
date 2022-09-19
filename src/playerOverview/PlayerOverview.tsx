@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { SortableTable } from "../components/SortableTable";
 import { statsSelector } from "../redux/statsSelectors";
-import { Player } from "../types/domain/Player";
+import { Player } from "../types/domain/statsTypes";
 import "./PlayerOverview.css";
 
 type PlayerTableData = {

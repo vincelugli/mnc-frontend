@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import CreatableSelect from "react-select/creatable";
-import { Player } from "../types/domain/Player";
+import { Player } from "../types/domain/statsTypes";
 import { fetchPlayers } from "../services/dataService";
 import { MmrData } from "../types/service/MmrData";
 import "./Matchmaker.css";

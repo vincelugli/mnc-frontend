@@ -4,8 +4,7 @@ import { useDispatch } from "react-redux";
 import { StatsAction } from "../redux/statsActions";
 import { mapStats } from "../services/dataMapper";
 import { fetchMMR, fetchStats } from "../services/dataService";
-import { Champion } from "../types/domain/Champion";
-import { Player } from "../types/domain/Player";
+import { Player, Champion } from "../types/domain/statsTypes";
 import { MmrData } from "../types/service/MmrData";
 import { StatsData } from "../types/service/StatsData";
 
