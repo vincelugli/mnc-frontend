@@ -82,7 +82,7 @@ export const ChampionOverview = React.memo(function ChampionOverview() {
       }}
     >
       <h1>Champion Overview</h1>
-      {
+      <div style={{maxWidth: 1024}}>
         <SortableTable
           columns={columns}
           data={processedChampionArray}
@@ -94,7 +94,7 @@ export const ChampionOverview = React.memo(function ChampionOverview() {
             };
           }}
         />
-      }
+      </div>
     </div>
   );
 });

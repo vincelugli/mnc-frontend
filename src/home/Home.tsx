@@ -86,7 +86,7 @@ export default function Home() {
         </div>
         <div style={{position: "absolute", right: 0, left: 0, bottom: 0, top: TOP_NAV_BAR_HEIGHT}}>
             <div style={{display: "flex", width: "100%", height: "100%", justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0.8)"}}>
-                <h1 style={{color: "white", fontSize: 48}}> Welcome to Monday Night Customs Hub </h1>
+                <h1 style={{color: "white", fontSize: 48, marginRight: 64, marginLeft: 64}}> Welcome to Monday Night Customs Hub </h1>
             </div>
         </div>
     </div>

@@ -14,11 +14,11 @@ export const Matchmaker = () => {
   const [redTeam, setRedTeam] = useState<readonly Player[]>([]);
 
   const { isLoading, error, data } = useQuery<MmrData, Error, Player[]>(
-    ["mmr"],
+    ["simpleMmr"],
     fetchPlayers,
     {
       select: (data) => {
-        const players = Object.entries(data.mmr).map(
+        const players = Object.entries(data).map(
           (kvPair) =>
             ({
               name: kvPair[0],

@@ -104,19 +104,19 @@ export const PlayerOverview = React.memo(function PlayerOverview() {
       }}
     >
       <chakra.h1>Player Overview</chakra.h1>
-      {
-        <SortableTable
-          columns={columns}
-          data={processedData}
-          getRowProps={(row: Row<any>) => {
-            return {
-              onClick: () => {
-                navigate(row.getValue("name"));
-              },
-            };
-          }}
-        />
-      }
+        <div style={{maxWidth: 1024}}>
+          <SortableTable
+            columns={columns}
+            data={processedData}
+            getRowProps={(row: Row<any>) => {
+              return {
+                onClick: () => {
+                  navigate(row.getValue("name"));
+                },
+              };
+            }}
+          />
+        </div>
     </div>
   );
 });
