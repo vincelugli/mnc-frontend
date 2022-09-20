@@ -1,5 +1,5 @@
 import { chakra, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
+import { TriangleDownIcon, TriangleUpIcon, UpDownIcon } from "@chakra-ui/icons";
 import {
   Cell,
   Column,
@@ -67,7 +67,7 @@ export function SortableTable({
                       ) : (
                         <TriangleUpIcon aria-label="sorted ascending" />
                       )
-                    ) : null}
+                    ) : <UpDownIcon/>}
                   </chakra.span>
                 </Th>
               );

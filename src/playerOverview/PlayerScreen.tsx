@@ -122,7 +122,7 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
       <div style={{ marginBottom: 32}}>
         <StatsCard stats={statsCardPlayer}/>
       </div>
-      {
+      <div style={{maxWidth: 1024}}>
         <SortableTable
           columns={columns}
           data={playerChampionData}
@@ -134,7 +134,7 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
             };
           }}
         />
-      }
+      </div>
     </div>
   );
 });

@@ -126,7 +126,7 @@ export const ChampionScreen = React.memo(function ChampionScreen() {
         <div style={{marginBottom: 32}}>
             <StatsCard stats={statsCardChampion}/>
         </div>
-        {
+        <div style={{maxWidth: 1024}}>
           <SortableTable
             columns={columns}
             data={championPlayerData}
@@ -138,6 +138,6 @@ export const ChampionScreen = React.memo(function ChampionScreen() {
               };
             }}
           />
-        }
+      </div>
     </div>;
 });
