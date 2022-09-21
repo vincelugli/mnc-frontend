@@ -5,7 +5,6 @@ export function mapChampions(data: Champions) {
     // get a mapping of friendly name to data dragon champion id
     // mnc-frontend uses friendly name as the key for its champions map
     for (const championId of Object.keys(data.data)) {
-        console.log(data.data[championId].name);
         championMap[data.data[championId].name] = data.data[championId].id;
     }
     return championMap;

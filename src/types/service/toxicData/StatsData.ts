@@ -10,7 +10,7 @@ export type StatsData = {
         champion: {
             [key:string] : StatsObject;
         }
-        oppponent: {
+        opponent: {
             [key:string] : StatsObject;
         }
         teammate: {
