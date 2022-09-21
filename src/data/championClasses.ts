@@ -12,7 +12,7 @@ export enum ChampionClass {
     Assassin = "Assassin",
     Skirmishers = "Skirmishers",
     Specialist = "Specialiist",
-    Vanguard = "Vanguar",
+    Vanguard = "Vanguard",
     Warden = "Warden",
 };
 
