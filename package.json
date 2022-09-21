@@ -43,7 +43,8 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "lint": "eslint . --ext .ts",
-        "format": "prettier --config .prettierrc.yaml \"src/**/*.{js,jsx,ts,tsx,css,md,json}\" --write"
+        "format": "prettier --config .prettierrc.yaml \"src/**/*.{js,jsx,ts,tsx,css,md,json}\" --write",
+        "prepare": "husky install"
     },
     "husky": {
         "hooks": {
@@ -85,7 +86,7 @@
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",
         "http-proxy-middleware": "^2.0.6",
-        "husky": "^4.3.8",
+        "husky": "^8.0.0",
         "lint-staged": "^13.0.3",
         "prettier": "^2.7.1"
     }
