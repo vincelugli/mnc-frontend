@@ -46,11 +46,6 @@
         "format": "prettier --config .prettierrc.yaml \"src/**/*.{js,jsx,ts,tsx,css,md,json}\" --write",
         "prepare": "husky install"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
     "lint-staged": {
         "*.+(js|jsx|tsx)": [
             "eslint --fix",
