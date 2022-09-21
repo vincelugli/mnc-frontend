@@ -24,13 +24,14 @@ export function mapStats(data: StatsData): {players: Player[], champions: {[id: 
 
                 // also update our champion map
                 if (championMap[championName] === undefined) {
+                    const totalGames = champion.loss + champion.win;
                     // champion does not exist in our map, so we can add it
                     championMap[championName] = {
                       name: championName,
                       losses: champion.loss,
                       wins: champion.win,
-                      totalGames: champion.loss + champion.win,
-                      winPercentage: champion.win_rate,
+                      totalGames: totalGames,
+                      winPercentage: Math.round(champion.win / totalGames * 100),
                     };
                   } else {
                     const wins = championMap[championName].wins + champion.win;
@@ -50,7 +51,7 @@ export function mapStats(data: StatsData): {players: Player[], champions: {[id: 
                 name: kvPair[0],
                 wins,
                 losses,
-                champions 
+                champions,
             }
         }
     )
