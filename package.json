@@ -47,8 +47,18 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "npm run lint && npm run format"
+            "pre-commit": "lint-staged"
         }
+    },
+    "lint-staged": {
+        "*.+(js|jsx|tsx)": [
+            "eslint --fix",
+            "git add"
+        ],
+        "*.+(json|css|md|tsx)": [
+            "prettier --write",
+            "git add"
+        ]
     },
     "eslintConfig": {
         "extends": [
@@ -76,6 +86,7 @@
         "eslint-plugin-prettier": "^4.2.1",
         "http-proxy-middleware": "^2.0.6",
         "husky": "^8.0.1",
+        "lint-staged": "^13.0.3",
         "prettier": "^2.7.1"
     }
 }
