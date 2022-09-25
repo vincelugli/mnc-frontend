@@ -150,7 +150,7 @@ export const Matchmaker = () => {
                             return (
                                 <li>
                                     <>
-                                        {player.name}({player.name})
+                                        {player.name}{ (player.wins ?? 0) + (player.losses ?? 0) >= 10 ? `(${player.mmr})` : ""}
                                     </>
                                 </li>
                             )
@@ -162,7 +162,7 @@ export const Matchmaker = () => {
                             return (
                                 <li>
                                     <>
-                                        {player.name}({player.mmr})
+                                        {player.name}{ (player.wins ?? 0) + (player.losses ?? 0) >= 10 ? `(${player.mmr})` : ""}
                                     </>
                                 </li>
                             )
