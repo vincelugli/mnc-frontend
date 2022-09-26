@@ -1,21 +1,21 @@
-import { chakra } from '@chakra-ui/react'
-import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table'
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { SortableTable } from '../components/SortableTable'
-import { statsSelector } from '../redux/stats/statsSelectors'
-import { Player } from '../types/domain/Player'
-import './PlayerOverview.css'
+import { chakra } from '@chakra-ui/react';
+import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { SortableTable } from '../components/SortableTable';
+import { statsSelector } from '../redux/stats/statsSelectors';
+import { Player } from '../types/domain/Player';
+import './PlayerOverview.css';
 
 type PlayerTableData = {
-    name: string
-    wins: number
-    winPercentage: string
-    losses: number
-    totalGames: number
-    mmr: number
-}
+    name: string;
+    wins: number;
+    winPercentage: string;
+    losses: number;
+    totalGames: number;
+    mmr: number;
+};
 
 /**
  * Given a collection of players, map to a collection of players with processed stats
@@ -24,9 +24,9 @@ type PlayerTableData = {
 const processPlayers = (players: Player[] | undefined): PlayerTableData[] => {
     return players
         ? players.map((player) => {
-              const wins = player.wins ?? 0
-              const losses = player.losses ?? 0
-              const totalGames = wins + losses
+              const wins = player.wins ?? 0;
+              const losses = player.losses ?? 0;
+              const totalGames = wins + losses;
               return {
                   ...player,
                   wins,
@@ -34,12 +34,12 @@ const processPlayers = (players: Player[] | undefined): PlayerTableData[] => {
                   winPercentage: Math.round((wins / totalGames) * 100) + '%',
                   totalGames: totalGames,
                   mmr: Math.round(player.mmr ?? 1500),
-              }
+              };
           })
-        : []
-}
+        : [];
+};
 
-const columnHelper = createColumnHelper<PlayerTableData>()
+const columnHelper = createColumnHelper<PlayerTableData>();
 
 const columns: ColumnDef<PlayerTableData, any>[] = [
     columnHelper.accessor((row) => row.name, {
@@ -87,12 +87,12 @@ const columns: ColumnDef<PlayerTableData, any>[] = [
             isNumeric: true,
         },
     }),
-]
+];
 
 export const PlayerOverview = React.memo(function PlayerOverview() {
-    const navigate = useNavigate()
-    const data = useSelector(statsSelector.getPlayersCollection)
-    const processedData = processPlayers(data)
+    const navigate = useNavigate();
+    const data = useSelector(statsSelector.getPlayersCollection);
+    const processedData = processPlayers(data);
 
     return (
         <div
@@ -111,12 +111,12 @@ export const PlayerOverview = React.memo(function PlayerOverview() {
                     getRowProps={(row: Row<any>) => {
                         return {
                             onClick: () => {
-                                navigate(row.getValue('name'))
+                                navigate(row.getValue('name'));
                             },
-                        }
+                        };
                     }}
                 />
             </div>
         </div>
-    )
-})
+    );
+});

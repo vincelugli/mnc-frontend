@@ -1,24 +1,24 @@
-import { useQuery } from '@tanstack/react-query'
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { TOP_NAV_BAR_HEIGHT } from '../navigation/Root'
-import { GameInfoAction } from '../redux/gameInfo/gameInfoActions'
-import { StatsAction } from '../redux/stats/statsActions'
-import { fetchChampions } from '../services/dataDragon/dataDragonService'
-import { mapChampions } from '../services/dataDragon/dataMapper'
-import { mapStats } from '../services/toxicData/dataMapper'
-import { fetchMMR, fetchStats } from '../services/toxicData/toxicDataService'
-import { Champion } from '../types/domain/Champion'
-import { Player } from '../types/domain/Player'
-import { Champions } from '../types/service/dataDragon/DataDragonChampions'
-import { MmrData } from '../types/service/toxicData/MmrData'
-import { StatsData } from '../types/service/toxicData/StatsData'
+import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { TOP_NAV_BAR_HEIGHT } from '../navigation/Root';
+import { GameInfoAction } from '../redux/gameInfo/gameInfoActions';
+import { StatsAction } from '../redux/stats/statsActions';
+import { fetchChampions } from '../services/dataDragon/dataDragonService';
+import { mapChampions } from '../services/dataDragon/dataMapper';
+import { mapStats } from '../services/toxicData/dataMapper';
+import { fetchMMR, fetchStats } from '../services/toxicData/toxicDataService';
+import { Champion } from '../types/domain/Champion';
+import { Player } from '../types/domain/Player';
+import { Champions } from '../types/service/dataDragon/DataDragonChampions';
+import { MmrData } from '../types/service/toxicData/MmrData';
+import { StatsData } from '../types/service/toxicData/StatsData';
 
 const backgroundVideo =
-    'https://screensavers.riotgames.com/v2/latest/content/original/AnimatedArt/animated-freljord.webm'
+    'https://screensavers.riotgames.com/v2/latest/content/original/AnimatedArt/animated-freljord.webm';
 
 export default function Home() {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const statsResponse = useQuery<
         StatsData,
@@ -26,9 +26,9 @@ export default function Home() {
         { players: Player[]; champions: { [id: string]: Champion } }
     >(['stats'], fetchStats, {
         select: (data) => {
-            return mapStats(data)
+            return mapStats(data);
         },
-    })
+    });
 
     const mmrResponse = useQuery<MmrData, Error, Player[]>(
         ['simpleMmr'],
@@ -41,11 +41,11 @@ export default function Home() {
                             name: kvPair[0],
                             mmr: kvPair[1],
                         } as Player)
-                )
-                return players
+                );
+                return players;
             },
         }
-    )
+    );
 
     const dataDragonResponse = useQuery<
         Champions,
@@ -53,9 +53,9 @@ export default function Home() {
         { [key: string]: string }
     >(['dataDragonChampions'], fetchChampions, {
         select: (data) => {
-            return mapChampions(data)
+            return mapChampions(data);
         },
-    })
+    });
 
     useEffect(() => {
         if (!statsResponse.isLoading && statsResponse.data !== undefined) {
@@ -63,20 +63,20 @@ export default function Home() {
                 StatsAction.hydratePlayerStatsActionComplete(
                     statsResponse.data.players
                 )
-            )
+            );
             dispatch(
                 StatsAction.hydrateChampionStatsActionComplete(
                     statsResponse.data.champions
                 )
-            )
+            );
         }
-    }, [statsResponse.isLoading, statsResponse.data])
+    }, [statsResponse.isLoading, statsResponse.data]);
 
     useEffect(() => {
         if (!mmrResponse.isLoading && mmrResponse.data !== undefined) {
-            dispatch(StatsAction.hydratePlayerMmrComplete(mmrResponse.data))
+            dispatch(StatsAction.hydratePlayerMmrComplete(mmrResponse.data));
         }
-    }, [mmrResponse.isLoading, mmrResponse.data])
+    }, [mmrResponse.isLoading, mmrResponse.data]);
 
     useEffect(() => {
         if (
@@ -85,9 +85,9 @@ export default function Home() {
         ) {
             dispatch(
                 GameInfoAction.hydrateChampionsComplete(dataDragonResponse.data)
-            )
+            );
         }
-    }, [dataDragonResponse.isLoading, dataDragonResponse.data])
+    }, [dataDragonResponse.isLoading, dataDragonResponse.data]);
 
     return (
         <div
@@ -167,5 +167,5 @@ export default function Home() {
                 </div>
             </div>
         </div>
-    )
+    );
 }

@@ -1,5 +1,5 @@
-import { StatsData } from '../../types/service/toxicData/StatsData'
-import { mapStats } from './dataMapper'
+import { StatsData } from '../../types/service/toxicData/StatsData';
+import { mapStats } from './dataMapper';
 
 describe('mapStats', () => {
     const mockToxicStatsData: StatsData = {
@@ -66,10 +66,10 @@ describe('mapStats', () => {
             },
             opponent: {},
         },
-    }
+    };
 
     it('should map a toxic stats response into a map of champion names to domain champions AND a collection of players', () => {
-        const result = mapStats(mockToxicStatsData)
+        const result = mapStats(mockToxicStatsData);
         expect(result.champions).toEqual({
             Leona: {
                 totalGames: 20,
@@ -92,7 +92,7 @@ describe('mapStats', () => {
                 winPercentage: 80,
                 name: 'Dr. Mundo',
             },
-        })
+        });
         expect(result.players).toEqual([
             {
                 name: 'player1',
@@ -136,6 +136,6 @@ describe('mapStats', () => {
                     },
                 },
             },
-        ])
-    })
-})
+        ]);
+    });
+});

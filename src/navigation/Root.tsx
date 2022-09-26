@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { useCallback, useEffect, useState } from 'react';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 
-import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai'
+import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 
-import './Root.css'
-import CSS from 'csstype'
+import './Root.css';
+import CSS from 'csstype';
 
 const baseSideBarStyle: CSS.Properties = {
     height: '100%' /* 100% Full-height */,
@@ -17,17 +17,17 @@ const baseSideBarStyle: CSS.Properties = {
     paddingTop: '60px' /* Place content 60px from the top */,
     transition:
         '0.5s' /* 0.5 second transition effect to slide in the sidenav */,
-}
+};
 
 const sideBarStyle: CSS.Properties = {
     ...baseSideBarStyle,
     width: '300px' /* 0 width - change this with JavaScript */,
-}
+};
 
 const sideBarCollapsedStyle: CSS.Properties = {
     ...baseSideBarStyle,
     width: '0px' /* 0 width - change this with JavaScript */,
-}
+};
 
 const openMenuIcon: CSS.Properties = {
     flex: 1,
@@ -44,7 +44,7 @@ const openMenuIcon: CSS.Properties = {
     maxWidth: '64px',
     borderWidth: 0,
     backgroundColor: 'transparent',
-}
+};
 
 const sideBarClose: CSS.Properties = {
     position: 'absolute',
@@ -59,25 +59,25 @@ const sideBarClose: CSS.Properties = {
     transition: '0.3s',
     borderWidth: 0,
     backgroundColor: 'transparent',
-}
+};
 
 function NavigationItem({
     route,
     label,
     onClickCallback,
 }: {
-    route: string
-    label: string
-    onClickCallback?: () => void
+    route: string;
+    label: string;
+    onClickCallback?: () => void;
 }) {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const onClick = useCallback(() => {
-        navigate(route)
+        navigate(route);
         if (onClickCallback) {
-            onClickCallback()
+            onClickCallback();
         }
-    }, [route, navigate, onClickCallback])
+    }, [route, navigate, onClickCallback]);
 
     return (
         <button
@@ -86,18 +86,18 @@ function NavigationItem({
         >
             <a style={{ minWidth: 500, textAlign: 'left' }}>{label}</a>
         </button>
-    )
+    );
 }
 
-export const TOP_NAV_BAR_HEIGHT = 80
+export const TOP_NAV_BAR_HEIGHT = 80;
 
 export default function Root() {
     const [isNavigationCollapsed, setIsNavigationCollapsed] =
-        useState<boolean>(true)
+        useState<boolean>(true);
 
     const onToggleNavigation = () => {
-        setIsNavigationCollapsed(!isNavigationCollapsed)
-    }
+        setIsNavigationCollapsed(!isNavigationCollapsed);
+    };
 
     return (
         <>
@@ -171,5 +171,5 @@ export default function Root() {
                 <Outlet />
             </div>
         </>
-    )
+    );
 }
