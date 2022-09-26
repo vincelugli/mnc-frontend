@@ -1,8 +1,8 @@
-import axios from 'axios'
-import { Champions } from '../../types/service/dataDragon/DataDragonChampions'
+import axios from 'axios';
+import { Champions } from '../../types/service/dataDragon/DataDragonChampions';
 
 const championDataEndpoint =
-    'http://ddragon.leagueoflegends.com/cdn/12.17.1/data/en_US/champion.json'
+    'http://ddragon.leagueoflegends.com/cdn/12.17.1/data/en_US/champion.json';
 
 export const fetchChampions = () =>
     axios
@@ -11,4 +11,4 @@ export const fetchChampions = () =>
                 Accept: 'application/json',
             },
         })
-        .then((res) => res.data)
+        .then((res) => res.data);

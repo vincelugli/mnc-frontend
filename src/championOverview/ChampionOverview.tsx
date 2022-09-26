@@ -1,18 +1,18 @@
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { SortableTable } from '../components/SortableTable'
-import { gameInfoSelector } from '../redux/gameInfo/gameInfoSelectors'
-import { statsSelector } from '../redux/stats/statsSelectors'
-import { Champion } from '../types/domain/Champion'
-import { getChampionImage } from '../utils/championImageHelpers'
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { SortableTable } from '../components/SortableTable';
+import { gameInfoSelector } from '../redux/gameInfo/gameInfoSelectors';
+import { statsSelector } from '../redux/stats/statsSelectors';
+import { Champion } from '../types/domain/Champion';
+import { getChampionImage } from '../utils/championImageHelpers';
 
 type ChampionOverviewChampion = {
-    imageUrl: string
-} & Champion
+    imageUrl: string;
+} & Champion;
 
-const columnHelper = createColumnHelper<ChampionOverviewChampion>()
+const columnHelper = createColumnHelper<ChampionOverviewChampion>();
 
 const columns: ColumnDef<ChampionOverviewChampion, any>[] = [
     columnHelper.accessor((row) => row.name, {
@@ -26,7 +26,7 @@ const columns: ColumnDef<ChampionOverviewChampion, any>[] = [
                     />
                     {info.getValue()}
                 </div>
-            )
+            );
         },
         header: () => <span>Name</span>,
     }),
@@ -62,12 +62,12 @@ const columns: ColumnDef<ChampionOverviewChampion, any>[] = [
             isNumeric: true,
         },
     }),
-]
+];
 
 export const ChampionOverview = React.memo(function ChampionOverview() {
-    const navigate = useNavigate()
-    const data = useSelector(statsSelector.getChampionsCollection)
-    const championIdMap = useSelector(gameInfoSelector.getChampionMap)
+    const navigate = useNavigate();
+    const data = useSelector(statsSelector.getChampionsCollection);
+    const championIdMap = useSelector(gameInfoSelector.getChampionMap);
     const processedChampionArray = Array.from(Object.values(data ?? [])).map(
         (champion) => {
             return {
@@ -75,9 +75,9 @@ export const ChampionOverview = React.memo(function ChampionOverview() {
                 imageUrl: championIdMap[champion.name]
                     ? getChampionImage(championIdMap[champion.name])
                     : '',
-            }
+            };
         }
-    )
+    );
 
     return (
         <div
@@ -96,12 +96,12 @@ export const ChampionOverview = React.memo(function ChampionOverview() {
                     getRowProps={(row: any) => {
                         return {
                             onClick: () => {
-                                navigate(row.getValue('name'))
+                                navigate(row.getValue('name'));
                             },
-                        }
+                        };
                     }}
                 />
             </div>
         </div>
-    )
-})
+    );
+});

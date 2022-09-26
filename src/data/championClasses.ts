@@ -1,4 +1,4 @@
-import { Champion } from '../types/domain/Champion'
+import { Champion } from '../types/domain/Champion';
 
 export enum ChampionClass {
     Diver = 'Diver',
@@ -21,34 +21,34 @@ export enum ChampionClass {
  * win rates for those classes
  */
 export function championClassWinRates(champions: Champion[]) {
-    const classWinRate: { [id: string]: { wins: number; losses: number } } = {}
+    const classWinRate: { [id: string]: { wins: number; losses: number } } = {};
 
     for (const champion of champions) {
-        const championClasses = ChampionClassMap[champion.name]
+        const championClasses = ChampionClassMap[champion.name];
         if (championClasses) {
             // champions may have multiple classes, so iterate through all of them
             for (const championClass of championClasses) {
-                const existingClassWinRate = classWinRate[championClass]
+                const existingClassWinRate = classWinRate[championClass];
                 if (existingClassWinRate === undefined) {
                     classWinRate[championClass] = {
                         losses: champion.losses,
                         wins: champion.wins,
-                    }
+                    };
                 } else {
                     // this champion class already exists so we just update the wins and loses
                     classWinRate[championClass] = {
                         losses: existingClassWinRate.losses + champion.losses,
                         wins: existingClassWinRate.wins + champion.wins,
-                    }
+                    };
                 }
             }
         } else {
             // this means that there are champions that we do not know about
-            console.log('ERROR: unknown champion: ' + champion.name)
+            console.log('ERROR: unknown champion: ' + champion.name);
         }
     }
 
-    return classWinRate
+    return classWinRate;
 }
 
 export const ChampionClassMap: { [id: string]: ChampionClass[] } = {
@@ -213,4 +213,4 @@ export const ChampionClassMap: { [id: string]: ChampionClass[] } = {
     Poppy: [ChampionClass.Warden],
     Shen: [ChampionClass.Warden],
     'Tahm Kench': [ChampionClass.Warden],
-}
+};

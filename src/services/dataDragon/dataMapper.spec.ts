@@ -1,5 +1,5 @@
-import { Champions } from '../../types/service/dataDragon/DataDragonChampions'
-import { mapChampions } from './dataMapper'
+import { Champions } from '../../types/service/dataDragon/DataDragonChampions';
+import { mapChampions } from './dataMapper';
 
 describe('mapChampions', () => {
     const mockDataDragonChampions: Champions = {
@@ -21,10 +21,10 @@ describe('mapChampions', () => {
                 },
             },
         },
-    }
+    };
 
     it('should map a collection of data dragon champions into a map of champion name to data dragon champion id ', () => {
-        const result = mapChampions(mockDataDragonChampions)
-        expect(result).toEqual({ Ahri: 'ddchamp1', 'Dr. Mundo': 'ddchamp2' })
-    })
-})
+        const result = mapChampions(mockDataDragonChampions);
+        expect(result).toEqual({ Ahri: 'ddchamp1', 'Dr. Mundo': 'ddchamp2' });
+    });
+});

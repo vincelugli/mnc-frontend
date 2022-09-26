@@ -1,5 +1,5 @@
-import { chakra, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
-import { TriangleDownIcon, TriangleUpIcon, UpDownIcon } from '@chakra-ui/icons'
+import { chakra, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { TriangleDownIcon, TriangleUpIcon, UpDownIcon } from '@chakra-ui/icons';
 import {
     Cell,
     Column,
@@ -10,10 +10,10 @@ import {
     Row,
     SortingState,
     useReactTable,
-} from '@tanstack/react-table'
-import React from 'react'
+} from '@tanstack/react-table';
+import React from 'react';
 
-const defaultPropGetter = () => ({})
+const defaultPropGetter = () => ({});
 
 export function SortableTable({
     columns,
@@ -23,14 +23,14 @@ export function SortableTable({
     getRowProps = defaultPropGetter,
     getCellProps = defaultPropGetter,
 }: {
-    columns: any
-    data: any
-    getHeaderProps?: (header: Header<any, any>) => any
-    getColumnProps?: (column: Column<any>) => any
-    getRowProps?: (row: Row<any>) => any
-    getCellProps?: (cell: Cell<any, any>) => any
+    columns: any;
+    data: any;
+    getHeaderProps?: (header: Header<any, any>) => any;
+    getColumnProps?: (column: Column<any>) => any;
+    getRowProps?: (row: Row<any>) => any;
+    getCellProps?: (cell: Cell<any, any>) => any;
 }) {
-    const [sorting, setSorting] = React.useState<SortingState>([])
+    const [sorting, setSorting] = React.useState<SortingState>([]);
     const table = useReactTable({
         columns,
         data,
@@ -40,14 +40,14 @@ export function SortableTable({
         state: {
             sorting,
         },
-    })
+    });
     return (
         <Table>
             <Thead>
                 {table.getHeaderGroups().map((headerGroup) => (
                     <Tr key={headerGroup.id}>
                         {headerGroup.headers.map((header) => {
-                            const meta: any = header.column.columnDef.meta
+                            const meta: any = header.column.columnDef.meta;
                             return (
                                 <Th
                                     key={header.id}
@@ -73,7 +73,7 @@ export function SortableTable({
                                         )}
                                     </chakra.span>
                                 </Th>
-                            )
+                            );
                         })}
                     </Tr>
                 ))}
@@ -82,7 +82,7 @@ export function SortableTable({
                 {table.getRowModel().rows.map((row) => (
                     <Tr key={row.id} {...getRowProps(row)}>
                         {row.getVisibleCells().map((cell) => {
-                            const meta: any = cell.column.columnDef.meta
+                            const meta: any = cell.column.columnDef.meta;
                             return (
                                 <Td
                                     key={cell.id}
@@ -95,11 +95,11 @@ export function SortableTable({
                                         cell.getContext()
                                     )}
                                 </Td>
-                            )
+                            );
                         })}
                     </Tr>
                 ))}
             </Tbody>
         </Table>
-    )
+    );
 }
