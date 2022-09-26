@@ -3,8 +3,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { SortableTable } from '../components/SortableTable';
+import { useChampions } from '../hooks/selectorWrapperHooks';
 import { gameInfoSelector } from '../redux/gameInfo/gameInfoSelectors';
-import { statsSelector } from '../redux/stats/statsSelectors';
 import { Champion } from '../types/domain/Champion';
 import { getChampionImage } from '../utils/championImageHelpers';
 
@@ -66,7 +66,7 @@ const columns: ColumnDef<ChampionOverviewChampion, any>[] = [
 
 export const ChampionOverview = React.memo(function ChampionOverview() {
     const navigate = useNavigate();
-    const data = useSelector(statsSelector.getChampionsCollection);
+    const data = useChampions();
     const championIdMap = useSelector(gameInfoSelector.getChampionMap);
     const processedChampionArray = Array.from(Object.values(data ?? [])).map(
         (champion) => {

@@ -4,9 +4,8 @@ import { useSelector } from 'react-redux';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { SortableTable } from '../components/SortableTable';
 import { StatsCard } from '../components/StatsCard';
+import { useChampion, usePlayers } from '../hooks/selectorWrapperHooks';
 import { gameInfoSelector } from '../redux/gameInfo/gameInfoSelectors';
-import { AppState } from '../redux/rootReducer';
-import { statsSelector } from '../redux/stats/statsSelectors';
 import { Champion } from '../types/domain/Champion';
 import { Player } from '../types/domain/Player';
 import { getChampionImage } from '../utils/championImageHelpers';
@@ -97,10 +96,8 @@ const columns: ColumnDef<ChampionPlayer, any>[] = [
 export const ChampionScreen = React.memo(function ChampionScreen() {
     const navigate = useNavigate();
     const championId = useLoaderData() as string;
-    const champion = useSelector((state: AppState) =>
-        statsSelector.getChampion(state, championId ?? '')
-    );
-    const allPlayers = useSelector(statsSelector.getPlayersCollection);
+    const champion = useChampion(championId ?? '');
+    const allPlayers = usePlayers();
     const dataDragonChampionIdMap = useSelector(
         gameInfoSelector.getChampionMap
     );

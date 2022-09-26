@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { SortableTable } from '../components/SortableTable';
 import { StatsCard } from '../components/StatsCard';
+import { usePlayer } from '../hooks/selectorWrapperHooks';
 import { gameInfoSelector } from '../redux/gameInfo/gameInfoSelectors';
 import { AppState } from '../redux/rootReducer';
 import { statsSelector } from '../redux/stats/statsSelectors';
@@ -95,9 +96,7 @@ const columns: ColumnDef<PlayerScreenChampion, any>[] = [
 export const PlayerScreen = React.memo(function PlayerScreen() {
     const navigate = useNavigate();
     const playerId = useLoaderData() as string;
-    const player: Player | undefined = useSelector((state: AppState) =>
-        statsSelector.getPlayer(state, playerId ?? '')
-    );
+    const player: Player | undefined = usePlayer(playerId ?? '');
 
     const championIdMap = useSelector(gameInfoSelector.getChampionMap);
 
