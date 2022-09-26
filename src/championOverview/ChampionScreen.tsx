@@ -1,27 +1,27 @@
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { useLoaderData, useNavigate } from 'react-router-dom'
-import { SortableTable } from '../components/SortableTable'
-import { StatsCard } from '../components/StatsCard'
-import { gameInfoSelector } from '../redux/gameInfo/gameInfoSelectors'
-import { AppState } from '../redux/rootReducer'
-import { statsSelector } from '../redux/stats/statsSelectors'
-import { Champion } from '../types/domain/Champion'
-import { Player } from '../types/domain/Player'
-import { getChampionImage } from '../utils/championImageHelpers'
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { useLoaderData, useNavigate } from 'react-router-dom';
+import { SortableTable } from '../components/SortableTable';
+import { StatsCard } from '../components/StatsCard';
+import { gameInfoSelector } from '../redux/gameInfo/gameInfoSelectors';
+import { AppState } from '../redux/rootReducer';
+import { statsSelector } from '../redux/stats/statsSelectors';
+import { Champion } from '../types/domain/Champion';
+import { Player } from '../types/domain/Player';
+import { getChampionImage } from '../utils/championImageHelpers';
 
 export async function loader(data: { params: any }) {
-    return data.params.championId
+    return data.params.championId;
 }
 
 type ChampionPlayer = {
-    name: string
-    wins: number
-    losses: number
-    winPercentage: number
-    totalGames: number
-}
+    name: string;
+    wins: number;
+    losses: number;
+    winPercentage: number;
+    totalGames: number;
+};
 
 /**
  * Given a champion, create an array of players that have played that champion
@@ -32,27 +32,27 @@ const processChampionPlayers = (
     allPlayers: Player[] | undefined
 ): ChampionPlayer[] => {
     if (champion === undefined || allPlayers === undefined) {
-        return []
+        return [];
     }
 
-    const championPlayers: ChampionPlayer[] = []
+    const championPlayers: ChampionPlayer[] = [];
 
     for (const player of allPlayers) {
         if (player.champions) {
-            const champDataForPlayer = player.champions[champion.name]
+            const champDataForPlayer = player.champions[champion.name];
             if (champDataForPlayer) {
                 // copy over the player's champion record, except replace the champion name with their name
                 championPlayers.push({
                     ...champDataForPlayer,
                     name: player.name,
-                })
+                });
             }
         }
     }
-    return championPlayers
-}
+    return championPlayers;
+};
 
-const columnHelper = createColumnHelper<ChampionPlayer>()
+const columnHelper = createColumnHelper<ChampionPlayer>();
 
 const columns: ColumnDef<ChampionPlayer, any>[] = [
     columnHelper.accessor((row) => row.name, {
@@ -92,22 +92,24 @@ const columns: ColumnDef<ChampionPlayer, any>[] = [
             isNumeric: true,
         },
     }),
-]
+];
 
 export const ChampionScreen = React.memo(function ChampionScreen() {
-    const navigate = useNavigate()
-    const championId = useLoaderData() as string
+    const navigate = useNavigate();
+    const championId = useLoaderData() as string;
     const champion = useSelector((state: AppState) =>
         statsSelector.getChampion(state, championId ?? '')
-    )
-    const allPlayers = useSelector(statsSelector.getPlayersCollection)
-    const dataDragonChampionIdMap = useSelector(gameInfoSelector.getChampionMap)
-    const dataDragonChampionId = dataDragonChampionIdMap[championId]
+    );
+    const allPlayers = useSelector(statsSelector.getPlayersCollection);
+    const dataDragonChampionIdMap = useSelector(
+        gameInfoSelector.getChampionMap
+    );
+    const dataDragonChampionId = dataDragonChampionIdMap[championId];
 
     const championPlayerData: Player[] = processChampionPlayers(
         champion,
         allPlayers
-    )
+    );
 
     if (champion === undefined) {
         return (
@@ -122,15 +124,15 @@ export const ChampionScreen = React.memo(function ChampionScreen() {
             >
                 <h1 style={{ color: 'white' }}>Champion not found</h1>
             </div>
-        )
+        );
     }
 
     const statsCardChampion = {
         ...champion,
         imageUri: getChampionImage(dataDragonChampionId),
-    }
+    };
 
-    console.log(statsCardChampion.imageUri)
+    console.log(statsCardChampion.imageUri);
 
     return (
         <div
@@ -153,12 +155,12 @@ export const ChampionScreen = React.memo(function ChampionScreen() {
                             onClick: () => {
                                 navigate(
                                     '/playerOverview/' + row.getValue('name')
-                                )
+                                );
                             },
-                        }
+                        };
                     }}
                 />
             </div>
         </div>
-    )
-})
+    );
+});

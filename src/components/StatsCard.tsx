@@ -1,15 +1,15 @@
-import React from 'react'
+import React from 'react';
 
 export const StatsCard = React.memo(function StatsCard({
     stats,
 }: {
     stats: {
-        name?: string
-        wins?: number
-        losses?: number
-        extraStats?: string[]
-        imageUri?: string
-    }
+        name?: string;
+        wins?: number;
+        losses?: number;
+        extraStats?: string[];
+        imageUri?: string;
+    };
 }) {
     // there can be no missing fields here
     if (
@@ -17,11 +17,11 @@ export const StatsCard = React.memo(function StatsCard({
         stats.wins === undefined ||
         stats.losses === undefined
     ) {
-        return null
+        return null;
     }
 
-    const totalGames = stats.wins + stats.losses
-    const winPercentage = Math.round((stats.wins / totalGames) * 100)
+    const totalGames = stats.wins + stats.losses;
+    const winPercentage = Math.round((stats.wins / totalGames) * 100);
 
     return (
         <div
@@ -52,5 +52,5 @@ export const StatsCard = React.memo(function StatsCard({
                     : null}
             </div>
         </div>
-    )
-})
+    );
+});

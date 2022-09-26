@@ -1,5 +1,5 @@
-import { createReducer } from '@reduxjs/toolkit'
-import { GameInfoAction } from './gameInfoActions'
+import { createReducer } from '@reduxjs/toolkit';
+import { GameInfoAction } from './gameInfoActions';
 
 /**
  * State containing game information about league of legends and its champions
@@ -7,20 +7,20 @@ import { GameInfoAction } from './gameInfoActions'
 export type GameInfoState = Readonly<{
     champions:
         | {
-              [id: string]: string
+              [id: string]: string;
           }
-        | undefined
-}>
+        | undefined;
+}>;
 
 const initialState: GameInfoState = {
     champions: undefined,
-}
+};
 
 export const gameInfoReducer = createReducer(initialState, (builder) => {
     builder.addCase(
         GameInfoAction.hydrateChampionsComplete,
         (state, action) => {
-            state.champions = action.payload
+            state.champions = action.payload;
         }
-    )
-})
+    );
+});
