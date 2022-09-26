@@ -47,8 +47,7 @@
         "prepare": "husky install"
     },
     "lint-staged": {
-        "*.+(js|jsx|tsx)": "eslint --fix",
-        "*.+(json|css|md|tsx)": "prettier --write"
+        "*.+(js|jsx|tsx)": "eslint --fix"
     },
     "eslintConfig": {
         "extends": [
@@ -77,6 +76,6 @@
         "http-proxy-middleware": "^2.0.6",
         "husky": "^8.0.0",
         "lint-staged": "^13.0.3",
-        "prettier": "^2.7.1"
+        "prettier": "2.7.1"
     }
 }
