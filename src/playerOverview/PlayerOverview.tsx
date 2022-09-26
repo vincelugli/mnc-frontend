@@ -4,6 +4,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { SortableTable } from '../components/SortableTable';
+import { usePlayers } from '../hooks/selectorWrapperHooks';
 import { statsSelector } from '../redux/stats/statsSelectors';
 import { Player } from '../types/domain/Player';
 import './PlayerOverview.css';
@@ -91,7 +92,7 @@ const columns: ColumnDef<PlayerTableData, any>[] = [
 
 export const PlayerOverview = React.memo(function PlayerOverview() {
     const navigate = useNavigate();
-    const data = useSelector(statsSelector.getPlayersCollection);
+    const data = usePlayers();
     const processedData = processPlayers(data);
 
     return (

@@ -1,10 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import { Player } from '../types/domain/Player';
-import { fetchPlayers } from '../services/toxicData/toxicDataService';
-import { MmrData } from '../types/service/toxicData/MmrData';
 import './Matchmaker.css';
+import { usePlayers } from '../hooks/selectorWrapperHooks';
+
+function getPlayerMmrText(player: Player): string {
+    console.log(player);
+    const totalGames = (player.wins ?? 0) + (player.losses ?? 0);
+    return totalGames >= 10 ? `(${player.mmr?.toString()})` : ``;
+}
 
 export const Matchmaker = () => {
     const [customPlayers, setCustomPlayers] = useState<Player[]>([]);
@@ -15,22 +19,7 @@ export const Matchmaker = () => {
     const [blueTeam, setBlueTeam] = useState<readonly Player[]>([]);
     const [redTeam, setRedTeam] = useState<readonly Player[]>([]);
 
-    const { isLoading, error, data } = useQuery<MmrData, Error, Player[]>(
-        ['simpleMmr'],
-        fetchPlayers,
-        {
-            select: (data) => {
-                const players = Object.entries(data).map(
-                    (kvPair) =>
-                        ({
-                            name: kvPair[0],
-                            mmr: kvPair[1],
-                        } as Player)
-                );
-                return players;
-            },
-        }
-    );
+    const players = usePlayers() ?? [];
 
     const handleInputChange = (value: string) => {
         setInputValue(value);
@@ -94,18 +83,14 @@ export const Matchmaker = () => {
         }
     };
 
-    if (isLoading) return <div>Loading...</div>;
-
-    if (error) return <div>Error fetching data from api</div>;
-
     return (
         <div
-        // style={{
-        //   display: "flex",
-        //   flexDirection: "column",
-        //   justifyContent: "center",
-        //   alignItems: "center",
-        // }}
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
         >
             <h1>Matchmaker</h1>
             <div>
@@ -117,7 +102,7 @@ export const Matchmaker = () => {
                         <CreatableSelect
                             isMulti
                             isClearable
-                            options={data.concat(customPlayers)}
+                            options={players.concat(customPlayers)}
                             isOptionDisabled={() =>
                                 selectedPlayers.length >= 10
                             }
@@ -150,7 +135,9 @@ export const Matchmaker = () => {
                             return (
                                 <li>
                                     <>
-                                        {player.name}{ (player.wins ?? 0) + (player.losses ?? 0) >= 10 ? `(${player.mmr})` : ""}
+                                        {`${player.name} ${getPlayerMmrText(
+                                            player
+                                        )}`}
                                     </>
                                 </li>
                             );
@@ -161,9 +148,9 @@ export const Matchmaker = () => {
                         {redTeam.map((player) => {
                             return (
                                 <li>
-                                    <>
-                                        {player.name}{ (player.wins ?? 0) + (player.losses ?? 0) >= 10 ? `(${player.mmr})` : ""}
-                                    </>
+                                    {`${player.name} ${getPlayerMmrText(
+                                        player
+                                    )}`}
                                 </li>
                             );
                         })}
