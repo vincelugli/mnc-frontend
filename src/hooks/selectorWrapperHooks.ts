@@ -7,7 +7,9 @@ export function usePlayers() {
     const playersCollection = useSelector(statsSelector.getPlayersCollection);
     // if the players collection is undefined, that means the service call has not happened yet
     if (playersCollection === undefined) {
-        useServiceCalls();
+        // TODO: We should probably be using redux saga at this point to dispatch an action that 
+        // fires off the respective service calls because we can't call hooks conditionally
+        // useServiceCalls();
     }
     return playersCollection;
 }
@@ -17,7 +19,9 @@ export function usePlayer(playerId: string) {
     const playersCollection = useSelector(statsSelector.getPlayersCollection);
     // if the players collection is undefined, that means the service call has not happened yet
     if (playersCollection === undefined) {
-        useServiceCalls();
+        // TODO: We should probably be using redux saga at this point to dispatch an action that 
+        // fires off the respective service calls because we can't call hooks conditionally
+        // useServiceCalls();
     }
     return player;
 }
@@ -26,7 +30,9 @@ export function useChampions() {
     const championsCollection = useSelector(statsSelector.getChampionsCollection);
     // if the champions collection is undefined, that means the service call has not happened yet
     if (championsCollection === undefined) {
-        useServiceCalls();
+        // TODO: We should probably be using redux saga at this point to dispatch an action that 
+        // fires off the respective service calls because we can't call hooks conditionally
+        // useServiceCalls();
     }
     return championsCollection;
 }
@@ -37,7 +43,9 @@ export function useChampion(championId: string) {
     const championsCollection = useSelector(statsSelector.getChampionsCollection);
     // if the champions collection is undefined, that means the service call has not happened yet
     if (championsCollection === undefined) {
-        useServiceCalls();
+        // TODO: We should probably be using redux saga at this point to dispatch an action that 
+        // fires off the respective service calls because we can't call hooks conditionally
+        // useServiceCalls();
     }
     return champion;
 }

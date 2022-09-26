@@ -7,7 +7,9 @@ import { usePlayers } from '../hooks/selectorWrapperHooks';
 function getPlayerMmrText(player: Player): string {
     console.log(player);
     const totalGames = (player.wins ?? 0) + (player.losses ?? 0);
-    return totalGames >= 10 ? `(${player.mmr?.toString()})` : ``;
+    return totalGames >= 10
+        ? `(${Math.round(player.mmr ?? 0).toString()})`
+        : ``;
 }
 
 export const Matchmaker = () => {
@@ -69,7 +71,7 @@ export const Matchmaker = () => {
     };
 
     const getTeamMmr = (players: readonly Player[]) => {
-        return (
+        return Math.round(
             players.reduce((total, player) => {
                 return total + (player.mmr ?? 0);
             }, 0) / 5
@@ -94,8 +96,22 @@ export const Matchmaker = () => {
         >
             <h1>Matchmaker</h1>
             <div>
-                <div>
-                    <div>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <div
+                        style={{
+                            width: 500,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            marginBottom: 8,
+                        }}
+                    >
                         <span>
                             Players selected: {selectedPlayers.length}/10
                         </span>
@@ -120,15 +136,29 @@ export const Matchmaker = () => {
                             placeholder='Add players...'
                         />
                     </div>
-                    <div id='players_to_match'></div>
                     <button
+                        style={{
+                            flex: 1,
+                            padding: 4,
+                            borderWidth: 1,
+                            borderColor: 'black',
+                            borderRadius: 4,
+                            marginBottom: 16,
+                        }}
                         onClick={addMatch}
                         disabled={selectedPlayers.length !== 10}
                     >
                         Matchmake!
                     </button>
                 </div>
-                <div className='debug'>
+                <div
+                    style={{
+                        flexDirection: 'row',
+                        display: 'flex',
+                        flex: 1,
+                        justifyContent: 'space-between',
+                    }}
+                >
                     <ul>
                         Blue Team: {getTeamMmr(blueTeam)}
                         {blueTeam.map((player) => {
