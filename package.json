@@ -42,12 +42,12 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "lint": "eslint . --ext .ts -c eslint.config.json",
+        "lint": "eslint --ext .ts -c eslint.config.json --fix",
         "format": "prettier --config .prettierrc.yaml \"src/**/*.{js,jsx,ts,tsx,css,md,json}\" --write",
         "prepare": "husky install"
     },
     "lint-staged": {
-        "*.+(js|jsx|tsx)": "eslint --fix"
+        "*.+(js|jsx|tsx)": "eslint --ext .ts -c eslint.config.json --fix"
     },
     "eslintConfig": {
         "extends": [
