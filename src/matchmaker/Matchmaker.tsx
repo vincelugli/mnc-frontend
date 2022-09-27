@@ -5,7 +5,6 @@ import './Matchmaker.css';
 import { usePlayers } from '../hooks/selectorWrapperHooks';
 
 function getPlayerMmrText(player: Player): string {
-    console.log(player);
     const totalGames = (player.wins ?? 0) + (player.losses ?? 0);
     return totalGames >= 10
         ? `(${Math.round(player.mmr ?? 0).toString()})`
