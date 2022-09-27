@@ -1,4 +1,5 @@
 import React from 'react';
+import { getMmrColor } from '../utils/mmrColorHelpers';
 
 export const StatsCard = React.memo(function StatsCard({
     stats,
@@ -7,7 +8,7 @@ export const StatsCard = React.memo(function StatsCard({
         name?: string;
         wins?: number;
         losses?: number;
-        extraStats?: string[];
+        extraStats?: { [id: string]: string };
         imageUri?: string;
     };
 }) {
@@ -26,29 +27,55 @@ export const StatsCard = React.memo(function StatsCard({
     return (
         <div
             style={{
+                flex: 1,
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
             }}
         >
-            <div style={{ flex: 1, display: 'flex', marginRight: 16 }}>
-                <img src={stats.imageUri} />
-            </div>
+            {stats.imageUri !== undefined ? (
+                <div style={{ flex: 1, display: 'flex', marginRight: 16 }}>
+                    <img src={stats.imageUri} />
+                </div>
+            ) : null}
             <div
                 style={{
                     flex: 1,
                     display: 'flex',
                     flexDirection: 'column',
-                    minWidth: 500,
                 }}
             >
-                <h1>{stats.name}</h1>
+                <h1
+                    style={{
+                        fontSize: 32,
+                        fontWeight: 'bold',
+                        fontStyle: 'italic',
+                    }}
+                >
+                    {stats.name.toUpperCase()}
+                </h1>
                 <h1>{'Wins: ' + stats.wins}</h1>
                 <h1>{'Losses: ' + stats.losses}</h1>
                 <h1>{'Win Percentage: ' + winPercentage + '%'}</h1>
                 <h1>{'Total Games: ' + totalGames}</h1>
-                {stats.extraStats
-                    ? stats.extraStats.map((stat: string) => <h1>{stat}</h1>)
+                {stats.extraStats !== undefined
+                    ? Array.from(Object.entries(stats.extraStats)).map((kv) => (
+                          <div
+                              style={{ display: 'flex', flexDirection: 'row' }}
+                          >
+                              <h1>{`${kv[0]}: `}</h1>
+                              <h1
+                                  style={{
+                                      color:
+                                          kv[0] === 'mmr'
+                                              ? getMmrColor(
+                                                    Number.parseInt(kv[1]) ?? 0
+                                                )
+                                              : undefined,
+                                  }}
+                              >{`${kv[1]}`}</h1>
+                          </div>
+                      ))
                     : null}
             </div>
         </div>

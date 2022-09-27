@@ -129,8 +129,6 @@ export const ChampionScreen = React.memo(function ChampionScreen() {
         imageUri: getChampionImage(dataDragonChampionId),
     };
 
-    console.log(statsCardChampion.imageUri);
-
     return (
         <div
             style={{

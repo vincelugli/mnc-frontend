@@ -18,10 +18,15 @@ export enum ChampionClass {
 
 /**
  * Given a collection of champions, will return a map of champion classes and the respective
- * win rates for those classes
+ * win rates for those classes. The champion classes will be ordered in the same order as the enum
  */
 export function championClassWinRates(champions: Champion[]) {
     const classWinRate: { [id: string]: { wins: number; losses: number } } = {};
+
+    // initialize all win rates to 0
+    for (const championClass of Object.keys(ChampionClass)) {
+        classWinRate[championClass] =  {wins: 0, losses: 0};
+    }
 
     for (const champion of champions) {
         const championClasses = ChampionClassMap[champion.name];
