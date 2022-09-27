@@ -6,8 +6,6 @@ import { SortableTable } from '../components/SortableTable';
 import { StatsCard } from '../components/StatsCard';
 import { usePlayer } from '../hooks/selectorWrapperHooks';
 import { gameInfoSelector } from '../redux/gameInfo/gameInfoSelectors';
-import { AppState } from '../redux/rootReducer';
-import { statsSelector } from '../redux/stats/statsSelectors';
 import { Champion } from '../types/domain/Champion';
 import { Player } from '../types/domain/Player';
 import { getChampionImage } from '../utils/championImageHelpers';
@@ -190,7 +188,9 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
 
     const statsCardPlayer: Player & { extraStats: { [id: string]: string } } = {
         ...player,
-        extraStats: player.mmr ? { mmr: player.mmr.toString() } : {},
+        extraStats: player.mmr
+            ? { mmr: Math.round(player.mmr).toString() }
+            : {},
     };
 
     return (

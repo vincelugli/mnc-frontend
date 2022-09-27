@@ -126,6 +126,7 @@ export const PlayerOverview = React.memo(function PlayerOverview() {
                         if (cell.column.id === 'mmr') {
                             return {
                                 style: {
+                                    backgroundColor: 'rgb(0,0,0,0.8)',
                                     color: getMmrColor(cell.getValue()),
                                     fontWeight: 'bold',
                                 },
