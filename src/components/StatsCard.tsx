@@ -1,3 +1,4 @@
+import { registerables } from 'chart.js';
 import React from 'react';
 import { getMmrColor } from '../utils/mmrColorHelpers';
 
@@ -66,6 +67,8 @@ export const StatsCard = React.memo(function StatsCard({
                               <h1>{`${kv[0]}: `}</h1>
                               <h1
                                   style={{
+                                      backgroundColor:
+                                          kv[0] === 'mmr' ? 'black' : undefined,
                                       color:
                                           kv[0] === 'mmr'
                                               ? getMmrColor(
