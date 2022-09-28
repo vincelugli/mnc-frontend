@@ -163,7 +163,7 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
                 },
             ],
         });
-    }, []);
+    }, [playerClasses]);
 
     if (player === undefined) {
         return (

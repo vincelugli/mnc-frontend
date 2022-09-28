@@ -1,51 +1,128 @@
-import { useSelector } from "react-redux";
-import { AppState } from "../redux/rootReducer";
-import { statsSelector } from "../redux/stats/statsSelectors";
-import { useServiceCalls } from "./useServiceCalls";
+import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { GameInfoAction } from '../redux/gameInfo/gameInfoActions';
+import { AppState } from '../redux/rootReducer';
+import { StatsAction } from '../redux/stats/statsActions';
+import { statsSelector } from '../redux/stats/statsSelectors';
+import { fetchChampions } from '../services/dataDragon/dataDragonService';
+import { mapChampions } from '../services/dataDragon/dataMapper';
+import { mapStats } from '../services/toxicData/dataMapper';
+import { fetchMMR, fetchStats } from '../services/toxicData/toxicDataService';
+import { Champion } from '../types/domain/Champion';
+import { Player } from '../types/domain/Player';
+import { Champions } from '../types/service/dataDragon/DataDragonChampions';
+import { MmrData } from '../types/service/toxicData/MmrData';
+import { StatsData } from '../types/service/toxicData/StatsData';
+
+function useDataDragonServiceCalls() {
+    const dispatch = useDispatch();
+
+    const dataDragonResponse = useQuery<
+        Champions,
+        Error,
+        { [key: string]: string }
+    >(['dataDragonChampions'], fetchChampions, {
+        select: (data) => {
+            return mapChampions(data);
+        },
+    });
+
+    useEffect(() => {
+        if (
+            !dataDragonResponse.isLoading &&
+            dataDragonResponse.data !== undefined
+        ) {
+            dispatch(
+                GameInfoAction.hydrateChampionsComplete(dataDragonResponse.data)
+            );
+        }
+    }, [dataDragonResponse.isLoading, dataDragonResponse.data]);
+}
+
+function useToxicDataServiceCalls() {
+    const dispatch = useDispatch();
+
+    const statsResponse = useQuery<
+        StatsData,
+        Error,
+        { players: Player[]; champions: { [id: string]: Champion } }
+    >(['stats'], fetchStats, {
+        select: (data) => {
+            return mapStats(data);
+        },
+    });
+
+    const mmrResponse = useQuery<MmrData, Error, Player[]>(
+        ['simpleMmr'],
+        fetchMMR,
+        {
+            select: (data) => {
+                const players = Object.entries(data).map(
+                    (kvPair) =>
+                        ({
+                            name: kvPair[0],
+                            mmr: kvPair[1],
+                        } as Player)
+                );
+                return players;
+            },
+        }
+    );
+
+    useEffect(() => {
+        if (!statsResponse.isLoading && statsResponse.data !== undefined) {
+            dispatch(
+                StatsAction.hydratePlayerStatsActionComplete(
+                    statsResponse.data.players
+                )
+            );
+            dispatch(
+                StatsAction.hydrateChampionStatsActionComplete(
+                    statsResponse.data.champions
+                )
+            );
+        }
+    }, [statsResponse.isLoading, statsResponse.data]);
+
+    useEffect(() => {
+        if (!mmrResponse.isLoading && mmrResponse.data !== undefined) {
+            dispatch(StatsAction.hydratePlayerMmrComplete(mmrResponse.data));
+        }
+    }, [mmrResponse.isLoading, mmrResponse.data]);
+}
 
 export function usePlayers() {
+    useToxicDataServiceCalls();
+    useDataDragonServiceCalls();
     const playersCollection = useSelector(statsSelector.getPlayersCollection);
-    // if the players collection is undefined, that means the service call has not happened yet
-    if (playersCollection === undefined) {
-        // TODO: We should probably be using redux saga at this point to dispatch an action that 
-        // fires off the respective service calls because we can't call hooks conditionally
-        // useServiceCalls();
-    }
+
     return playersCollection;
 }
 
 export function usePlayer(playerId: string) {
-    const player = useSelector((state: AppState) => statsSelector.getPlayer(state, playerId));
-    const playersCollection = useSelector(statsSelector.getPlayersCollection);
-    // if the players collection is undefined, that means the service call has not happened yet
-    if (playersCollection === undefined) {
-        // TODO: We should probably be using redux saga at this point to dispatch an action that 
-        // fires off the respective service calls because we can't call hooks conditionally
-        // useServiceCalls();
-    }
+    useToxicDataServiceCalls();
+    useDataDragonServiceCalls();
+    const player = useSelector((state: AppState) =>
+        statsSelector.getPlayer(state, playerId)
+    );
     return player;
 }
 
-export function useChampions() {    
-    const championsCollection = useSelector(statsSelector.getChampionsCollection);
-    // if the champions collection is undefined, that means the service call has not happened yet
-    if (championsCollection === undefined) {
-        // TODO: We should probably be using redux saga at this point to dispatch an action that 
-        // fires off the respective service calls because we can't call hooks conditionally
-        // useServiceCalls();
-    }
+export function useChampions() {
+    useToxicDataServiceCalls();
+    useDataDragonServiceCalls();
+    const championsCollection = useSelector(
+        statsSelector.getChampionsCollection
+    );
     return championsCollection;
 }
 
 export function useChampion(championId: string) {
-    const champion = useSelector((state: AppState) => statsSelector.getChampion(state, championId));
-    
-    const championsCollection = useSelector(statsSelector.getChampionsCollection);
-    // if the champions collection is undefined, that means the service call has not happened yet
-    if (championsCollection === undefined) {
-        // TODO: We should probably be using redux saga at this point to dispatch an action that 
-        // fires off the respective service calls because we can't call hooks conditionally
-        // useServiceCalls();
-    }
+    useToxicDataServiceCalls();
+    useDataDragonServiceCalls();
+    const champion = useSelector((state: AppState) =>
+        statsSelector.getChampion(state, championId)
+    );
     return champion;
 }
