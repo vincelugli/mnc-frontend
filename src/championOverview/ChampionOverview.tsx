@@ -97,6 +97,7 @@ export const ChampionOverview = React.memo(function ChampionOverview() {
                         return {
                             onClick: () => {
                                 navigate(row.getValue('name'));
+                                window.scrollTo(0, 0);
                             },
                         };
                     }}

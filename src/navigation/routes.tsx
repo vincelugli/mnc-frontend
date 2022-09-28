@@ -13,12 +13,13 @@ import {
     loader as championLoader,
     ChampionScreen,
 } from '../championOverview/ChampionScreen';
+import { Error } from '../components/Error';
 
 export const router = createBrowserRouter([
     {
         path: '/',
         element: <Root />,
-        errorElement: <div>Hello world!</div>,
+        errorElement: <Error error={'Whoops! Made a wrong turn!'} />,
         children: [
             {
                 path: '/',

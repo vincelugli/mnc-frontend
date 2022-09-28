@@ -4,6 +4,7 @@ import { getMmrColor } from '../utils/mmrColorHelpers';
 
 export const StatsCard = React.memo(function StatsCard({
     stats,
+    hideName,
 }: {
     stats: {
         name?: string;
@@ -12,6 +13,7 @@ export const StatsCard = React.memo(function StatsCard({
         extraStats?: { [id: string]: string };
         imageUri?: string;
     };
+    hideName?: boolean;
 }) {
     // there can be no missing fields here
     if (
@@ -49,15 +51,17 @@ export const StatsCard = React.memo(function StatsCard({
                     flexDirection: 'column',
                 }}
             >
-                <h1
-                    style={{
-                        fontSize: 32,
-                        fontWeight: 'bold',
-                        fontStyle: 'italic',
-                    }}
-                >
-                    {stats.name.toUpperCase()}
-                </h1>
+                {hideName === true ? null : (
+                    <h1
+                        style={{
+                            fontSize: 32,
+                            fontWeight: 'bold',
+                            fontStyle: 'italic',
+                        }}
+                    >
+                        {stats.name.toUpperCase()}
+                    </h1>
+                )}
                 <h1>{'Wins: ' + stats.wins}</h1>
                 <h1>{'Losses: ' + stats.losses}</h1>
                 <h1>{'Win Percentage: ' + winPercentage + '%'}</h1>
