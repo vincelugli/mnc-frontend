@@ -2,6 +2,7 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLoaderData, useNavigate } from 'react-router-dom';
+import { Error } from '../components/Error';
 import { SortableTable } from '../components/SortableTable';
 import { StatsCard } from '../components/StatsCard';
 import { usePlayer } from '../hooks/selectorWrapperHooks';
@@ -22,6 +23,8 @@ import {
     Legend,
     ChartData,
 } from 'chart.js';
+import { getMmrColor } from '../utils/mmrColorHelpers';
+import { SummonerCollage } from '../components/SummonerCollage';
 
 ChartJS.register(
     RadialLinearScale,
@@ -39,6 +42,8 @@ export async function loader(data: { params: any }) {
 type PlayerScreenChampion = {
     imageUrl: string;
 } & Champion;
+
+const MAX_CONTENT_WIDTH = 1024;
 
 /**
  * Given a player, create an array of champions that player has played with image url populated
@@ -166,19 +171,7 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
     }, [playerClasses]);
 
     if (player === undefined) {
-        return (
-            <div
-                style={{
-                    display: 'flex',
-                    minHeight: '100vh',
-                    backgroundColor: '#282c34',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                <h1 style={{ color: 'white' }}>Player not found</h1>
-            </div>
-        );
+        return <Error error={'Player not found!'} />;
     }
 
     const playerChampionData: Champion[] = processPlayerChampions(
@@ -202,22 +195,85 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
                 alignItems: 'center',
             }}
         >
-            <div
-                style={{
-                    flex: 1,
-                    marginBottom: 32,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                <div style={{ flex: 1, marginRight: 32 }}>
-                    <Radar data={chartData as any} />
-                </div>
-                <StatsCard stats={statsCardPlayer} />
-            </div>
             <div style={{ maxWidth: 1024 }}>
+                <div
+                    style={{
+                        flex: 1,
+                        marginBottom: 32,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                        maxWidth: 1024,
+                    }}
+                >
+                    <h1
+                        style={{
+                            fontSize: 32,
+                            fontWeight: 'bold',
+                            fontStyle: 'italic',
+                        }}
+                    >
+                        {player.name.toUpperCase()}
+                    </h1>
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignSelf: 'stretch',
+                            flex: 1,
+                        }}
+                    >
+                        <div
+                            style={{
+                                flex: 1,
+                                marginRight: 32,
+                                display: 'flex',
+                                flexDirection: 'row',
+                            }}
+                        >
+                            <div style={{ flex: 1, marginRight: 16 }}>
+                                <SummonerCollage player={player} />
+                            </div>
+                            <div style={{ flex: 1 }}>
+                                <StatsCard stats={player} hideName={true} />
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                flex: 1,
+                                marginRight: 32,
+                                alignItems: 'center',
+                                //alignSelf: "stretch"
+                            }}
+                        >
+                            <h1
+                                style={
+                                    player.mmr
+                                        ? {
+                                              fontSize: 60,
+                                              fontWeight: 'bold',
+                                              color: getMmrColor(player.mmr),
+                                              textShadow: '2px 2px 7px black',
+                                          }
+                                        : {
+                                              fontSize: 30,
+                                          }
+                                }
+                            >
+                                {player.mmr
+                                    ? Math.round(player.mmr)
+                                    : 'Not Placed'}
+                            </h1>
+                            <h1>{'MMR'}</h1>
+                        </div>
+                        <div style={{ flex: 1 }}>
+                            <Radar data={chartData as any} />
+                        </div>
+                    </div>
+                </div>
                 <SortableTable
                     columns={columns}
                     data={playerChampionData}

@@ -2,8 +2,10 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useLoaderData, useNavigate } from 'react-router-dom';
+import { Error } from '../components/Error';
 import { SortableTable } from '../components/SortableTable';
 import { StatsCard } from '../components/StatsCard';
+import { ChampionClassMap } from '../data/championClasses';
 import { useChampion, usePlayers } from '../hooks/selectorWrapperHooks';
 import { gameInfoSelector } from '../redux/gameInfo/gameInfoSelectors';
 import { Champion } from '../types/domain/Champion';
@@ -101,7 +103,9 @@ export const ChampionScreen = React.memo(function ChampionScreen() {
     const dataDragonChampionIdMap = useSelector(
         gameInfoSelector.getChampionMap
     );
+
     const dataDragonChampionId = dataDragonChampionIdMap[championId];
+    const championClass = champion ? ChampionClassMap[champion.name] : [];
 
     const championPlayerData: Player[] = processChampionPlayers(
         champion,
@@ -109,24 +113,17 @@ export const ChampionScreen = React.memo(function ChampionScreen() {
     );
 
     if (champion === undefined) {
-        return (
-            <div
-                style={{
-                    display: 'flex',
-                    minHeight: '100vh',
-                    backgroundColor: '#282c34',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                <h1 style={{ color: 'white' }}>Champion not found</h1>
-            </div>
-        );
+        return <Error error={'Champion not found!'} />;
     }
 
     const statsCardChampion = {
         ...champion,
         imageUri: getChampionImage(dataDragonChampionId),
+        extraStats: {
+            Class: championClass.reduce((prevValue, currentValue) => {
+                return (prevValue !== '' ? prevValue + ',' : '') + currentValue;
+            }, ''),
+        },
     };
 
     return (

@@ -40,7 +40,7 @@ const processPlayers = (players: Player[] | undefined): PlayerTableData[] => {
                   losses,
                   winPercentage: Math.round((wins / totalGames) * 100) + '%',
                   totalGames: totalGames,
-                  mmr: Math.round(player.mmr ?? 1500),
+                  mmr: totalGames >= 10 ? Math.round(player.mmr ?? 1500) : 0,
               };
           })
         : [];
@@ -119,6 +119,7 @@ export const PlayerOverview = React.memo(function PlayerOverview() {
                         return {
                             onClick: () => {
                                 navigate(row.getValue('name'));
+                                window.scrollTo(0, 0);
                             },
                         };
                     }}
@@ -126,7 +127,9 @@ export const PlayerOverview = React.memo(function PlayerOverview() {
                         if (cell.column.id === 'mmr') {
                             return {
                                 style: {
-                                    backgroundColor: 'rgb(0,0,0,0.8)',
+                                    textShadow: cell.getValue()
+                                        ? '1px 1px 3px black'
+                                        : undefined,
                                     color: getMmrColor(cell.getValue()),
                                     fontWeight: 'bold',
                                 },
