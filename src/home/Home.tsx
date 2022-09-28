@@ -1,14 +1,9 @@
-import { useDispatch } from 'react-redux';
-import { useServiceCalls } from '../hooks/useServiceCalls';
 import { TOP_NAV_BAR_HEIGHT } from '../navigation/Root';
-import { StatsAction } from '../redux/stats/statsActions';
 
 const backgroundVideo =
     'https://screensavers.riotgames.com/v2/latest/content/original/AnimatedArt/animated-freljord.webm';
 
 export default function Home() {
-    useServiceCalls();
-
     return (
         <div
             style={{

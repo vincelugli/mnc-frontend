@@ -36,7 +36,10 @@ export const StatsCard = React.memo(function StatsCard({
         >
             {stats.imageUri !== undefined ? (
                 <div style={{ flex: 1, display: 'flex', marginRight: 16 }}>
-                    <img src={stats.imageUri} />
+                    <img
+                        src={stats.imageUri}
+                        style={{ objectFit: 'contain' }}
+                    />
                 </div>
             ) : null}
             <div
