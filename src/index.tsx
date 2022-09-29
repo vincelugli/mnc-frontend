@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './redux/configure-store';
 import { ChakraProvider } from '@chakra-ui/react';
+import { amethystTheme } from './themes/amethyst/index';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -14,7 +15,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <React.StrictMode>
-        <ChakraProvider>
+        <ChakraProvider theme={amethystTheme}>
             <Provider store={store}>
                 <App />
             </Provider>
