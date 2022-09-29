@@ -76,8 +76,7 @@ export default function Home() {
                             marginLeft: 64,
                         }}
                     >
-                        {' '}
-                        Welcome to Monday Night Customs Hub{' '}
+                        Welcome to Monday Night Customs Hub
                     </h1>
                 </div>
             </div>
