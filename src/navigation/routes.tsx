@@ -50,10 +50,14 @@ export const router = createBrowserRouter([
                 element: <ChampionScreen />,
             },
             {
+                path: '/beholder/:videoId',
+                loader: casterLoader,
+                element: <CasterScreen />,
+            },
+            {
                 path: '/hydra',
                 element: <Slideshow />,
             },
-            {},
         ],
     },
 ]);
