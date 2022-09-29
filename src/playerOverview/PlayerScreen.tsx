@@ -232,7 +232,13 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
                                 flexDirection: 'row',
                             }}
                         >
-                            <div style={{ flex: 1, marginRight: 16 }}>
+                            <div
+                                style={{
+                                    minWidth: 128,
+                                    marginRight: 16,
+                                    overflow: 'hidden',
+                                }}
+                            >
                                 <SummonerCollage player={player} />
                             </div>
                             <div style={{ flex: 1 }}>
@@ -243,7 +249,7 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
                             style={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                flex: 1,
+                                flex: 0,
                                 marginRight: 32,
                                 alignItems: 'center',
                                 //alignSelf: "stretch"
