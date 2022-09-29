@@ -14,6 +14,7 @@ import {
     ChampionScreen,
 } from '../championOverview/ChampionScreen';
 import { Error } from '../components/Error';
+import { loader as casterLoader, CasterScreen } from '../admin/CasterScreen';
 
 export const router = createBrowserRouter([
     {
@@ -46,6 +47,11 @@ export const router = createBrowserRouter([
                 path: '/championOverview/:championId',
                 loader: championLoader,
                 element: <ChampionScreen />,
+            },
+            {
+                path: '/beholder/:videoId',
+                loader: casterLoader,
+                element: <CasterScreen />,
             },
         ],
     },
