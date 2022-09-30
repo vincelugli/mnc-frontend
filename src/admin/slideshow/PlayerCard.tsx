@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getMmrColor } from '../../utils/mmrColorHelpers';
 
 import CSS from 'csstype';
@@ -60,8 +60,10 @@ export const PlayerCard = (props: { player: Player }) => {
     const wins = Math.round(props.player.wins ?? 0);
     const losses = Math.round(props.player.losses ?? 0);
 
-    const playerClasses = championClassWinRates(
-        Object.values(props.player.champions ?? {})
+    const playerClasses = useMemo(
+        () =>
+            championClassWinRates(Object.values(props.player.champions ?? {})),
+        [props.player]
     );
 
     const chartLabels = Object.keys(ChampionClass).map((value) => {
