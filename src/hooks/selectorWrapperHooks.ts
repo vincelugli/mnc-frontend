@@ -8,7 +8,10 @@ import { statsSelector } from '../redux/stats/statsSelectors';
 import { fetchChampions } from '../services/dataDragon/dataDragonService';
 import { mapChampions } from '../services/dataDragon/dataMapper';
 import { mapStats } from '../services/toxicData/dataMapper';
-import { fetchMMR, fetchStats } from '../services/toxicData/toxicDataService';
+import {
+    fetchPlayers,
+    fetchStats,
+} from '../services/toxicData/toxicDataService';
 import { Champion } from '../types/domain/Champion';
 import { Player } from '../types/domain/Player';
 import { Champions } from '../types/service/dataDragon/DataDragonChampions';
@@ -55,10 +58,10 @@ function useToxicDataServiceCalls() {
 
     const mmrResponse = useQuery<MmrData, Error, Player[]>(
         ['simpleMmr'],
-        fetchMMR,
+        fetchPlayers,
         {
             select: (data) => {
-                const players = Object.entries(data).map(
+                const players = Object.entries(data.mmr).map(
                     (kvPair) =>
                         ({
                             name: kvPair[0],
