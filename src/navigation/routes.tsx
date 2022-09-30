@@ -15,6 +15,7 @@ import {
 } from '../championOverview/ChampionScreen';
 import { Error } from '../components/Error';
 import { loader as casterLoader, CasterScreen } from '../admin/CasterScreen';
+import { Slideshow } from '../admin/Slideshow';
 
 export const router = createBrowserRouter([
     {
@@ -52,6 +53,10 @@ export const router = createBrowserRouter([
                 path: '/beholder/:videoId',
                 loader: casterLoader,
                 element: <CasterScreen />,
+            },
+            {
+                path: '/hydra',
+                element: <Slideshow />,
             },
         ],
     },

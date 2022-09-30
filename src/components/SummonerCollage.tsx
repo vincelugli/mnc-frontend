@@ -45,7 +45,7 @@ export const SummonerCollage = React.memo(function Error({
         });
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', width: '50%' }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 {sortedChampions[0] ? (
                     <img
