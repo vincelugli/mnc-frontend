@@ -3,6 +3,7 @@ import CreatableSelect from 'react-select/creatable';
 import { ToxicDataService } from '../services/toxicData/ToxicDataService';
 import { Player } from '../types/domain/Player';
 import './Matchmaker.css';
+import { Button } from '@chakra-ui/react';
 
 function getPlayerMmrText(player: Player): string {
     const totalGames = (player.wins ?? 0) + (player.losses ?? 0);
@@ -136,20 +137,12 @@ export const Matchmaker = () => {
                             placeholder='Add players...'
                         />
                     </div>
-                    <button
-                        style={{
-                            flex: 1,
-                            padding: 4,
-                            borderWidth: 1,
-                            borderColor: 'black',
-                            borderRadius: 4,
-                            marginBottom: 16,
-                        }}
+                    <Button
                         onClick={addMatch}
                         disabled={selectedPlayers.length !== 10}
                     >
                         Matchmake!
-                    </button>
+                    </Button>
                 </div>
                 <div
                     style={{
