@@ -6,11 +6,9 @@ import {
     Row,
 } from '@tanstack/react-table';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { SortableTable } from '../components/SortableTable';
 import { usePlayers } from '../hooks/selectorWrapperHooks';
-import { statsSelector } from '../redux/stats/statsSelectors';
 import { Player } from '../types/domain/Player';
 import { getMmrColor } from '../utils/mmrColorHelpers';
 import './PlayerOverview.css';

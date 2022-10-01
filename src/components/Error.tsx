@@ -1,5 +1,6 @@
 import React from 'react';
-import { TOP_NAV_BAR_HEIGHT } from '../navigation/Root';
+
+const TOP_NAV_BAR_HEIGHT = 80;
 
 export const Error = React.memo(function Error({ error }: { error: string }) {
     return (
