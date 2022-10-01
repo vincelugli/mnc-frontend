@@ -1,13 +1,12 @@
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { Error } from '../components/Error';
 import { SortableTable } from '../components/SortableTable';
 import { StatsCard } from '../components/StatsCard';
 import { ChampionClassMap } from '../data/championClasses';
-import { useChampion, usePlayers } from '../hooks/selectorWrapperHooks';
-import { gameInfoSelector } from '../redux/gameInfo/gameInfoSelectors';
+import { DataDragonService } from '../services/dataDragon/DataDragonService';
+import { ToxicDataService } from '../services/toxicData/ToxicDataService';
 import { Champion } from '../types/domain/Champion';
 import { Player } from '../types/domain/Player';
 import { getChampionImage } from '../utils/championImageHelpers';
@@ -98,18 +97,21 @@ const columns: ColumnDef<ChampionPlayer, any>[] = [
 export const ChampionScreen = React.memo(function ChampionScreen() {
     const navigate = useNavigate();
     const championId = useLoaderData() as string;
-    const champion = useChampion(championId ?? '');
-    const allPlayers = usePlayers();
-    const dataDragonChampionIdMap = useSelector(
-        gameInfoSelector.getChampionMap
-    );
+    const championResponse = ToxicDataService.useChampion(championId ?? '');
+    const champion = championResponse.data;
 
-    const dataDragonChampionId = dataDragonChampionIdMap[championId];
+    const playersResponse = ToxicDataService.usePlayers();
+    const players = playersResponse.data ?? [];
+
+    const championIdMapResponse = DataDragonService.useChampionIdMap();
+    const championIdMap = championIdMapResponse.data ?? {};
+
+    const dataDragonChampionId = championIdMap[championId];
     const championClass = champion ? ChampionClassMap[champion.name] : [];
 
     const championPlayerData: Player[] = processChampionPlayers(
         champion,
-        allPlayers
+        players
     );
 
     if (champion === undefined) {

@@ -1,11 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { Error } from '../components/Error';
 import { SortableTable } from '../components/SortableTable';
 import { StatsCard } from '../components/StatsCard';
-import { usePlayer } from '../hooks/selectorWrapperHooks';
-import { gameInfoSelector } from '../redux/gameInfo/gameInfoSelectors';
 import { Champion } from '../types/domain/Champion';
 import { Player, PlayerRecord } from '../types/domain/Player';
 import { getChampionImage } from '../utils/championImageHelpers';
@@ -38,6 +35,8 @@ import {
     opponentColumns,
     teammateColumns,
 } from './PlayerScreenColumnHelper';
+import { DataDragonService } from '../services/dataDragon/DataDragonService';
+import { ToxicDataService } from '../services/toxicData/ToxicDataService';
 
 ChartJS.register(
     RadialLinearScale,
@@ -77,14 +76,18 @@ const processPlayerChampions = (
 export const PlayerScreen = React.memo(function PlayerScreen() {
     const navigate = useNavigate();
     const playerId = useLoaderData() as string;
-    const player: Player | undefined = usePlayer(playerId ?? '');
+    const playerResponse = ToxicDataService.usePlayer(playerId ?? '');
+    const player = playerResponse.data;
 
-    const championIdMap = useSelector(gameInfoSelector.getChampionMap);
+    const championIdMapResponse = DataDragonService.useChampionIdMap();
+    const championIdMap = championIdMapResponse.data ?? {};
 
     const playerClasses = useMemo(
         () => championClassWinRates(Object.values(player?.champions ?? {})),
         [player]
     );
+
+    console.log('wow');
 
     const chartLabels = Object.keys(ChampionClass).map((value) => {
         return value.toString();

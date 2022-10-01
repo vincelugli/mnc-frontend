@@ -8,7 +8,7 @@ import {
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SortableTable } from '../components/SortableTable';
-import { usePlayers } from '../hooks/selectorWrapperHooks';
+import { ToxicDataService } from '../services/toxicData/ToxicDataService';
 import { Player } from '../types/domain/Player';
 import { getMmrColor } from '../utils/mmrColorHelpers';
 import './PlayerOverview.css';
@@ -96,7 +96,8 @@ const columns: ColumnDef<PlayerTableData, any>[] = [
 
 export const PlayerOverview = React.memo(function PlayerOverview() {
     const navigate = useNavigate();
-    const data = usePlayers();
+    const usePlayersResponse = ToxicDataService.usePlayers();
+    const data = usePlayersResponse.data;
     const processedData = processPlayers(data);
 
     return (

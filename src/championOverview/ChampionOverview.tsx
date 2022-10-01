@@ -1,10 +1,9 @@
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { SortableTable } from '../components/SortableTable';
-import { useChampions } from '../hooks/selectorWrapperHooks';
-import { gameInfoSelector } from '../redux/gameInfo/gameInfoSelectors';
+import { DataDragonService } from '../services/dataDragon/DataDragonService';
+import { ToxicDataService } from '../services/toxicData/ToxicDataService';
 import { Champion } from '../types/domain/Champion';
 import { getChampionImage } from '../utils/championImageHelpers';
 
@@ -66,18 +65,23 @@ const columns: ColumnDef<ChampionOverviewChampion, any>[] = [
 
 export const ChampionOverview = React.memo(function ChampionOverview() {
     const navigate = useNavigate();
-    const data = useChampions();
-    const championIdMap = useSelector(gameInfoSelector.getChampionMap);
-    const processedChampionArray = Array.from(Object.values(data ?? [])).map(
-        (champion) => {
-            return {
-                ...champion,
-                imageUrl: championIdMap[champion.name]
-                    ? getChampionImage(championIdMap[champion.name])
-                    : '',
-            };
-        }
-    );
+
+    const championsResponse = ToxicDataService.useChampions();
+    const champions = championsResponse.data;
+
+    const championIdMapResponse = DataDragonService.useChampionIdMap();
+    const championIdMap = championIdMapResponse.data ?? {};
+
+    const processedChampionArray = Array.from(
+        Object.values(champions ?? {})
+    ).map((champion) => {
+        return {
+            ...champion,
+            imageUrl: championIdMap[champion.name]
+                ? getChampionImage(championIdMap[champion.name])
+                : '',
+        };
+    });
 
     return (
         <div

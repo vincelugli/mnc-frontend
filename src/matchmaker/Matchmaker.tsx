@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import CreatableSelect from 'react-select/creatable';
+import { ToxicDataService } from '../services/toxicData/ToxicDataService';
 import { Player } from '../types/domain/Player';
 import './Matchmaker.css';
-import { usePlayers } from '../hooks/selectorWrapperHooks';
 
 function getPlayerMmrText(player: Player): string {
     const totalGames = (player.wins ?? 0) + (player.losses ?? 0);
@@ -20,7 +20,8 @@ export const Matchmaker = () => {
     const [blueTeam, setBlueTeam] = useState<readonly Player[]>([]);
     const [redTeam, setRedTeam] = useState<readonly Player[]>([]);
 
-    const players = usePlayers() ?? [];
+    const playersResponse = ToxicDataService.usePlayers();
+    const players = playersResponse.data ?? [];
 
     const handleInputChange = (value: string) => {
         setInputValue(value);
