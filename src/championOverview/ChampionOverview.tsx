@@ -89,20 +89,18 @@ export const ChampionOverview = React.memo(function ChampionOverview() {
             }}
         >
             <h1>Champion Overview</h1>
-            <div style={{ maxWidth: 1024 }}>
-                <SortableTable
-                    columns={columns}
-                    data={processedChampionArray}
-                    getRowProps={(row: any) => {
-                        return {
-                            onClick: () => {
-                                navigate(row.getValue('name'));
-                                window.scrollTo(0, 0);
-                            },
-                        };
-                    }}
-                />
-            </div>
+            <SortableTable
+                columns={columns}
+                data={processedChampionArray}
+                getRowProps={(row: any) => {
+                    return {
+                        onClick: () => {
+                            navigate(row.getValue('name'));
+                            window.scrollTo(0, 0);
+                        },
+                    };
+                }}
+            />
         </div>
     );
 });

@@ -1,4 +1,3 @@
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLoaderData, useNavigate } from 'react-router-dom';
@@ -25,7 +24,20 @@ import {
 } from 'chart.js';
 import { getMmrColor } from '../utils/mmrColorHelpers';
 import { SummonerCollage } from '../components/SummonerCollage';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import {
+    Flex,
+    Tab,
+    TabList,
+    TabPanel,
+    TabPanels,
+    Tabs,
+} from '@chakra-ui/react';
+import { PlayerScreenChampion } from './types/PlayerScreenChampion';
+import {
+    championColumns,
+    opponentColumns,
+    teammateColumns,
+} from './PlayerScreenColumnHelper';
 
 ChartJS.register(
     RadialLinearScale,
@@ -39,10 +51,6 @@ ChartJS.register(
 export async function loader(data: { params: any }) {
     return data.params.playerId;
 }
-
-type PlayerScreenChampion = {
-    imageUrl: string;
-} & Champion;
 
 const MAX_CONTENT_WIDTH = 1024;
 
@@ -65,140 +73,6 @@ const processPlayerChampions = (
         };
     });
 };
-
-const columnHelper = createColumnHelper<PlayerScreenChampion>();
-
-const columns: ColumnDef<PlayerScreenChampion, any>[] = [
-    columnHelper.accessor((row) => row.name, {
-        id: 'name',
-        cell: (info) => {
-            return (
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    {info.row.original.imageUrl ? (
-                        <img
-                            src={info.row.original.imageUrl}
-                            style={{ width: 32, height: 32, marginRight: 8 }}
-                        />
-                    ) : null}
-                    {info.getValue()}
-                </div>
-            );
-        },
-        header: () => <span>Name</span>,
-    }),
-    columnHelper.accessor((row) => row.wins, {
-        id: 'wins',
-        cell: (info) => info.getValue(),
-        header: () => <span>Wins</span>,
-        meta: {
-            isNumeric: true,
-        },
-    }),
-    columnHelper.accessor((row) => row.winPercentage, {
-        id: 'winPercentage',
-        cell: (info) => info.getValue(),
-        header: () => <span>Win Percentage</span>,
-        meta: {
-            isNumeric: true,
-        },
-    }),
-    columnHelper.accessor((row) => row.losses, {
-        id: 'losses',
-        cell: (info) => info.getValue(),
-        header: () => <span>Losses</span>,
-        meta: {
-            isNumeric: true,
-        },
-    }),
-    columnHelper.accessor((row) => row.totalGames, {
-        id: 'totalGames',
-        cell: (info) => info.getValue(),
-        header: () => <span>Total Games</span>,
-        meta: {
-            isNumeric: true,
-        },
-    }),
-];
-
-const teammateColumns: ColumnDef<PlayerScreenChampion, any>[] = [
-    columnHelper.accessor((row) => row.name, {
-        id: 'name',
-        cell: (info) => info.getValue(),
-        header: () => <span>Name</span>,
-    }),
-    columnHelper.accessor((row) => row.wins, {
-        id: 'wins',
-        cell: (info) => info.getValue(),
-        header: () => <span>Wins With</span>,
-        meta: {
-            isNumeric: true,
-        },
-    }),
-    columnHelper.accessor((row) => row.winPercentage, {
-        id: 'winPercentage',
-        cell: (info) => info.getValue(),
-        header: () => <span>Win Percentage With</span>,
-        meta: {
-            isNumeric: true,
-        },
-    }),
-    columnHelper.accessor((row) => row.losses, {
-        id: 'losses',
-        cell: (info) => info.getValue(),
-        header: () => <span>Losses With</span>,
-        meta: {
-            isNumeric: true,
-        },
-    }),
-    columnHelper.accessor((row) => row.totalGames, {
-        id: 'totalGames',
-        cell: (info) => info.getValue(),
-        header: () => <span>Total Games With</span>,
-        meta: {
-            isNumeric: true,
-        },
-    }),
-];
-
-const opponentColumns: ColumnDef<PlayerScreenChampion, any>[] = [
-    columnHelper.accessor((row) => row.name, {
-        id: 'name',
-        cell: (info) => info.getValue(),
-        header: () => <span>Name</span>,
-    }),
-    columnHelper.accessor((row) => row.wins, {
-        id: 'wins',
-        cell: (info) => info.getValue(),
-        header: () => <span>Wins Against</span>,
-        meta: {
-            isNumeric: true,
-        },
-    }),
-    columnHelper.accessor((row) => row.winPercentage, {
-        id: 'winPercentage',
-        cell: (info) => info.getValue(),
-        header: () => <span>Win Percentage Against</span>,
-        meta: {
-            isNumeric: true,
-        },
-    }),
-    columnHelper.accessor((row) => row.losses, {
-        id: 'losses',
-        cell: (info) => info.getValue(),
-        header: () => <span>Losses Against</span>,
-        meta: {
-            isNumeric: true,
-        },
-    }),
-    columnHelper.accessor((row) => row.totalGames, {
-        id: 'totalGames',
-        cell: (info) => info.getValue(),
-        header: () => <span>Total Games Against</span>,
-        meta: {
-            isNumeric: true,
-        },
-    }),
-];
 
 export const PlayerScreen = React.memo(function PlayerScreen() {
     const navigate = useNavigate();
@@ -279,61 +153,61 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
                 alignItems: 'center',
             }}
         >
-            <div style={{ maxWidth: 1024 }}>
-                <div
+            <div
+                style={{
+                    flex: 1,
+                    marginBottom: 32,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <h1
                     style={{
-                        flex: 1,
-                        marginBottom: 32,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'flex-start',
-                        maxWidth: 1024,
+                        paddingLeft: 8,
+                        fontSize: 32,
+                        fontWeight: 'bold',
+                        fontStyle: 'italic',
+                        alignSelf: 'flex-start',
                     }}
                 >
-                    <h1
-                        style={{
-                            fontSize: 32,
-                            fontWeight: 'bold',
-                            fontStyle: 'italic',
-                        }}
-                    >
-                        {player.name.toUpperCase()}
-                    </h1>
+                    {player.name.toUpperCase()}
+                </h1>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignSelf: 'stretch',
+                        flex: 1,
+                        flexWrap: 'wrap',
+                    }}
+                >
                     <div
                         style={{
                             display: 'flex',
                             flexDirection: 'row',
-                            alignSelf: 'stretch',
-                            flex: 1,
+                            flexWrap: 'wrap',
+                            marginLeft: 32,
+                            marginRight: 32,
+                            justifyContent: 'center',
                         }}
                     >
-                        <div
-                            style={{
-                                flex: 1,
-                                marginRight: 32,
-                                display: 'flex',
-                                flexDirection: 'row',
-                            }}
-                        >
-                            <div
-                                style={{
-                                    minWidth: 128,
-                                    marginRight: 16,
-                                    overflow: 'hidden',
-                                }}
-                            >
-                                <SummonerCollage player={player} />
-                            </div>
-                            <div style={{ flex: 1 }}>
-                                <StatsCard stats={player} hideName={true} />
-                            </div>
+                        <div>
+                            <SummonerCollage player={player} />
+                        </div>
+                        <div style={{ marginLeft: 16 }}>
+                            <StatsCard stats={player} hideName={true} />
                         </div>
                         <div
                             style={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                flex: 0,
+                                flex: 1,
+                                maxWidth: 150,
+                                marginLeft: 32,
+                                padding: 16,
                                 marginRight: 32,
                                 alignItems: 'center',
                             }}
@@ -343,9 +217,12 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
                                     player.mmr
                                         ? {
                                               fontSize: 60,
-                                              fontWeight: 'bold',
-                                              color: getMmrColor(player.mmr),
-                                              textShadow: '2px 2px 7px black',
+                                              backgroundColor: getMmrColor(
+                                                  player.mmr
+                                              ),
+                                              borderRadius: 10,
+                                              paddingLeft: 4,
+                                              paddingRight: 4,
                                           }
                                         : {
                                               fontSize: 30,
@@ -358,72 +235,87 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
                             </h1>
                             <h1>{'MMR'}</h1>
                         </div>
-                        <div style={{ flex: 1 }}>
+                        <div
+                            style={{
+                                display: 'flex',
+                                flex: 1,
+                                maxWidth: 320,
+                                padding: 16,
+                            }}
+                        >
                             <Radar data={chartData as any} />
                         </div>
                     </div>
                 </div>
-                <Tabs>
-                    <TabList>
-                        <Tab>Champion Overview</Tab>
-                        <Tab>Teammate Record</Tab>
-                        <Tab>Oppponent Record</Tab>
-                    </TabList>
-                    <TabPanels>
-                        <TabPanel>
-                            <SortableTable
-                                columns={columns}
-                                data={playerChampionData}
-                                getRowProps={(row: any) => {
-                                    return {
-                                        onClick: () => {
-                                            navigate(
-                                                '/championOverview/' +
-                                                    row.getValue('name')
-                                            );
-                                            window.scrollTo(0, 0);
-                                        },
-                                    };
-                                }}
-                            />
-                        </TabPanel>
-                        <TabPanel>
-                            <SortableTable
-                                columns={teammateColumns}
-                                data={playerTeammateData}
-                                getRowProps={(row: any) => {
-                                    return {
-                                        onClick: () => {
-                                            navigate(
-                                                '/playerOverview/' +
-                                                    row.getValue('name')
-                                            );
-                                            window.scrollTo(0, 0);
-                                        },
-                                    };
-                                }}
-                            />
-                        </TabPanel>
-                        <TabPanel>
-                            <SortableTable
-                                columns={opponentColumns}
-                                data={playerOpponentData}
-                                getRowProps={(row: any) => {
-                                    return {
-                                        onClick: () => {
-                                            navigate(
-                                                '/playerOverview/' +
-                                                    row.getValue('name')
-                                            );
-                                            window.scrollTo(0, 0);
-                                        },
-                                    };
-                                }}
-                            />
-                        </TabPanel>
-                    </TabPanels>
-                </Tabs>
             </div>
+            <Tabs
+                style={{
+                    alignSelf: 'stretch',
+                    flex: 1,
+                    alignItems: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+            >
+                <TabList style={{ maxWidth: 1024 }}>
+                    <Tab>Champion Overview</Tab>
+                    <Tab>Teammate Record</Tab>
+                    <Tab>Opponent Record</Tab>
+                </TabList>
+                <TabPanels style={{ maxWidth: 1024 }}>
+                    <TabPanel>
+                        <SortableTable
+                            columns={championColumns}
+                            data={playerChampionData}
+                            getRowProps={(row: any) => {
+                                return {
+                                    onClick: () => {
+                                        navigate(
+                                            '/championOverview/' +
+                                                row.getValue('name')
+                                        );
+                                        window.scrollTo(0, 0);
+                                    },
+                                };
+                            }}
+                        />
+                    </TabPanel>
+                    <TabPanel>
+                        <SortableTable
+                            columns={teammateColumns}
+                            data={playerTeammateData}
+                            getRowProps={(row: any) => {
+                                return {
+                                    onClick: () => {
+                                        navigate(
+                                            '/playerOverview/' +
+                                                row.getValue('name')
+                                        );
+                                        window.scrollTo(0, 0);
+                                    },
+                                };
+                            }}
+                        />
+                    </TabPanel>
+                    <TabPanel>
+                        <SortableTable
+                            columns={opponentColumns}
+                            data={playerOpponentData}
+                            getRowProps={(row: any) => {
+                                return {
+                                    onClick: () => {
+                                        navigate(
+                                            '/playerOverview/' +
+                                                row.getValue('name')
+                                        );
+                                        window.scrollTo(0, 0);
+                                    },
+                                };
+                            }}
+                        />
+                    </TabPanel>
+                </TabPanels>
+            </Tabs>
         </div>
     );
 });

@@ -3,7 +3,7 @@ import { MmrData } from '../../types/service/toxicData/MmrData';
 import { StatsData } from '../../types/service/toxicData/StatsData';
 
 const placementEndpoint =
-    'https://toxic-api-production.gggrunt16.workers.dev/mmr';
+    'https://toxic-api-production.gggrunt16.workers.dev/placement';
 const mmrEndpoint = 'https://toxic-api-production.gggrunt16.workers.dev/mmr';
 const statsEndpoint =
     'https://toxic-api-production.gggrunt16.workers.dev/stats';

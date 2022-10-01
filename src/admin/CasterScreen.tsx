@@ -49,10 +49,9 @@ export const CasterScreen = React.memo(function CasterScreen() {
         >
             <div
                 style={{
-                    flex: 1,
                     zIndex: 10,
                     height: 50,
-                    marginTop: 0,
+                    paddingTop: 32,
                     flexWrap: 'nowrap',
                 }}
             >

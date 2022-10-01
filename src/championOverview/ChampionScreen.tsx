@@ -138,21 +138,17 @@ export const ChampionScreen = React.memo(function ChampionScreen() {
             <div style={{ marginBottom: 32 }}>
                 <StatsCard stats={statsCardChampion} />
             </div>
-            <div style={{ maxWidth: 1024 }}>
-                <SortableTable
-                    columns={columns}
-                    data={championPlayerData}
-                    getRowProps={(row: any) => {
-                        return {
-                            onClick: () => {
-                                navigate(
-                                    '/playerOverview/' + row.getValue('name')
-                                );
-                            },
-                        };
-                    }}
-                />
-            </div>
+            <SortableTable
+                columns={columns}
+                data={championPlayerData}
+                getRowProps={(row: any) => {
+                    return {
+                        onClick: () => {
+                            navigate('/playerOverview/' + row.getValue('name'));
+                        },
+                    };
+                }}
+            />
         </div>
     );
 });
