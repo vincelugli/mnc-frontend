@@ -1,16 +1,10 @@
-import { useState } from 'react';
+import { Button, Flex } from '@chakra-ui/react';
 import { CreatableSelect } from 'chakra-react-select';
 import { ToxicDataService } from '../services/toxicData/ToxicDataService';
 import { Player } from '../types/domain/Player';
 import './Matchmaker.css';
-import { Button, Tag } from '@chakra-ui/react';
-
-function getPlayerMmrText(player: Player): string {
-    const totalGames = (player.wins ?? 0) + (player.losses ?? 0);
-    return totalGames >= 10
-        ? `(${Math.round(player.mmr ?? 0).toString()})`
-        : ``;
-}
+import { useState } from 'react';
+import MatchTable from './MatchTable';
 
 export const Matchmaker = () => {
     const [customPlayers, setCustomPlayers] = useState<Player[]>([]);
@@ -71,14 +65,6 @@ export const Matchmaker = () => {
         }
     };
 
-    const getTeamMmr = (players: readonly Player[]) => {
-        return Math.round(
-            players.reduce((total, player) => {
-                return total + (player.mmr ?? 0);
-            }, 0) / 5
-        );
-    };
-
     const randomizePlayers = (players: Player[]) => {
         for (let i = players.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -87,91 +73,42 @@ export const Matchmaker = () => {
     };
 
     return (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            <h1>Matchmaker</h1>
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                }}
-            >
-                <div
-                    style={{
-                        width: 500,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        marginBottom: 8,
-                    }}
-                >
-                    <span>Players selected: {selectedPlayers.length}/10</span>
-                    <CreatableSelect
-                        isMulti
-                        isClearable
-                        options={players.concat(customPlayers)}
-                        isOptionDisabled={() => selectedPlayers.length >= 10}
-                        inputValue={inputValue}
-                        value={selectedPlayers}
-                        getOptionLabel={(player) => player.name}
-                        getOptionValue={(player) => player.name}
-                        onChange={handleOnChange}
-                        onInputChange={handleInputChange}
-                        onCreateOption={handleCreate}
-                        getNewOptionData={(inputValue) => ({
-                            name: inputValue,
-                            mmr: 1500,
-                        })}
-                        placeholder='Add players...'
-                    />
-                </div>
+        <>
+            <Flex direction={'column'}>
+                <h1>Matchmaker</h1>
+                <span>Players selected: {selectedPlayers.length}/10</span>
+                <CreatableSelect
+                    isMulti
+                    isClearable
+                    options={players.concat(customPlayers)}
+                    isOptionDisabled={() => selectedPlayers.length >= 10}
+                    inputValue={inputValue}
+                    value={selectedPlayers}
+                    getOptionLabel={(player) => player.name}
+                    getOptionValue={(player) => player.name}
+                    onChange={handleOnChange}
+                    onInputChange={handleInputChange}
+                    onCreateOption={handleCreate}
+                    getNewOptionData={(inputValue) => ({
+                        name: inputValue,
+                        mmr: 1500,
+                    })}
+                    placeholder='Add players...'
+                />
+
                 <Button
                     onClick={addMatch}
                     disabled={selectedPlayers.length !== 10}
                 >
                     Matchmake!
                 </Button>
-            </div>
-            <div
-                style={{
-                    flexDirection: 'row',
-                    display: 'flex',
-                    flex: 1,
-                    justifyContent: 'space-between',
-                }}
-            >
-                <ul>
-                    Blue Team: {getTeamMmr(blueTeam)}
-                    {blueTeam.map((player) => {
-                        return (
-                            <li>
-                                <>
-                                    {`${player.name} ${getPlayerMmrText(
-                                        player
-                                    )}`}
-                                </>
-                            </li>
-                        );
-                    })}
-                </ul>
-                <ul>
-                    Red Team: {getTeamMmr(redTeam)}
-                    {redTeam.map((player) => {
-                        return (
-                            <li>
-                                {`${player.name} ${getPlayerMmrText(player)}`}
-                            </li>
-                        );
-                    })}
-                </ul>
-            </div>
-        </div>
+                {blueTeam.length === 5 && (
+                    <MatchTable
+                        blueTeam={blueTeam}
+                        redTeam={redTeam}
+                    ></MatchTable>
+                )}
+            </Flex>
+        </>
     );
 };
