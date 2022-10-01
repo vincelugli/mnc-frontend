@@ -220,8 +220,13 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
                                     ? {
                                           fontSize: 60,
                                           fontWeight: 'bold',
-                                          color: getMmrColor(player.mmr),
-                                          backgroundColor: 'black',
+                                          backgroundColor: getMmrColor(
+                                              player.mmr
+                                          ),
+                                          borderRadius: 10,
+                                          paddingLeft: 4,
+                                          paddingRight: 4,
+                                          marginTop: 16,
                                       }
                                     : {
                                           fontSize: 30,

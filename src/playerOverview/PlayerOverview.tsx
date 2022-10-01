@@ -109,35 +109,30 @@ export const PlayerOverview = React.memo(function PlayerOverview() {
             }}
         >
             <chakra.h1>Player Overview</chakra.h1>
-            <div style={{ maxWidth: 1024 }}>
-                <SortableTable
-                    columns={columns}
-                    data={processedData}
-                    getRowProps={(row: Row<any>) => {
+            <SortableTable
+                columns={columns}
+                data={processedData}
+                getRowProps={(row: Row<any>) => {
+                    return {
+                        onClick: () => {
+                            navigate(row.getValue('name'));
+                            window.scrollTo(0, 0);
+                        },
+                    };
+                }}
+                getCellProps={(cell: Cell<any, any>) => {
+                    if (cell.column.id === 'mmr') {
                         return {
-                            onClick: () => {
-                                navigate(row.getValue('name'));
-                                window.scrollTo(0, 0);
+                            style: {
+                                textAlign: 'center',
+                                backgroundColor: getMmrColor(cell.getValue()),
                             },
                         };
-                    }}
-                    getCellProps={(cell: Cell<any, any>) => {
-                        if (cell.column.id === 'mmr') {
-                            return {
-                                style: {
-                                    textShadow: cell.getValue()
-                                        ? '1px 1px 3px black'
-                                        : undefined,
-                                    color: getMmrColor(cell.getValue()),
-                                    fontWeight: 'bold',
-                                },
-                            };
-                        }
+                    }
 
-                        return {};
-                    }}
-                />
-            </div>
+                    return {};
+                }}
+            />
         </div>
     );
 });
