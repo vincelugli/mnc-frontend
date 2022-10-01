@@ -87,8 +87,6 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
         [player]
     );
 
-    console.log('wow');
-
     const chartLabels = Object.keys(ChampionClass).map((value) => {
         return value.toString();
     });
