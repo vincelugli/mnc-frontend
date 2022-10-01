@@ -1,6 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { gameInfoSelector } from '../redux/gameInfo/gameInfoSelectors';
+import { DataDragonService } from '../services/dataDragon/DataDragonService';
 import { Champion } from '../types/domain/Champion';
 import { Player } from '../types/domain/Player';
 import { getChampionImage } from '../utils/championImageHelpers';
@@ -29,15 +28,14 @@ export const SummonerCollage = React.memo(function Error({
 }: {
     player: Player;
 }) {
-    const dataDragonChampionIdMap = useSelector(
-        gameInfoSelector.getChampionMap
-    );
+    const championIdMapResponse = DataDragonService.useChampionIdMap();
+    const championIdMap = championIdMapResponse.data ?? {};
 
     // get the player's 4 champions wih thte highest win rate
     const sortedChampions = sortChampionsByWinRate(player)
         .slice(0, 4)
         .map((value) => {
-            const dataDragonChampionId = dataDragonChampionIdMap[value.name];
+            const dataDragonChampionId = championIdMap[value.name];
             return {
                 ...value,
                 imageUri: getChampionImage(dataDragonChampionId),

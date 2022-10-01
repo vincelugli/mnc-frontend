@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useChampions, usePlayers } from '../hooks/selectorWrapperHooks';
 import { getMmrColor } from '../utils/mmrColorHelpers';
 
 import CSS from 'csstype';
 import { PlayerCard } from './slideshow/PlayerCard';
-import { useSelector } from 'react-redux';
-import { gameInfoSelector } from '../redux/gameInfo/gameInfoSelectors';
 import { getChampionImage } from '../utils/championImageHelpers';
+import { DataDragonService } from '../services/dataDragon/DataDragonService';
+import { ToxicDataService } from '../services/toxicData/ToxicDataService';
 
 const styles = {
     header: {
@@ -113,10 +112,15 @@ export const Slideshow = React.memo(function Slideshow({
 }: {
     transparentBackground?: boolean;
 }) {
-    const players = usePlayers();
-    const champions = useChampions();
+    const playersResponse = ToxicDataService.usePlayers();
+    const players = playersResponse.data ?? [];
+
+    const championsResponse = ToxicDataService.useChampions();
+    const champions = Array.from(Object.values(championsResponse.data ?? {}));
+
     const [slideNo, setSlideNo] = useState(0);
-    const championIdMap = useSelector(gameInfoSelector.getChampionMap);
+    const championIdMapResponse = DataDragonService.useChampionIdMap();
+    const championIdMap = championIdMapResponse.data ?? {};
 
     // sort the players by MMR
     const sortedPlayers = players
