@@ -24,7 +24,14 @@ import {
 } from 'chart.js';
 import { getMmrColor } from '../utils/mmrColorHelpers';
 import { SummonerCollage } from '../components/SummonerCollage';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import {
+    Flex,
+    Tab,
+    TabList,
+    TabPanel,
+    TabPanels,
+    Tabs,
+} from '@chakra-ui/react';
 import { PlayerScreenChampion } from './types/PlayerScreenChampion';
 import {
     championColumns,
@@ -144,7 +151,6 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                maxWidth: 1024,
             }}
         >
             <div
@@ -201,8 +207,10 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
                             flexDirection: 'column',
                             flex: 1,
                             maxWidth: 150,
+                            marginLeft: 32,
                             paddingLeft: 32,
                             paddingRight: 32,
+                            marginRight: 32,
                             alignItems: 'center',
                         }}
                     >
@@ -213,7 +221,7 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
                                           fontSize: 60,
                                           fontWeight: 'bold',
                                           color: getMmrColor(player.mmr),
-                                          textShadow: '2px 2px 7px black',
+                                          backgroundColor: 'black',
                                       }
                                     : {
                                           fontSize: 30,
@@ -229,68 +237,74 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
                     </div>
                 </div>
             </div>
-            <div style={{ flex: 1 }}>
-                <Tabs>
-                    <TabList>
-                        <Tab>Champion Overview</Tab>
-                        <Tab>Teammate Record</Tab>
-                        <Tab>Oppponent Record</Tab>
-                    </TabList>
-                    <TabPanels>
-                        <TabPanel>
-                            <SortableTable
-                                columns={championColumns}
-                                data={playerChampionData}
-                                getRowProps={(row: any) => {
-                                    return {
-                                        onClick: () => {
-                                            navigate(
-                                                '/championOverview/' +
-                                                    row.getValue('name')
-                                            );
-                                            window.scrollTo(0, 0);
-                                        },
-                                    };
-                                }}
-                            />
-                        </TabPanel>
-                        <TabPanel>
-                            <SortableTable
-                                columns={teammateColumns}
-                                data={playerTeammateData}
-                                getRowProps={(row: any) => {
-                                    return {
-                                        onClick: () => {
-                                            navigate(
-                                                '/playerOverview/' +
-                                                    row.getValue('name')
-                                            );
-                                            window.scrollTo(0, 0);
-                                        },
-                                    };
-                                }}
-                            />
-                        </TabPanel>
-                        <TabPanel>
-                            <SortableTable
-                                columns={opponentColumns}
-                                data={playerOpponentData}
-                                getRowProps={(row: any) => {
-                                    return {
-                                        onClick: () => {
-                                            navigate(
-                                                '/playerOverview/' +
-                                                    row.getValue('name')
-                                            );
-                                            window.scrollTo(0, 0);
-                                        },
-                                    };
-                                }}
-                            />
-                        </TabPanel>
-                    </TabPanels>
-                </Tabs>
-            </div>
+            <Tabs
+                style={{
+                    alignSelf: 'stretch',
+                    flex: 1,
+                    alignItems: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+            >
+                <TabList style={{ maxWidth: 1024 }}>
+                    <Tab>Champion Overview</Tab>
+                    <Tab>Teammate Record</Tab>
+                    <Tab>Opponent Record</Tab>
+                </TabList>
+                <TabPanels style={{ maxWidth: 1024 }}>
+                    <TabPanel>
+                        <SortableTable
+                            columns={championColumns}
+                            data={playerChampionData}
+                            getRowProps={(row: any) => {
+                                return {
+                                    onClick: () => {
+                                        navigate(
+                                            '/championOverview/' +
+                                                row.getValue('name')
+                                        );
+                                        window.scrollTo(0, 0);
+                                    },
+                                };
+                            }}
+                        />
+                    </TabPanel>
+                    <TabPanel>
+                        <SortableTable
+                            columns={teammateColumns}
+                            data={playerTeammateData}
+                            getRowProps={(row: any) => {
+                                return {
+                                    onClick: () => {
+                                        navigate(
+                                            '/playerOverview/' +
+                                                row.getValue('name')
+                                        );
+                                        window.scrollTo(0, 0);
+                                    },
+                                };
+                            }}
+                        />
+                    </TabPanel>
+                    <TabPanel>
+                        <SortableTable
+                            columns={opponentColumns}
+                            data={playerOpponentData}
+                            getRowProps={(row: any) => {
+                                return {
+                                    onClick: () => {
+                                        navigate(
+                                            '/playerOverview/' +
+                                                row.getValue('name')
+                                        );
+                                        window.scrollTo(0, 0);
+                                    },
+                                };
+                            }}
+                        />
+                    </TabPanel>
+                </TabPanels>
+            </Tabs>
         </div>
     );
 });

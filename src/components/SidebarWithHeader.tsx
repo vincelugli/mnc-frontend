@@ -56,7 +56,7 @@ export default function SidebarWithHeader({
 }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
-        <Box minH='100vh' bg={useColorModeValue('gray.100', 'gray.900')}>
+        <Box minH='100vh'>
             <SidebarContent
                 onClose={() => onClose}
                 display={{ base: 'none', md: 'block' }}
@@ -106,7 +106,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 justifyContent='space-between'
             >
                 <Text fontSize='2xl' fontFamily='monospace' fontWeight='bold'>
-                    Monday Night Customs Hub
+                    MNC Hub
                 </Text>
                 <CloseButton
                     display={{ base: 'flex', md: 'none' }}
@@ -207,7 +207,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 fontFamily='monospace'
                 fontWeight='bold'
             >
-                Monday Night Customs Hub
+                MNC Hub
             </Text>
 
             <HStack spacing={{ base: '0', md: '6' }}>

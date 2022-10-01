@@ -168,8 +168,11 @@ export const Slideshow = React.memo(function Slideshow() {
     return (
         <div
             style={{
-                display: 'flex',
-                minHeight: '100vh',
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                left: 0,
+                bottom: 0,
                 backgroundColor: 'magenta',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
