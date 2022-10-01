@@ -1,5 +1,6 @@
 const backgroundVideo =
-    'https://screensavers.riotgames.com/v2/latest/content/original/AnimatedArt/animated-freljord.webm';
+    'https://blitz-cdn-videos.blitz.gg/ui/video/Homepage-Slide-One.webm';
+// 'https://screensavers.riotgames.com/v2/latest/content/original/AnimatedArt/animated-freljord.webm';
 
 export default function Home() {
     return (
@@ -8,6 +9,7 @@ export default function Home() {
                 minHeight: '100vh',
                 backgroundColor: '#282c34',
                 margin: -16,
+                position: 'relative',
             }}
         >
             <div
@@ -30,7 +32,6 @@ export default function Home() {
                     }}
                 >
                     <source type='video/webm' src={backgroundVideo} />
-                    {/* <source type="video/MP4" src="https://lolstatic-a.akamaihd.net/frontpage/apps/prod/rg-league-display-2017/en_US/cb24025fade09e3f965776440dffcc65024d3266/assets/img/content/splash/videos/animated-dragontrainer-tristana.mp4"> */}
                 </video>
             </div>
             <div
@@ -39,18 +40,23 @@ export default function Home() {
                     height: '100%',
                     width: '100%',
                     backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                 }}
             >
                 <h1
                     style={{
-                        paddingTop: 32,
                         color: 'white',
                         fontSize: 48,
                         marginRight: 64,
                         marginLeft: 64,
+                        fontWeight: 'bold',
+                        fontStyle: 'italic',
                     }}
                 >
-                    Welcome to Monday Night Customs Hub
+                    WELCOME TO MONDAY NIGHT CUSTOMS!
                 </h1>
             </div>
         </div>

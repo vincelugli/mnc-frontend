@@ -194,51 +194,57 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
                             justifyContent: 'center',
                         }}
                     >
-                        <div style={{ marginRight: 16 }}>
+                        <div>
                             <SummonerCollage player={player} />
                         </div>
-                        <div style={{ flex: 1, minWidth: 128 }}>
+                        <div style={{ marginLeft: 16 }}>
                             <StatsCard stats={player} hideName={true} />
                         </div>
-                    </div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            flex: 1,
-                            maxWidth: 150,
-                            marginLeft: 32,
-                            paddingLeft: 32,
-                            paddingRight: 32,
-                            marginRight: 32,
-                            alignItems: 'center',
-                        }}
-                    >
-                        <h1
-                            style={
-                                player.mmr
-                                    ? {
-                                          fontSize: 60,
-                                          fontWeight: 'bold',
-                                          backgroundColor: getMmrColor(
-                                              player.mmr
-                                          ),
-                                          borderRadius: 10,
-                                          paddingLeft: 4,
-                                          paddingRight: 4,
-                                          marginTop: 16,
-                                      }
-                                    : {
-                                          fontSize: 30,
-                                      }
-                            }
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                flex: 1,
+                                maxWidth: 150,
+                                marginLeft: 32,
+                                padding: 16,
+                                marginRight: 32,
+                                alignItems: 'center',
+                            }}
                         >
-                            {player.mmr ? Math.round(player.mmr) : 'Not Placed'}
-                        </h1>
-                        <h1>{'MMR'}</h1>
-                    </div>
-                    <div style={{ display: 'flex', flex: 1, maxWidth: 300 }}>
-                        <Radar data={chartData as any} />
+                            <h1
+                                style={
+                                    player.mmr
+                                        ? {
+                                              fontSize: 60,
+                                              backgroundColor: getMmrColor(
+                                                  player.mmr
+                                              ),
+                                              borderRadius: 10,
+                                              paddingLeft: 4,
+                                              paddingRight: 4,
+                                          }
+                                        : {
+                                              fontSize: 30,
+                                          }
+                                }
+                            >
+                                {player.mmr
+                                    ? Math.round(player.mmr)
+                                    : 'Not Placed'}
+                            </h1>
+                            <h1>{'MMR'}</h1>
+                        </div>
+                        <div
+                            style={{
+                                display: 'flex',
+                                flex: 1,
+                                maxWidth: 320,
+                                padding: 16,
+                            }}
+                        >
+                            <Radar data={chartData as any} />
+                        </div>
                     </div>
                 </div>
             </div>

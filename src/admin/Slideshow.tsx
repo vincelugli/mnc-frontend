@@ -108,7 +108,11 @@ const StatsRow = (props: {
 const mmrScreenCount = 4;
 const championScreenCount = 4;
 
-export const Slideshow = React.memo(function Slideshow() {
+export const Slideshow = React.memo(function Slideshow({
+    transparentBackground,
+}: {
+    transparentBackground?: boolean;
+}) {
     const players = usePlayers();
     const champions = useChampions();
     const [slideNo, setSlideNo] = useState(0);
@@ -173,7 +177,7 @@ export const Slideshow = React.memo(function Slideshow() {
                 right: 0,
                 left: 0,
                 bottom: 0,
-                backgroundColor: 'magenta',
+                backgroundColor: transparentBackground ? undefined : 'magenta',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
                 padding: 64,

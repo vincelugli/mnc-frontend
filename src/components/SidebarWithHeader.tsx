@@ -32,6 +32,9 @@ import {
     FiMenu,
     FiBell,
     FiChevronDown,
+    FiUsers,
+    FiZap,
+    FiShield,
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
@@ -44,9 +47,9 @@ interface LinkItemProps {
 }
 const LinkItems: Array<LinkItemProps> = [
     { name: 'Home', icon: FiHome, route: '/' },
-    { name: 'Player Overview', icon: FiTrendingUp, route: 'playerOverview' },
-    { name: 'Champion Overview', icon: FiCompass, route: '/championOverview' },
-    { name: 'Matchmaker', icon: FiStar, route: 'matchmaker' },
+    { name: 'Player Overview', icon: FiUsers, route: 'playerOverview' },
+    { name: 'Champion Overview', icon: FiShield, route: '/championOverview' },
+    { name: 'Matchmaker', icon: FiZap, route: 'matchmaker' },
 ];
 
 export default function SidebarWithHeader({
