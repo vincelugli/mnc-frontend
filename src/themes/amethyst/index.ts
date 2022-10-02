@@ -1,3 +1,4 @@
+import { Alert } from './components/alert';
 import { Tag } from './components/tag';
 import { Button } from './components/button';
 import { extendTheme } from '@chakra-ui/react';
@@ -10,5 +11,6 @@ export const amethyst = extendTheme({
     components: {
         Button,
         Tag,
+        Alert,
     },
 });
