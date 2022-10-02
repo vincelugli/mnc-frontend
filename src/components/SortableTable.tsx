@@ -50,6 +50,7 @@ export function SortableTable({
             sorting,
         },
     });
+
     return (
         <TableContainer>
             <Table>
@@ -64,6 +65,7 @@ export function SortableTable({
                                         onClick={header.column.getToggleSortingHandler()}
                                         isNumeric={meta?.isNumeric}
                                         {...getHeaderProps(header)}
+                                        role={'button'}
                                     >
                                         {flexRender(
                                             header.column.columnDef.header,
@@ -90,7 +92,15 @@ export function SortableTable({
                 </Thead>
                 <Tbody>
                     {table.getRowModel().rows.map((row) => (
-                        <Tr key={row.id} {...getRowProps(row)}>
+                        <Tr
+                            key={row.id}
+                            {...getRowProps(row)}
+                            role={
+                                getRowProps(row).onClick !== undefined
+                                    ? 'button'
+                                    : undefined
+                            }
+                        >
                             {row.getVisibleCells().map((cell) => {
                                 const meta: any = cell.column.columnDef.meta;
                                 return (

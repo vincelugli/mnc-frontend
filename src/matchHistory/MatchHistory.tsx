@@ -2,11 +2,38 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SortableTable } from '../components/SortableTable';
-import { Match, useMatchHistory } from '../data/matchHistory';
+import { DataDragonService } from '../services/dataDragon/DataDragonService';
+import { ToxicDataService } from '../services/toxicData/ToxicDataService';
+import { Match } from '../types/domain/Match';
+import {
+    ChampionImages,
+    getChampionImage,
+    getMatchWithImages,
+} from '../utils/championImageHelpers';
 
-const columnHelper = createColumnHelper<Match>();
+type MatchPlayerWithImages = {
+    name: string;
+    champion: {
+        name: string;
+        images: ChampionImages;
+    };
+};
 
-const columns: ColumnDef<Match, any>[] = [
+type MatchWithImages = {
+    id: string;
+    date: Date;
+    team1: {
+        players: MatchPlayerWithImages[];
+    };
+    team2: {
+        players: MatchPlayerWithImages[];
+    };
+    winner: string;
+};
+
+const columnHelper = createColumnHelper<MatchWithImages>();
+
+const columns: ColumnDef<MatchWithImages, any>[] = [
     columnHelper.accessor((row) => row.date, {
         id: 'date',
         cell: (info) => {
@@ -111,7 +138,15 @@ const columns: ColumnDef<Match, any>[] = [
 export const MatchHistory = React.memo(function MatchHistory() {
     const navigate = useNavigate();
 
-    const matchHistory = useMatchHistory();
+    const matchHistoryResponse = ToxicDataService.useMatchHistory();
+    const matchHistory = matchHistoryResponse.data ?? [];
+
+    const championIdMapResponse = DataDragonService.useChampionIdMap();
+    const championIdMap = championIdMapResponse.data ?? {};
+
+    const processedMatchHistory = matchHistory.map((match) => {
+        return getMatchWithImages(match, championIdMap);
+    });
 
     return (
         <div
@@ -125,7 +160,7 @@ export const MatchHistory = React.memo(function MatchHistory() {
             <h1>Match History</h1>
             <SortableTable
                 columns={columns}
-                data={matchHistory}
+                data={processedMatchHistory}
                 getRowProps={(row: any) => {
                     return {
                         onClick: () => {

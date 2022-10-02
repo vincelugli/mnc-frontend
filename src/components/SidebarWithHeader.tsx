@@ -110,7 +110,13 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 mx='8'
                 justifyContent='space-between'
             >
-                <Text fontSize='2xl' fontFamily='monospace' fontWeight='bold'>
+                <Text
+                    fontSize='2xl'
+                    fontFamily='monospace'
+                    fontWeight='bold'
+                    fontStyle='italic'
+                    textTransform='uppercase'
+                >
                     MNC Hub
                 </Text>
                 <CloseButton
@@ -209,7 +215,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             <Text
                 display={{ base: 'flex', md: 'none' }}
                 fontSize='2xl'
-                fontFamily='monospace'
                 fontWeight='bold'
             >
                 MNC Hub
