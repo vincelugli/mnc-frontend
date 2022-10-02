@@ -3,7 +3,6 @@ import type { ComponentStyleConfig } from '@chakra-ui/theme';
 export const Button: ComponentStyleConfig = {
     baseStyle: {
         fontWeight: 'bold',
-        textTransform: 'uppercase',
         borderRadius: 'base',
     },
     sizes: {

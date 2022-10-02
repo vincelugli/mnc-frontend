@@ -1,18 +1,10 @@
 import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
-import { ChakraStylesConfig, CreatableSelect } from 'chakra-react-select';
+import { CreatableSelect } from 'chakra-react-select';
 import { useState } from 'react';
 import { ToxicDataService } from '../services/toxicData/ToxicDataService';
 import { Player } from '../types/domain/Player';
 import './Matchmaker.css';
 import MatchTable from './MatchTable';
-
-const customStyles: ChakraStylesConfig<Player, true> = {
-    control: (props) => ({
-        ...props,
-        // none of react-select's styles are passed to <Control />
-        flex: 1,
-    }),
-};
 
 export const Matchmaker = () => {
     const [customPlayers, setCustomPlayers] = useState<Player[]>([]);
@@ -83,7 +75,7 @@ export const Matchmaker = () => {
     return (
         <>
             <Flex direction='column' justify='center' align='flex-start'>
-                <Heading>Matchmaker</Heading>
+                <Heading color='gray.500'>Matchmaker</Heading>
                 <Flex
                     direction='column'
                     justify='center'
@@ -144,7 +136,7 @@ export const Matchmaker = () => {
                         </Button>
                     </Flex>
                 </Flex>
-                {blueTeam.length === 5 && (
+                {blueTeam.length === 5 && redTeam.length === 5 && (
                     <Flex
                         direction='row'
                         alignSelf='stretch'
@@ -156,6 +148,7 @@ export const Matchmaker = () => {
                             <MatchTable
                                 blueTeam={blueTeam}
                                 redTeam={redTeam}
+                                clipboardButton={true}
                             ></MatchTable>
                         </Box>
                         <Flex alignSelf='stretch' flex='1'></Flex>
