@@ -298,33 +298,41 @@ export const Slideshow = React.memo(function Slideshow({
                 <div style={styles.content}>
                     <h1 style={styles.header}>{'CHAMPION WIN RATES'}</h1>
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[0].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[0].name]
+                            ).square
+                        }
                         name={sortedChampions[0].name}
                         value={sortedChampions[0].winPercentage}
                         valueType={StatsRowValueType.percentage}
                     />
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[1].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[1].name]
+                            ).square
+                        }
                         name={sortedChampions[1].name}
                         value={sortedChampions[1].winPercentage}
                         valueType={StatsRowValueType.percentage}
                     />
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[2].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[2].name]
+                            ).square
+                        }
                         name={sortedChampions[2].name}
                         value={sortedChampions[2].winPercentage}
                         valueType={StatsRowValueType.percentage}
                     />
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[3].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[3].name]
+                            ).square
+                        }
                         name={sortedChampions[3].name}
                         value={sortedChampions[3].winPercentage}
                         valueType={StatsRowValueType.percentage}
@@ -341,33 +349,41 @@ export const Slideshow = React.memo(function Slideshow({
                 <div style={styles.content}>
                     <h1 style={styles.header}>{'CHAMPION WIN RATES'}</h1>
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[4].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[4].name]
+                            ).square
+                        }
                         name={sortedChampions[4].name}
                         value={sortedChampions[4].winPercentage}
                         valueType={StatsRowValueType.percentage}
                     />
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[5].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[5].name]
+                            ).square
+                        }
                         name={sortedChampions[5].name}
                         value={sortedChampions[5].winPercentage}
                         valueType={StatsRowValueType.percentage}
                     />
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[6].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[6].name]
+                            ).square
+                        }
                         name={sortedChampions[6].name}
                         value={sortedChampions[6].winPercentage}
                         valueType={StatsRowValueType.percentage}
                     />
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[7].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[7].name]
+                            ).square
+                        }
                         name={sortedChampions[7].name}
                         value={sortedChampions[7].winPercentage}
                         valueType={StatsRowValueType.percentage}
@@ -384,33 +400,41 @@ export const Slideshow = React.memo(function Slideshow({
                 <div style={styles.content}>
                     <h1 style={styles.header}>{'CHAMPION WIN RATES'}</h1>
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[8].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[8].name]
+                            ).square
+                        }
                         name={sortedChampions[8].name}
                         value={sortedChampions[8].winPercentage}
                         valueType={StatsRowValueType.percentage}
                     />
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[9].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[9].name]
+                            ).square
+                        }
                         name={sortedChampions[9].name}
                         value={sortedChampions[9].winPercentage}
                         valueType={StatsRowValueType.percentage}
                     />
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[10].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[10].name]
+                            ).square
+                        }
                         name={sortedChampions[10].name}
                         value={sortedChampions[10].winPercentage}
                         valueType={StatsRowValueType.percentage}
                     />
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[11].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[11].name]
+                            ).square
+                        }
                         name={sortedChampions[11].name}
                         value={sortedChampions[11].winPercentage}
                         valueType={StatsRowValueType.percentage}
@@ -427,33 +451,41 @@ export const Slideshow = React.memo(function Slideshow({
                 <div style={styles.content}>
                     <h1 style={styles.header}>{'CHAMPION WIN RATES'}</h1>
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[12].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[12].name]
+                            ).square
+                        }
                         name={sortedChampions[12].name}
                         value={sortedChampions[12].winPercentage}
                         valueType={StatsRowValueType.percentage}
                     />
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[13].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[13].name]
+                            ).square
+                        }
                         name={sortedChampions[13].name}
                         value={sortedChampions[13].winPercentage}
                         valueType={StatsRowValueType.percentage}
                     />
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[14].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[14].name]
+                            ).square
+                        }
                         name={sortedChampions[14].name}
                         value={sortedChampions[14].winPercentage}
                         valueType={StatsRowValueType.percentage}
                     />
                     <StatsRow
-                        imageUri={getChampionImage(
-                            championIdMap[sortedChampions[15].name]
-                        )}
+                        imageUri={
+                            getChampionImage(
+                                championIdMap[sortedChampions[15].name]
+                            ).square
+                        }
                         name={sortedChampions[15].name}
                         value={sortedChampions[15].winPercentage}
                         valueType={StatsRowValueType.percentage}

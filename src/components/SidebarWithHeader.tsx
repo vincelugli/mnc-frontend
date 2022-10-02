@@ -35,6 +35,7 @@ import {
     FiUsers,
     FiZap,
     FiShield,
+    FiCalendar,
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
@@ -49,6 +50,7 @@ const LinkItems: Array<LinkItemProps> = [
     { name: 'Home', icon: FiHome, route: '/' },
     { name: 'Player Overview', icon: FiUsers, route: 'playerOverview' },
     { name: 'Champion Overview', icon: FiShield, route: '/championOverview' },
+    { name: 'Match History', icon: FiCalendar, route: '/matchHistory' },
     { name: 'Matchmaker', icon: FiZap, route: 'matchmaker' },
 ];
 
@@ -108,7 +110,13 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 mx='8'
                 justifyContent='space-between'
             >
-                <Text fontSize='2xl' fontFamily='monospace' fontWeight='bold'>
+                <Text
+                    fontSize='2xl'
+                    fontFamily='monospace'
+                    fontWeight='bold'
+                    fontStyle='italic'
+                    textTransform='uppercase'
+                >
                     MNC Hub
                 </Text>
                 <CloseButton
@@ -207,7 +215,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             <Text
                 display={{ base: 'flex', md: 'none' }}
                 fontSize='2xl'
-                fontFamily='monospace'
                 fontWeight='bold'
             >
                 MNC Hub

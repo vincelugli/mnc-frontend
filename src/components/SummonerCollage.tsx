@@ -38,7 +38,7 @@ export const SummonerCollage = React.memo(function Error({
             const dataDragonChampionId = championIdMap[value.name];
             return {
                 ...value,
-                imageUri: getChampionImage(dataDragonChampionId),
+                imageUri: getChampionImage(dataDragonChampionId).square,
             };
         });
 
