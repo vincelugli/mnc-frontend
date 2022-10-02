@@ -1,4 +1,5 @@
 import {
+    Box,
     Button,
     Flex,
     Table,
@@ -8,6 +9,7 @@ import {
     Th,
     Thead,
     Tr,
+    useToast,
 } from '@chakra-ui/react';
 import { Player } from '../types/domain/Player';
 
@@ -26,6 +28,18 @@ export const MatchTable = ({
     blueTeam: readonly Player[];
     redTeam: readonly Player[];
 }) => {
+    const toast = useToast();
+    const writeTeamToString = (team: readonly Player[]) => {
+        return team.map((player) => player.name).join('\n');
+    };
+
+    const copyMatchToClipboard = () => {
+        const text = `Blue Team:\n${writeTeamToString(
+            blueTeam
+        )}\n\nRedTeam:\n${writeTeamToString(redTeam)}`;
+        navigator.clipboard.writeText(text);
+    };
+
     return (
         <Flex direction='column' align='flex-start' alignSelf='stretch'>
             <Flex
@@ -95,7 +109,21 @@ export const MatchTable = ({
                     </Table>
                 </TableContainer>
             </Flex>
-            <Button style={{ margin: 10 }}>Copy to clipboard</Button>
+            <Button
+                style={{ margin: 10 }}
+                onClick={() => {
+                    copyMatchToClipboard();
+                    toast({
+                        title: 'Match copied to clipboard',
+                        status: 'success',
+                        duration: 3000,
+                        isClosable: false,
+                        variant: 'solid',
+                    });
+                }}
+            >
+                Copy to clipboard
+            </Button>
         </Flex>
     );
 };
