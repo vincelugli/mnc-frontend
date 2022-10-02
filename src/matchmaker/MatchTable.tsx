@@ -1,13 +1,15 @@
-import { Player } from '../types/domain/Player';
 import {
+    Button,
+    Flex,
     Table,
-    Thead,
-    Tbody,
-    Tr,
-    Th,
-    Td,
     TableContainer,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr,
 } from '@chakra-ui/react';
+import { Player } from '../types/domain/Player';
 
 const rightAlign = 'right';
 function getPlayerMmrText(player: Player): string {
@@ -25,59 +27,76 @@ export const MatchTable = ({
     redTeam: readonly Player[];
 }) => {
     return (
-        <TableContainer>
-            <Table variant='simple' colorScheme='teal'>
-                {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
-                <Thead>
-                    <Tr>
-                        <Th>Blue Team</Th>
-                        <Th textAlign={rightAlign}>Red Team</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    <Tr>
-                        <Td>{`${blueTeam[0].name} ${getPlayerMmrText(
-                            blueTeam[0]
-                        )}`}</Td>
-                        <Td textAlign={rightAlign}>{`${
-                            redTeam[0].name
-                        } ${getPlayerMmrText(redTeam[0])}`}</Td>
-                    </Tr>
-                    <Tr>
-                        <Td>{`${blueTeam[1].name} ${getPlayerMmrText(
-                            blueTeam[1]
-                        )}`}</Td>
-                        <Td textAlign={rightAlign}>{`${
-                            redTeam[1].name
-                        } ${getPlayerMmrText(redTeam[1])}`}</Td>
-                    </Tr>
-                    <Tr>
-                        <Td>{`${blueTeam[2].name} ${getPlayerMmrText(
-                            blueTeam[2]
-                        )}`}</Td>
-                        <Td textAlign={rightAlign}>{`${
-                            redTeam[2].name
-                        } ${getPlayerMmrText(redTeam[2])}`}</Td>
-                    </Tr>
-                    <Tr>
-                        <Td>{`${blueTeam[3].name} ${getPlayerMmrText(
-                            blueTeam[3]
-                        )}`}</Td>
-                        <Td textAlign={rightAlign}>{`${
-                            redTeam[3].name
-                        } ${getPlayerMmrText(redTeam[3])}`}</Td>
-                    </Tr>
-                    <Tr>
-                        <Td>{`${blueTeam[4].name} ${getPlayerMmrText(
-                            blueTeam[4]
-                        )}`}</Td>
-                        <Td textAlign={rightAlign}>{`${
-                            redTeam[4].name
-                        } ${getPlayerMmrText(redTeam[4])}`}</Td>
-                    </Tr>
-                </Tbody>
-            </Table>
-        </TableContainer>
+        <Flex direction='column' align='flex-start' alignSelf='stretch'>
+            <Flex
+                direction='column'
+                alignSelf='stretch'
+                align='stretch'
+                flex='1'
+            >
+                <TableContainer
+                    border='1px solid'
+                    borderColor='gray.100'
+                    borderRadius='md'
+                    background={'white'}
+                    color='gray.600'
+                >
+                    <Table variant='simple'>
+                        <Thead>
+                            <Tr>
+                                <Th color='blue.500'>Blue Team</Th>
+                                <Th color='red.600' textAlign={rightAlign}>
+                                    Red Team
+                                </Th>
+                            </Tr>
+                        </Thead>
+                        <Tbody>
+                            <Tr>
+                                <Td>{`${blueTeam[0].name} ${getPlayerMmrText(
+                                    blueTeam[0]
+                                )}`}</Td>
+                                <Td textAlign={rightAlign}>{`${
+                                    redTeam[0].name
+                                } ${getPlayerMmrText(redTeam[0])}`}</Td>
+                            </Tr>
+                            <Tr>
+                                <Td>{`${blueTeam[1].name} ${getPlayerMmrText(
+                                    blueTeam[1]
+                                )}`}</Td>
+                                <Td textAlign={rightAlign}>{`${
+                                    redTeam[1].name
+                                } ${getPlayerMmrText(redTeam[1])}`}</Td>
+                            </Tr>
+                            <Tr>
+                                <Td>{`${blueTeam[2].name} ${getPlayerMmrText(
+                                    blueTeam[2]
+                                )}`}</Td>
+                                <Td textAlign={rightAlign}>{`${
+                                    redTeam[2].name
+                                } ${getPlayerMmrText(redTeam[2])}`}</Td>
+                            </Tr>
+                            <Tr>
+                                <Td>{`${blueTeam[3].name} ${getPlayerMmrText(
+                                    blueTeam[3]
+                                )}`}</Td>
+                                <Td textAlign={rightAlign}>{`${
+                                    redTeam[3].name
+                                } ${getPlayerMmrText(redTeam[3])}`}</Td>
+                            </Tr>
+                            <Tr>
+                                <Td>{`${blueTeam[4].name} ${getPlayerMmrText(
+                                    blueTeam[4]
+                                )}`}</Td>
+                                <Td textAlign={rightAlign}>{`${
+                                    redTeam[4].name
+                                } ${getPlayerMmrText(redTeam[4])}`}</Td>
+                            </Tr>
+                        </Tbody>
+                    </Table>
+                </TableContainer>
+            </Flex>
+            <Button style={{ margin: 10 }}>Copy to clipboard</Button>
+        </Flex>
     );
 };
 

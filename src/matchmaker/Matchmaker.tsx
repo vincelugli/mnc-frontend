@@ -1,10 +1,18 @@
-import { Button, Flex } from '@chakra-ui/react';
-import { CreatableSelect } from 'chakra-react-select';
+import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { ChakraStylesConfig, CreatableSelect } from 'chakra-react-select';
+import { useState } from 'react';
 import { ToxicDataService } from '../services/toxicData/ToxicDataService';
 import { Player } from '../types/domain/Player';
 import './Matchmaker.css';
-import { useState } from 'react';
 import MatchTable from './MatchTable';
+
+const customStyles: ChakraStylesConfig<Player, true> = {
+    control: (props) => ({
+        ...props,
+        // none of react-select's styles are passed to <Control />
+        flex: 1,
+    }),
+};
 
 export const Matchmaker = () => {
     const [customPlayers, setCustomPlayers] = useState<Player[]>([]);
@@ -74,39 +82,84 @@ export const Matchmaker = () => {
 
     return (
         <>
-            <Flex direction={'column'}>
-                <h1>Matchmaker</h1>
-                <span>Players selected: {selectedPlayers.length}/10</span>
-                <CreatableSelect
-                    isMulti
-                    isClearable
-                    options={players.concat(customPlayers)}
-                    isOptionDisabled={() => selectedPlayers.length >= 10}
-                    inputValue={inputValue}
-                    value={selectedPlayers}
-                    getOptionLabel={(player) => player.name}
-                    getOptionValue={(player) => player.name}
-                    onChange={handleOnChange}
-                    onInputChange={handleInputChange}
-                    onCreateOption={handleCreate}
-                    getNewOptionData={(inputValue) => ({
-                        name: inputValue,
-                        mmr: 1500,
-                    })}
-                    placeholder='Add players...'
-                />
-
-                <Button
-                    onClick={addMatch}
-                    disabled={selectedPlayers.length !== 10}
+            <Flex direction='column' justify='center' align='flex-start'>
+                <Heading>Matchmaker</Heading>
+                <Flex
+                    direction='column'
+                    justify='center'
+                    align='stretch'
+                    alignSelf='stretch'
+                    paddingTop='6'
+                    paddingBottom='6'
                 >
-                    Matchmake!
-                </Button>
+                    <Flex
+                        direction='row'
+                        justify='center'
+                        align='center'
+                        alignSelf='stretch'
+                    >
+                        <Box style={{ flex: 1 }}>
+                            <CreatableSelect
+                                isMulti
+                                isClearable
+                                options={players.concat(customPlayers)}
+                                isOptionDisabled={() =>
+                                    selectedPlayers.length >= 10
+                                }
+                                inputValue={inputValue}
+                                value={selectedPlayers}
+                                getOptionLabel={(player) => player.name}
+                                getOptionValue={(player) => player.name}
+                                onChange={handleOnChange}
+                                onInputChange={handleInputChange}
+                                onCreateOption={handleCreate}
+                                getNewOptionData={(inputValue) => ({
+                                    name: inputValue,
+                                    mmr: 1500,
+                                })}
+                                placeholder='Add players...'
+                                size='lg'
+                            />
+                        </Box>
+                        <Box style={{ flex: 1 }}></Box>
+                    </Flex>
+                    <Flex
+                        direction='column'
+                        justify='center'
+                        align='flex-start'
+                        padding='3'
+                    >
+                        <Text color='gray.600'>
+                            Players selected: {selectedPlayers.length}/10
+                        </Text>
+                        <Button
+                            onClick={addMatch}
+                            disabled={selectedPlayers.length !== 10}
+                            style={{
+                                marginTop: 3,
+                                marginBottom: 3,
+                            }}
+                        >
+                            Matchmake!
+                        </Button>
+                    </Flex>
+                </Flex>
                 {blueTeam.length === 5 && (
-                    <MatchTable
-                        blueTeam={blueTeam}
-                        redTeam={redTeam}
-                    ></MatchTable>
+                    <Flex
+                        direction='row'
+                        alignSelf='stretch'
+                        align='flex-start'
+                        paddingTop='3'
+                        paddingBottom='3'
+                    >
+                        <Box style={{ flex: 2 }}>
+                            <MatchTable
+                                blueTeam={blueTeam}
+                                redTeam={redTeam}
+                            ></MatchTable>
+                        </Box>
+                        <Flex alignSelf='stretch' flex='1'></Flex>
+                    </Flex>
                 )}
             </Flex>
         </>
