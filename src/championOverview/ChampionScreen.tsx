@@ -120,7 +120,7 @@ export const ChampionScreen = React.memo(function ChampionScreen() {
 
     const statsCardChampion = {
         ...champion,
-        imageUri: getChampionImage(dataDragonChampionId),
+        imageUri: getChampionImage(dataDragonChampionId).square,
         extraStats: {
             Class: championClass.reduce((prevValue, currentValue) => {
                 return (prevValue !== '' ? prevValue + ',' : '') + currentValue;

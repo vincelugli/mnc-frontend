@@ -35,6 +35,7 @@ import {
     FiUsers,
     FiZap,
     FiShield,
+    FiCalendar,
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
@@ -49,6 +50,7 @@ const LinkItems: Array<LinkItemProps> = [
     { name: 'Home', icon: FiHome, route: '/' },
     { name: 'Player Overview', icon: FiUsers, route: 'playerOverview' },
     { name: 'Champion Overview', icon: FiShield, route: '/championOverview' },
+    { name: 'Match History', icon: FiCalendar, route: '/matchHistory' },
     { name: 'Matchmaker', icon: FiZap, route: 'matchmaker' },
 ];
 

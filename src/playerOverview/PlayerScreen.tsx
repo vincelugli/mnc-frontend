@@ -67,7 +67,7 @@ const processPlayerChampions = (
         return {
             ...champion,
             imageUrl: championIdMap[champion.name]
-                ? getChampionImage(championIdMap[champion.name])
+                ? getChampionImage(championIdMap[champion.name]).square
                 : '',
         };
     });

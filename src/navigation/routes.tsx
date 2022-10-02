@@ -16,6 +16,11 @@ import {
 import { Error } from '../components/Error';
 import { loader as casterLoader, CasterScreen } from '../admin/CasterScreen';
 import { Slideshow } from '../admin/Slideshow';
+import { MatchHistory } from '../matchHistory/MatchHistory';
+import {
+    loader as matchLoader,
+    MatchScreen,
+} from '../matchHistory/MatchScreen';
 
 export const router = createBrowserRouter([
     {
@@ -48,6 +53,15 @@ export const router = createBrowserRouter([
                 path: '/championOverview/:championId',
                 loader: championLoader,
                 element: <ChampionScreen />,
+            },
+            {
+                path: '/matchHistory',
+                element: <MatchHistory />,
+            },
+            {
+                path: '/matchHistory/:matchId',
+                loader: matchLoader,
+                element: <MatchScreen />,
             },
             {
                 path: '/beholder/:videoId',

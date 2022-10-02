@@ -78,7 +78,7 @@ export const ChampionOverview = React.memo(function ChampionOverview() {
         return {
             ...champion,
             imageUrl: championIdMap[champion.name]
-                ? getChampionImage(championIdMap[champion.name])
+                ? getChampionImage(championIdMap[champion.name]).square
                 : '',
         };
     });
