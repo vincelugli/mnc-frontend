@@ -45,9 +45,9 @@ import { ReactText } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {DISCORD_BASE, DISCORD_OAUTH} from '../discord/api';
 
-const CLIENT_ID = '1021884223898009640';
+const CLIENT_ID = 'TODO: Add application client_id';
 const SCOPES = ['identify'].join('%20');
-const REDIRECT = encodeURIComponent('http://localhost:3000/');
+const REDIRECT = encodeURIComponent('https://mnc.pages.dev/');
 const oauth2LoginUrl = `${DISCORD_BASE+DISCORD_OAUTH}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT}&response_type=code&scope=${SCOPES}`;
 
 interface LinkItemProps {
