@@ -132,7 +132,7 @@ export const playerMatchHistoryColumns: ColumnDef<MatchWithImages, any>[] = [
                         player={info.row.original.team1.players[4]}
                         activePlayerName={activePlayerName}
                     />
-                    <div style={{ marginRight: 8 }}>{'VS'}</div>
+                    <div style={{ marginLeft: 8, marginRight: 8 }}>{'VS'}</div>
                     <TeamIcon
                         player={info.row.original.team2.players[0]}
                         activePlayerName={activePlayerName}
