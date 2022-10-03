@@ -260,10 +260,28 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
             >
                 <TabList style={{ maxWidth: 1024 }}>
                     <Tab>Champion Overview</Tab>
+                    <Tab>Match History</Tab>
                     <Tab>Teammate Record</Tab>
                     <Tab>Opponent Record</Tab>
                 </TabList>
                 <TabPanels style={{ maxWidth: 1024 }}>
+                    <TabPanel>
+                        <SortableTable
+                            columns={championColumns}
+                            data={playerChampionData}
+                            getRowProps={(row: any) => {
+                                return {
+                                    onClick: () => {
+                                        navigate(
+                                            '/championOverview/' +
+                                                row.getValue('name')
+                                        );
+                                        window.scrollTo(0, 0);
+                                    },
+                                };
+                            }}
+                        />
+                    </TabPanel>
                     <TabPanel>
                         <SortableTable
                             columns={championColumns}

@@ -48,10 +48,10 @@ interface LinkItemProps {
 }
 const LinkItems: Array<LinkItemProps> = [
     { name: 'Home', icon: FiHome, route: '/' },
-    { name: 'Player Overview', icon: FiUsers, route: 'playerOverview' },
+    { name: 'Player Overview', icon: FiUsers, route: '/playerOverview' },
     { name: 'Champion Overview', icon: FiShield, route: '/championOverview' },
     { name: 'Match History', icon: FiCalendar, route: '/matchHistory' },
-    { name: 'Matchmaker', icon: FiZap, route: 'matchmaker' },
+    { name: 'Matchmaker', icon: FiZap, route: '/matchmaker' },
 ];
 
 export default function SidebarWithHeader({
