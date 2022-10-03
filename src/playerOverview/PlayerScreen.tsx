@@ -5,7 +5,10 @@ import { SortableTable } from '../components/SortableTable';
 import { StatsCard } from '../components/StatsCard';
 import { Champion } from '../types/domain/Champion';
 import { Player, PlayerRecord } from '../types/domain/Player';
-import { getChampionImage } from '../utils/championImageHelpers';
+import {
+    getChampionImage,
+    getMatchWithImages,
+} from '../utils/championImageHelpers';
 
 import { championClassWinRates, ChampionClass } from '../data/championClasses';
 import { Radar } from 'react-chartjs-2';
@@ -34,9 +37,14 @@ import {
     championColumns,
     opponentColumns,
     teammateColumns,
-} from './PlayerScreenColumnHelper';
+} from './playerScreenColumnHelper';
 import { DataDragonService } from '../services/dataDragon/DataDragonService';
 import { ToxicDataService } from '../services/toxicData/ToxicDataService';
+import {
+    MatchWithImages,
+    playerMatchHistoryColumns,
+} from '../matchHistory/matchHistoryColumnHelper';
+import { Match } from '../types/domain/Match';
 
 ChartJS.register(
     RadialLinearScale,
@@ -73,6 +81,16 @@ const processPlayerChampions = (
     });
 };
 
+function isPlayerMatchWinner(player: Player, match: Match) {
+    return match.winner === 'Team 1'
+        ? match.team1.players.findIndex(
+              (matchPlayer) => matchPlayer.name === player.name
+          ) > -1
+        : match.team2.players.findIndex(
+              (matchPlayer) => matchPlayer.name === player.name
+          ) > -1;
+}
+
 export const PlayerScreen = React.memo(function PlayerScreen() {
     const navigate = useNavigate();
     const playerId = useLoaderData() as string;
@@ -82,9 +100,13 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
     const championIdMapResponse = DataDragonService.useChampionIdMap();
     const championIdMap = championIdMapResponse.data ?? {};
 
+    const matchHistoryResponse = ToxicDataService.useMatchHistory();
+    const matchHistory = matchHistoryResponse.data ?? [];
+
+    // only recompute the player classes when are looking at a new player
     const playerClasses = useMemo(
         () => championClassWinRates(Object.values(player?.champions ?? {})),
-        [player]
+        [player?.name]
     );
 
     const chartLabels = Object.keys(ChampionClass).map((value) => {
@@ -137,6 +159,27 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
         player,
         championIdMap
     );
+
+    const playerMatchHistory: MatchWithImages[] = matchHistory
+        .filter((match) => {
+            return (
+                match.team1.players.findIndex(
+                    (matchPlayer) => matchPlayer.name === player.name
+                ) > -1 ||
+                match.team2.players.findIndex(
+                    (matchPlayer) => matchPlayer.name === player.name
+                ) > -1
+            );
+        })
+        .map((match) => {
+            return {
+                ...getMatchWithImages(match, championIdMap),
+                winner: isPlayerMatchWinner(player, match) ? 'WIN' : 'LOSS',
+                playerName: player.name,
+            };
+        });
+
+    console.log('render');
 
     const playerTeammateData: PlayerRecord[] = Object.values(
         player.teammates ?? []
@@ -260,6 +303,7 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
             >
                 <TabList style={{ maxWidth: 1024 }}>
                     <Tab>Champion Overview</Tab>
+                    <Tab>Match History</Tab>
                     <Tab>Teammate Record</Tab>
                     <Tab>Opponent Record</Tab>
                 </TabList>
@@ -274,6 +318,22 @@ export const PlayerScreen = React.memo(function PlayerScreen() {
                                         navigate(
                                             '/championOverview/' +
                                                 row.getValue('name')
+                                        );
+                                        window.scrollTo(0, 0);
+                                    },
+                                };
+                            }}
+                        />
+                    </TabPanel>
+                    <TabPanel>
+                        <SortableTable
+                            columns={playerMatchHistoryColumns}
+                            data={playerMatchHistory}
+                            getRowProps={(row: any) => {
+                                return {
+                                    onClick: () => {
+                                        navigate(
+                                            '/matchHistory/' + row.original.id
                                         );
                                         window.scrollTo(0, 0);
                                     },
