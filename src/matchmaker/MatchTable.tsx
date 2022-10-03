@@ -16,8 +16,18 @@ function getPlayerMmrText(player: Player): string {
     const totalGames = (player.wins ?? 0) + (player.losses ?? 0);
     return totalGames >= 10
         ? `(${Math.round(player.mmr ?? 0).toString()})`
-        : ``;
+        : `(unrated)`;
 }
+
+const getTeamMmr = (team: readonly Player[]) => {
+    return Math.round(
+        team.reduce(
+            (teamMmr, player) =>
+                player.mmr ? teamMmr + player.mmr : teamMmr + 1500,
+            0
+        ) / 5
+    );
+};
 
 export const MatchTable = ({
     blueTeam,
@@ -58,52 +68,64 @@ export const MatchTable = ({
                     <Table variant='simple'>
                         <Thead>
                             <Tr>
-                                <Th color='blue.500'>Blue Team</Th>
+                                <Th color='blue.500'>
+                                    Blue Team ({getTeamMmr(blueTeam)})
+                                </Th>
                                 <Th color='red.600' textAlign='right'>
-                                    Red Team
+                                    Red Team ({getTeamMmr(redTeam)})
                                 </Th>
                             </Tr>
                         </Thead>
                         <Tbody>
                             <Tr>
-                                <Td>{`${blueTeam[0].name} ${getPlayerMmrText(
-                                    blueTeam[0]
-                                )}`}</Td>
-                                <Td textAlign='right'>{`${
-                                    redTeam[0].name
-                                } ${getPlayerMmrText(redTeam[0])}`}</Td>
+                                <Td>
+                                    {blueTeam[0].name}{' '}
+                                    {getPlayerMmrText(blueTeam[0])}
+                                </Td>
+                                <Td textAlign='right'>
+                                    {redTeam[0].name}{' '}
+                                    {getPlayerMmrText(redTeam[0])}
+                                </Td>
                             </Tr>
                             <Tr>
-                                <Td>{`${blueTeam[1].name} ${getPlayerMmrText(
-                                    blueTeam[1]
-                                )}`}</Td>
-                                <Td textAlign='right'>{`${
-                                    redTeam[1].name
-                                } ${getPlayerMmrText(redTeam[1])}`}</Td>
+                                <Td>
+                                    {blueTeam[1].name}{' '}
+                                    {getPlayerMmrText(blueTeam[1])}
+                                </Td>
+                                <Td textAlign='right'>
+                                    {redTeam[1].name}{' '}
+                                    {getPlayerMmrText(redTeam[1])}
+                                </Td>
                             </Tr>
                             <Tr>
-                                <Td>{`${blueTeam[2].name} ${getPlayerMmrText(
-                                    blueTeam[2]
-                                )}`}</Td>
-                                <Td textAlign='right'>{`${
-                                    redTeam[2].name
-                                } ${getPlayerMmrText(redTeam[2])}`}</Td>
+                                <Td>
+                                    {blueTeam[2].name}{' '}
+                                    {getPlayerMmrText(blueTeam[2])}
+                                </Td>
+                                <Td textAlign='right'>
+                                    {redTeam[2].name}{' '}
+                                    {getPlayerMmrText(redTeam[2])}
+                                </Td>
                             </Tr>
                             <Tr>
-                                <Td>{`${blueTeam[3].name} ${getPlayerMmrText(
-                                    blueTeam[3]
-                                )}`}</Td>
-                                <Td textAlign='right'>{`${
-                                    redTeam[3].name
-                                } ${getPlayerMmrText(redTeam[3])}`}</Td>
+                                <Td>
+                                    {blueTeam[3].name}{' '}
+                                    {getPlayerMmrText(blueTeam[3])}
+                                </Td>
+                                <Td textAlign='right'>
+                                    {redTeam[3].name}{' '}
+                                    {getPlayerMmrText(redTeam[3])}
+                                </Td>
                             </Tr>
                             <Tr>
-                                <Td>{`${blueTeam[4].name} ${getPlayerMmrText(
-                                    blueTeam[4]
-                                )}`}</Td>
-                                <Td textAlign='right'>{`${
-                                    redTeam[4].name
-                                } ${getPlayerMmrText(redTeam[4])}`}</Td>
+                                <Td>
+                                    {blueTeam[4].name}{' '}
+                                    {getPlayerMmrText(blueTeam[4])}
+                                </Td>
+                                <Td textAlign='right'>
+                                    {redTeam[4].name}{' '}
+                                    {getPlayerMmrText(redTeam[4])}
+                                </Td>
                             </Tr>
                         </Tbody>
                     </Table>
