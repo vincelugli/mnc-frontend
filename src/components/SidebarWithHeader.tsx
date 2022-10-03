@@ -1,4 +1,6 @@
-import React, { ReactNode, useCallback } from 'react';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { getAccessTokenBackend, getUser } from '../discord/client';
 import {
     IconButton,
     Avatar,
@@ -35,11 +37,18 @@ import {
     FiUsers,
     FiZap,
     FiShield,
+    FiLogIn,
     FiCalendar,
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {DISCORD_BASE, DISCORD_OAUTH} from '../discord/api';
+
+const CLIENT_ID = '1021884223898009640';
+const SCOPES = ['identify'].join('%20');
+const REDIRECT = encodeURIComponent('http://localhost:3000/');
+const oauth2LoginUrl = `${DISCORD_BASE+DISCORD_OAUTH}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT}&response_type=code&scope=${SCOPES}`;
 
 interface LinkItemProps {
     name: string;
@@ -60,10 +69,30 @@ export default function SidebarWithHeader({
     children: ReactNode;
 }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [username, setUsername] = useState('');
+    const [fetched, setFetched] = useState<boolean>(false);
+
+    const [searchParams] = useSearchParams();
+
+    useEffect(() => {
+        async function getClientInformation() {
+            if (!searchParams.has('code') || fetched) return;
+
+            setFetched(true)
+            const response = await getAccessTokenBackend(searchParams.get('code')!)
+
+            if (response.error) return;
+            const user = await getUser(response.access_token, response.token_type);
+            setUsername(user.username);
+        }
+        if (!fetched) getClientInformation();
+    });
+
     return (
         <Box minH='100vh'>
             <SidebarContent
                 onClose={() => onClose}
+                username={username}
                 display={{ base: 'none', md: 'block' }}
             />
             <Drawer
@@ -76,7 +105,7 @@ export default function SidebarWithHeader({
                 size='full'
             >
                 <DrawerContent>
-                    <SidebarContent onClose={onClose} />
+                    <SidebarContent onClose={onClose} username={username} />
                 </DrawerContent>
             </Drawer>
             {/* mobilenav */}
@@ -90,9 +119,10 @@ export default function SidebarWithHeader({
 
 interface SidebarProps extends BoxProps {
     onClose: () => void;
+    username: string;
 }
 
-const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+const SidebarContent = ({ onClose, username, ...rest }: SidebarProps) => {
     return (
         <Box
             transition='3s ease'
@@ -134,6 +164,36 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                     {link.name}
                 </NavItem>
             ))}
+            <Link
+                // TODO: add profile
+                href={username ? '#' : oauth2LoginUrl}
+                style={{ textDecoration: 'none' }}
+                _focus={{ boxShadow: 'none' }}
+            >
+                <Flex
+                    align='center'
+                    p='4'
+                    mx='4'
+                    borderRadius='lg'
+                    role='group'
+                    cursor='pointer'
+                    _hover={{
+                        bg: 'cyan.400',
+                        color: 'white',
+                    }}
+                    {...rest}
+                >
+                <Icon
+                    mr='4'
+                    fontSize='16'
+                    _groupHover={{
+                        color: 'white',
+                    }}
+                    as={FiLogIn}
+                />
+                    {username ? username : 'LOGIN'}
+                </Flex>
+            </Link>
         </Box>
     );
 };
